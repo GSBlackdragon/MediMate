@@ -238,4 +238,6 @@
     <string name="annuler_prise">Annuler la prise</string>
     <string name="stock_faible_pensez_racheter">Votre stock est faible, pensez à en racheter</string>
     <string name="gerer_stock">Gérer mon stock</string>
+    <string name="confirmer">Confirmer</string>
+    <string name="duplication_substance_active">Duplication de substance active détecté</string>
 </resources>
