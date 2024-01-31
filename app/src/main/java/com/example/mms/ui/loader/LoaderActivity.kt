@@ -18,6 +18,7 @@ import com.example.mms.database.inApp.SingletonDatabase
 import com.example.mms.database.jsonMedicines.MedicineJsonDatabase
 import com.example.mms.databinding.LoaderBinding
 import com.example.mms.broadcast.MidnightAlarmReceiver
+import com.example.mms.database.csvDoctor.DoctorCsvDatabase
 import com.example.mms.model.User
 import com.example.mms.service.NotifService
 import com.example.mms.service.TasksService
@@ -59,6 +60,7 @@ class LoaderActivity : AppCompatActivity() {
                 val mediJsDb = MedicineJsonDatabase(this)
                 mediJsDb.transferJsonDBintoRoom(db.medicineDao())
             }
+
 
             // call the api to check if the local version is up to date
             this.updateDataService.needToUpdate(
@@ -110,6 +112,15 @@ class LoaderActivity : AppCompatActivity() {
                     this.showSnackbar()
                     this.nextPage()
                 })
+        }.start()
+        Thread{
+            val doctorsDB = db.doctorDao()
+
+            if (doctorsDB.getNbDoctor() == 0) {
+                val doctorsJsDb = DoctorCsvDatabase(this)
+                doctorsJsDb.transferCsvDBintoRoom(db.doctorDao())
+            }
+            Log.d("D", doctorsDB.getNbDoctor().toString())
         }.start()
     }
 

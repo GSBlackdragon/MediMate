@@ -1,12 +1,16 @@
 package com.example.mms.ui.add
 
 import android.app.Activity.RESULT_OK
+import android.app.Dialog
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -23,9 +27,11 @@ import com.example.mms.model.Task
 import com.example.mms.model.medicines.Medicine
 import com.example.mms.service.NotifService
 import com.example.mms.service.TasksService
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.Locale
+import java.util.concurrent.LinkedBlockingQueue
 
 class AddMedicamentRecapFragment : Fragment() {
     private var _binding: FragmentAddRecapBinding? = null
@@ -116,7 +122,29 @@ class AddMedicamentRecapFragment : Fragment() {
         }
 
         binding.btnTaskValidate.setOnClickListener {
-            saveAndRedirect()
+            // check if the same active substance is already present in the active treatments
+            var isSubCodePresent : Boolean = false
+            val t = Thread {
+                var listOfAllTasks = db.taskDao().getAll()
+                var listOfAllSubstanceCode : MutableList<Int?> = mutableListOf()
+                for (task in listOfAllTasks){
+                    listOfAllSubstanceCode.add(db.medicineDao().getByCIS(task.medicineCIS)?.composition?.substance_code)
+                }
+                var sub_active_code=db.medicineDao().getByCIS(viewModel.taskData.value!!.medicineCIS)?.composition?.substance_code
+                isSubCodePresent=(sub_active_code in listOfAllSubstanceCode)
+            }
+            t.start()
+            t.join()
+
+            Log.d("test",isSubCodePresent.toString())
+
+
+            if (isSubCodePresent){
+                confirmSameActiveSubstance()
+            }else{
+                saveAndRedirect()
+            }
+
         }
 
         return root
@@ -162,10 +190,13 @@ class AddMedicamentRecapFragment : Fragment() {
      * Save the task in database and redirect to main activity
      */
     private fun saveAndRedirect() {
+
         if (viewModel.storage.value != null) {
             // save storage
             val t = Thread {
                 db.medicineStorageDao().insert(viewModel.storage.value!!)
+                //db.medicineDao().getByCIS(viewModel.taskData.value!!.medicineCIS)?.composition?.substance_code.toString()
+
             }
             t.start()
             t.join()
@@ -232,5 +263,24 @@ class AddMedicamentRecapFragment : Fragment() {
         }
 
         return hours
+    }
+
+    private fun confirmSameActiveSubstance() {
+        val dialog = Dialog(this.requireContext())
+        dialog.setContentView(R.layout.custom_dialog_same_active_substance)
+
+
+        // We bind the onClickListener of the button btnInfoTask to the action of going to the page myTasks (dashboard)
+        val btnInfoTask = dialog.findViewById<TextView>(R.id.btn_confirm_active_sub)
+        btnInfoTask.setOnClickListener {
+            saveAndRedirect()
+            dialog.dismiss()
+        }
+
+        val btnCancel = dialog.findViewById<TextView>(R.id.btn_cancel_active_sub)
+        btnCancel.setOnClickListener {
+            dialog.dismiss()
+        }
+        dialog.show()
     }
 }

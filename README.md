@@ -16,6 +16,11 @@ Application that helps you store the different medication you have to take, allo
 - [@Sylvain Baudouin](https://www.github.com/syysy)
 
 
+## Api repository
+
+Python script to clean data & create an Api
+[MediMate-BD](https://github.com/MathieuMarthy/Medimate-BD)
+
 
 ## Installation
 

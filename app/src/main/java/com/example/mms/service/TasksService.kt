@@ -403,7 +403,7 @@ class TasksService(context: Context) {
             }
         }
 
-        return false
+        return compareLocalDateTimeOnlyDays(pointerDate, dateStartDay)
     }
 
 

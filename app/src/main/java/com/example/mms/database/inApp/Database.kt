@@ -13,9 +13,11 @@ import com.example.mms.dao.TakesDAO
 import com.example.mms.dao.TaskDAO
 import com.example.mms.dao.UserDAO
 import com.example.mms.dao.VersionDAO
+import com.example.mms.dao.DoctorDAO
 import com.example.mms.database.converter.DateConverter
 import com.example.mms.model.Cycle
 import com.example.mms.model.CycleHourWeight
+import com.example.mms.model.Doctor
 import com.example.mms.model.HourWeight
 import com.example.mms.model.OneTake
 import com.example.mms.model.SpecificDaysHourWeight
@@ -31,7 +33,8 @@ import com.example.mms.model.medicines.Medicine
     User::class, Medicine::class, Task::class, Cycle::class,
     CycleHourWeight::class, HourWeight::class,
     SpecificDaysHourWeight::class, Takes::class, OneTake::class,
-    MedicineStorage::class, Version::class
+    MedicineStorage::class, Version::class,
+    Doctor::class
 ], version = 7)
 @TypeConverters(DateConverter::class)
 abstract class AppDatabase : RoomDatabase() {
@@ -45,4 +48,7 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun oneTakeDao(): OneTakeDAO
     abstract fun medicineStorageDao(): MedicineStorageDAO
     abstract fun versionDao(): VersionDAO
+    abstract fun doctorDao(): DoctorDAO
+
+
 }
