@@ -30,6 +30,27 @@ import java.util.Date
 class TasksService(context: Context) {
     private var db = SingletonDatabase.getDatabase(context)
 
+
+    /**
+     * Return a boolean regarding if the active substance is
+     * already present in any active treatments during the the given period of time
+     *
+     * @param subcode The active substance code you want to check
+     * @param startDate The start of the interval to check
+     * @param endDate The end of the interval to check
+     * @return The Boolean
+     */
+    fun isSubCodeInActiveSubstanceCode(subcode : Int?,startDate : LocalDateTime, endDate : LocalDateTime) : Boolean{
+        var listSubActiveCode = mutableListOf<Int?>()
+        var listTasks = getCurrentUserTasks()
+        for (task in listTasks){
+            if (startDate <= task.endDate && endDate >= task.startDate){
+                listSubActiveCode.add(db.medicineDao().getByCIS(task.medicineCIS)?.composition?.substance_code)
+            }
+        }
+        return (subcode in listSubActiveCode)
+    }
+
     /**
      * Get all the tasks of the current user
      *

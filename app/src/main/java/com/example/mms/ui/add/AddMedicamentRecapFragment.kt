@@ -3,6 +3,8 @@ package com.example.mms.ui.add
 import android.app.Activity.RESULT_OK
 import android.app.Dialog
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -123,21 +125,17 @@ class AddMedicamentRecapFragment : Fragment() {
 
         binding.btnTaskValidate.setOnClickListener {
             // check if the same active substance is already present in the active treatments
-            var isSubCodePresent : Boolean = false
+            var isSubCodePresent = false
             val t = Thread {
-                var listOfAllTasks = db.taskDao().getAll()
-                var listOfAllSubstanceCode : MutableList<Int?> = mutableListOf()
-                for (task in listOfAllTasks){
-                    listOfAllSubstanceCode.add(db.medicineDao().getByCIS(task.medicineCIS)?.composition?.substance_code)
-                }
-                var sub_active_code=db.medicineDao().getByCIS(viewModel.taskData.value!!.medicineCIS)?.composition?.substance_code
-                isSubCodePresent=(sub_active_code in listOfAllSubstanceCode)
+                isSubCodePresent = tasksService.isSubCodeInActiveSubstanceCode(
+                    db.medicineDao().getByCIS(
+                        viewModel.taskData.value!!.medicineCIS)?.composition?.substance_code,
+                        viewModel.taskData.value!!.startDate,
+                        viewModel.taskData.value!!.endDate
+                )
             }
             t.start()
             t.join()
-
-            Log.d("test",isSubCodePresent.toString())
-
 
             if (isSubCodePresent){
                 confirmSameActiveSubstance()
@@ -270,6 +268,7 @@ class AddMedicamentRecapFragment : Fragment() {
         dialog.setContentView(R.layout.custom_dialog_same_active_substance)
 
 
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         // We bind the onClickListener of the button btnInfoTask to the action of going to the page myTasks (dashboard)
         val btnInfoTask = dialog.findViewById<TextView>(R.id.btn_confirm_active_sub)
         btnInfoTask.setOnClickListener {
