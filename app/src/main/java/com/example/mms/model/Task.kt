@@ -25,6 +25,12 @@ import java.util.Locale
             parentColumns = ["email"],
             childColumns = ["userId"],
             onDelete = ForeignKey.CASCADE
+        ),
+        ForeignKey(
+            entity = Doctor::class,
+            parentColumns = ["rpps"],
+            childColumns = ["doctor"],
+            onDelete = ForeignKey.CASCADE
         )
     ]
 )
@@ -51,7 +57,11 @@ data class Task(
     var specificDays: MutableList<SpecificDaysHourWeight> = mutableListOf(),
 
     @Ignore
-    var oneTakeHourWeight: HourWeight? = null
+    var oneTakeHourWeight: HourWeight? = null,
+
+    @ColumnInfo(index = true)
+    var doctor: Long? = null
+
 ) {
     constructor() : this(0, "", LocalDateTime.now(), LocalDateTime.now(), LocalDateTime.now(),LocalDateTime.now(), 0, "", Cycle(), mutableListOf())
 

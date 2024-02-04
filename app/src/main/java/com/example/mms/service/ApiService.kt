@@ -6,7 +6,9 @@ import com.android.volley.Request
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.example.mms.database.mongoObjects.MongoVersion
+import com.example.mms.model.Doctor
 import com.example.mms.model.medicines.Medicine
+import kotlinx.serialization.Serializable
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 
@@ -22,16 +24,24 @@ import kotlinx.serialization.json.Json
  * @property json The json parser
  */
 class ApiService private constructor(context: Context) {
-    private val url = "http://138.68.64.36:8080/"
+    private val MedicineUrl = "http://138.68.64.36:8080/"
+    private val GouvUrl = "https://gateway.api.esante.gouv.fr/fhir/v1/Practitioner?identifier="
+    private val GouvKEY = "698f7862-435e-4021-a05b-8671ca5f9590"
+    private val InstaMedUrl = "https://data.instamed.fr/api"
     private val queue = Volley.newRequestQueue(context)
 
     private val json = Json { ignoreUnknownKeys = true }
-
+    private var Doctor :Doctor? = null
     /**
      * Add a path to the api url
      */
-    private fun makeUrl(path: String): String {
-        return this.url + path
+    private fun makeUrl(path: String,whatLink:Int): String {
+        return when(whatLink){
+            0 -> MedicineUrl + path
+            1 -> GouvUrl + path
+            2 -> InstaMedUrl + path
+            else -> ""
+        }
     }
 
     /**
@@ -45,7 +55,7 @@ class ApiService private constructor(context: Context) {
     fun getMedicinesCodesToUpdate(localVersion: Int, callback: (version: MongoVersion) -> Unit, callbackError: () -> Unit) {
         // build the request
         val stringRequest = StringRequest(
-            Request.Method.GET, this.makeUrl("version/$localVersion"),
+            Request.Method.GET, this.makeUrl("version/$localVersion",0),
             { response ->
                 try {
                     // try to parse the response into a version
@@ -75,7 +85,7 @@ class ApiService private constructor(context: Context) {
     fun getMedicine(codeCis: Int, callback: (Medicine) -> Unit, errorCallback: () -> Unit) {
         // build the request
         val stringRequest = StringRequest(
-            Request.Method.GET, this.makeUrl("medicine/$codeCis"),
+            Request.Method.GET, this.makeUrl("medicine/$codeCis",0),
             { response ->
                 try {
                     // try to parse the response into a medicine
@@ -92,6 +102,245 @@ class ApiService private constructor(context: Context) {
 
         queue.add(stringRequest)
     }
+
+    @Serializable
+    private data class Bundle(
+        val entry: List<Entry>
+    )
+
+    @Serializable
+    private  data class Entry(
+        val resource: Practitioner
+    )
+
+    @Serializable
+    private data class Practitioner(
+        val extension: List<Extension>
+    )
+
+    @Serializable
+    private data class Extension(
+        val extension: List<ExtensionDetail>? = null
+    )
+
+    @Serializable
+    private data class ExtensionDetail(
+        val url: String,
+        val valueString: String? = null // Seul ce champ est nécessaire pour l'email
+    )
+    private fun extractEmail(jsonString: String): String? {
+        val json = Json { ignoreUnknownKeys = true }
+        val bundle = json.decodeFromString<Bundle>(jsonString)
+        bundle.entry.forEach { entry ->
+            entry.resource.extension.forEach { extension ->
+                extension.extension?.forEach { detail ->
+                    if (detail.url == "value") {
+                        return detail.valueString
+                    }
+                }
+            }
+        }
+        return null // Retourne null si aucun email n'est trouvé
+    }
+    private fun getDoctorbyIDGOUV(identifier: String, callback: (String) -> Unit, errorCallback: () -> Unit) {
+        val url = makeUrl(identifier, 1)
+
+        val stringRequest = object : StringRequest(Method.GET, url,
+            { response ->
+                try {
+                    Log.d("URLDEBUG", response)
+                    val email = extractEmail(response)
+                    if (email != null) {
+                        Log.d("URLDEBUG", email)
+                        callback(email)
+                    } else {
+                        Log.d("extractEmail", "Aucun email trouvé dans la réponse")
+                        errorCallback()
+                    }
+                } catch (e: Exception) {
+                    Log.d("json", "error: $e")
+                    errorCallback()
+                }
+            },
+            {
+                Log.d("request", "Échec de la requête")
+                errorCallback()
+            }) {
+            override fun getHeaders(): MutableMap<String, String> = hashMapOf("ESANTE-API-KEY" to GouvKEY)
+        }
+        queue.add(stringRequest)
+    }
+
+
+    private fun getDoctorbyIDInstamed(identifier: String, callback: (Doctor) -> Unit, errorCallback: () -> Unit) {
+        val url = makeUrl("/rpps/$identifier", 2)
+        val stringRequest = object : StringRequest(Method.GET, url,
+            { response ->
+                try {
+                    val doctorResponse = json.decodeFromString<temporaryDoctor>(response)
+                    // Assurez-vous que temporaryDoctor a une fonction toDoctor() définie similairement à l'exemple précédent
+                    callback(doctorResponse.toDoctor())
+                } catch (e: Exception) {
+                    Log.d("json", "error: $e")
+                    errorCallback()
+                }
+            },
+            {
+                Log.d("request", "Échec de la requête")
+                errorCallback()
+            }) {
+            override fun getHeaders(): MutableMap<String, String> = hashMapOf("accept" to "application/json")
+        }
+        queue.add(stringRequest)
+    }
+
+
+    @Serializable
+    data class DoctorsResponse(
+        val doctors: List<temporaryDoctor>
+    )
+    // Supposons que ces propriétés soient les seules nécessaires pour créer un objet Doctor
+    @Serializable
+    data class temporaryDoctor(
+        var idRpps: Long,
+        var lastName: String?,
+        var firstName: String?,
+        var title: String?,
+        var specialty: String?
+    ) {
+        fun toDoctor(): Doctor = Doctor(idRpps, lastName ?: "", firstName ?: "", title ?: "", specialty ?: "", "")
+    }
+
+
+    private fun getDoctorByName(lastName: String, firstName: String, callback: (List<Doctor>) -> Unit, errorCallback: (String) -> Unit) {
+        var url = makeUrl("/rpps?page=1&_per_page=30&lastName=${lastName}&firstName=${firstName}",2)
+        val stringRequest = object : StringRequest(Method.GET, url,
+            { response ->
+                try {
+
+                    val doctorResponse = json.decodeFromString<List<temporaryDoctor>>(response)
+                    // Assurez-vous que temporaryDoctor a une fonction toDoctor() définie similairement à l'exemple précédent
+                    Log.d("byname", "success: ${doctorResponse.map { it.toDoctor() }}")
+                    callback(doctorResponse.map { it.toDoctor() })
+
+
+                } catch (e: Exception) {
+                    Log.d("json", "error: $e")
+                    errorCallback("Erreur de traitement: ${e.message}")
+                }
+            },
+            { error ->
+                Log.d("byname", "error: $error.message")
+                errorCallback("Échec de la requête: ${error.message ?: "Erreur inconnue"}")
+            }) {
+            override fun getHeaders(): MutableMap<String, String> = hashMapOf("accept" to "application/json")
+
+        }
+        queue.add(stringRequest)
+    }
+
+
+
+    interface DoctorResultCallback {
+        fun onSuccess(doctor: Doctor?)
+        fun onError(error: String)
+    }
+
+    fun getDoctor(name: Pair<String, String>?, identifier: String?, resultCallback: DoctorResultCallback) {
+        this.Doctor =null
+        if (identifier != null) {
+            getDoctorbyIDInstamed(identifier,
+                callback = { doctor ->
+                    Log.d("DEBUGINSTAMED", doctor.toString())
+                    this.Doctor = doctor
+                    getDoctorbyIDGOUV(identifier,
+                        callback = { email ->
+                            this.Doctor!!.email = email
+                            Log.d("doctor", this.Doctor.toString())
+                            // Opération terminée avec succès, retourner le Doctor
+                            resultCallback.onSuccess(this.Doctor)
+                        },
+                        errorCallback = {
+                            Log.d("error", "Une erreur est survenue lors de la récupération de l'email du docteur")
+                            // Signaler une erreur
+                            resultCallback.onError("Une erreur est survenue lors de la récupération de l'email du docteur")
+                        }
+                    )
+                },
+                errorCallback = {
+                    Log.d("error", "Une erreur est survenue lors de la récupération des informations du docteur")
+                    // Signaler une erreur
+                    resultCallback.onError("Une erreur est survenue lors de la récupération des informations du docteur")
+                }
+            )
+        } else if (name != null) {
+            getDoctorByName(name.second,name.first,
+                callback = { doctors ->
+                    var found = false
+                    doctors.forEach { doctor ->
+                        Log.d("if", "${ doctor.firstname.uppercase() } ${ name.first.uppercase() } && ${doctor.name.uppercase()} == ${name.second.uppercase()}")
+                        if (doctor.firstname.uppercase() == name.first.uppercase() && doctor.name.uppercase() == name.second.uppercase()) {
+                            this.Doctor = doctor
+                            found = true
+                            getDoctorbyIDGOUV(doctor.rpps.toString(),
+                                callback = { email ->
+                                    this.Doctor!!.email = email
+                                    Log.d("doctor", this.Doctor.toString())
+                                    // Opération terminée avec succès, retourner le Doctor
+                                    resultCallback.onSuccess(this.Doctor)
+                                },
+                                errorCallback = {
+                                    Log.d("error", "Une erreur est survenue lors de la récupération de l'email du docteur")
+                                    // Signaler une erreur
+                                    resultCallback.onError("Une erreur est survenue lors de la récupération de l'email du docteur")
+                                }
+                            )
+                        }
+                    }
+                    if (!found) {
+                        // Aucun docteur trouvé
+                        resultCallback.onSuccess(null)
+                    }
+                },
+                errorCallback = {
+                    Log.d("error", "Une erreur est survenue lors de la récupération des informations du docteur")
+                    // Signaler une erreur
+                    resultCallback.onError("Une erreur est survenue lors de la récupération des informations du docteur")
+                }
+            )
+        } else {
+            // Ni identifiant ni nom fourni
+            resultCallback.onSuccess(null)
+        }
+    }
+
+
+    /* Exemple d'utilisation de la fonction getDoctor
+    * Thread{
+            var bd = db.doctorDao()
+
+            ApiService.getInstance(this).getDoctor(null,"10002527652", object : ApiService.DoctorResultCallback {
+                override fun onSuccess(doctor: Doctor?) {
+                    if (doctor != null) {
+                        Thread{ bd.insert(doctor) }.start()
+                    } else {
+                        Log.d("SUCCESS", "Aucun docteur trouvé")
+                    }
+                }
+
+                override fun onError(error: String) {
+                    Log.d("ERROR", error)
+                }
+            })
+
+
+        }.start()
+    *
+    *
+    *
+    * */
+
+
 
     /**
      * Singleton pattern
