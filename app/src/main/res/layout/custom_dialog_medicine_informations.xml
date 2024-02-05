@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/textView19"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:text="@string/informations_du_medicament"
+        android:textSize="15sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/medicine_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/nom_du_medicament"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView19" />
+
+    <TextView
+        android:id="@+id/medicine_type"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="20dp"
+        android:layout_marginTop="10dp"
+        android:text="Type"
+        app:layout_constraintStart_toStartOf="@+id/medicine_name"
+        app:layout_constraintTop_toBottomOf="@+id/medicine_name" />
+
+    <TextView
+        android:id="@+id/medicine_weight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:text="Dosage"
+        app:layout_constraintStart_toEndOf="@+id/medicine_type"
+        app:layout_constraintTop_toTopOf="@+id/medicine_type" />
+
+    <TextView
+        android:id="@+id/medicine_administration"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Administration"
+        android:layout_marginTop="10dp"
+        app:layout_constraintStart_toStartOf="@+id/medicine_type"
+        app:layout_constraintTop_toBottomOf="@+id/medicine_type" />
+
+    <TextView
+        android:id="@+id/medicine_help_link"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Lien d'aide"
+        android:layout_marginStart="20dp"
+        app:layout_constraintStart_toEndOf="@+id/medicine_administration"
+        app:layout_constraintTop_toTopOf="@+id/medicine_administration" />
+
+    <TextView
+        android:id="@+id/medicine_substance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="Substance"
+        app:layout_constraintStart_toStartOf="@+id/medicine_administration"
+        app:layout_constraintTop_toBottomOf="@+id/medicine_administration" />
+
+    <TextView
+        android:id="@+id/medicine_security_start_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="Date début"
+        app:layout_constraintStart_toStartOf="@+id/medicine_substance"
+        app:layout_constraintTop_toBottomOf="@+id/medicine_substance" />
+
+    <TextView
+        android:id="@+id/medicine_security_end_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Date fin"
+        android:layout_marginStart="20dp"
+        app:layout_constraintStart_toEndOf="@+id/medicine_security_start_date"
+        app:layout_constraintTop_toTopOf="@+id/medicine_security_start_date" />
+
+    <TextView
+        android:id="@+id/medicine_security_link"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Lien sécurité"
+        android:layout_marginStart="20dp"
+        app:layout_constraintStart_toEndOf="@+id/medicine_security_end_date"
+        app:layout_constraintTop_toTopOf="@+id/medicine_security_start_date" />
+
+    <TextView
+        android:id="@+id/medicine_availability"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="Disponibilité"
+        app:layout_constraintStart_toStartOf="@+id/medicine_security_start_date"
+        app:layout_constraintTop_toBottomOf="@+id/medicine_security_start_date" />
+
+    <TextView
+        android:id="@+id/medicine_sales"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Vendeur"
+        android:layout_marginTop="10dp"
+        app:layout_constraintStart_toStartOf="@+id/medicine_security_start_date"
+        app:layout_constraintTop_toBottomOf="@+id/medicine_availability" />
+
+    <TextView
+        android:id="@+id/medicine_price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="En Ventes ? "
+        android:layout_marginTop="10dp"
+        app:layout_constraintStart_toStartOf="@+id/medicine_security_start_date"
+        app:layout_constraintTop_toBottomOf="@+id/medicine_sales" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

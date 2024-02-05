@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.mms.R
 import com.example.mms.Utils.areDatesOnSameDay
 import com.example.mms.Utils.getFormattedDate
+import com.example.mms.adapter.Interface.OnItemClickListener
 import com.example.mms.database.inApp.AppDatabase
 import com.example.mms.model.HourWeight
 import com.example.mms.model.ShowableHourWeight
@@ -48,7 +49,6 @@ class TakesAdapter(
     // Services
     private val tasksService = TasksService(context)
     private val mStorageService = MedicineStorageService(context,view)
-
 
     /**
      * Class that represents the view holder of the recycler view
@@ -183,6 +183,9 @@ class TakesAdapter(
                 }
             }
          //TODO get image by medicine type
+        holder.medicineImage.setOnClickListener {
+            dialogMedicineInformations()
+        }
     }
 
     override fun getItemCount(): Int {
@@ -295,4 +298,13 @@ class TakesAdapter(
         }
         dialog.show()
     }
+
+    private fun dialogMedicineInformations(){
+        val dialog = Dialog(context)
+        dialog.setContentView(R.layout.custom_dialog_medicine_informations)
+
+
+        dialog.show()
+    }
+
 }
