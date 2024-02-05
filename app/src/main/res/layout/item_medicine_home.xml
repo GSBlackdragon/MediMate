@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="130sp"
     style="@style/BoxShadow">
@@ -80,7 +81,7 @@
         android:layout_marginTop="4dp"
         android:alpha="50"
         android:fontFamily="@font/poppins_regular"
-        android:text="1000 mg - Sachet"
+        android:text="@string/_1000_mg_sachet"
         android:textColor="@color/semi_transparent_black"
         app:layout_constraintStart_toStartOf="@+id/medicine_title"
         app:layout_constraintTop_toBottomOf="@+id/medicine_title" />
@@ -105,5 +106,16 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/alertSameSubstance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="3dp"
+        android:visibility="gone"
+        app:layout_constraintStart_toEndOf="@+id/medicine_home_time"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/baseline_warning_amber_24" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

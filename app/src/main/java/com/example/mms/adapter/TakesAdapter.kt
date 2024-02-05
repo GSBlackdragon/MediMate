@@ -7,8 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mms.R
 import com.example.mms.Utils.areDatesOnSameDay
@@ -21,7 +21,6 @@ import com.example.mms.model.Takes
 import com.example.mms.model.Task
 import com.example.mms.service.MedicineStorageService
 import com.example.mms.service.TasksService
-import com.example.mms.ui.main.MedicamentsFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import java.time.LocalDateTime
@@ -42,7 +41,9 @@ class TakesAdapter(
     private val db : AppDatabase,
     private val currentDate : Date,
     private val view : View,
+    private var listSubActiveDoublons : MutableList<Int?>,
     private val funUpdateSmiley : () -> Unit
+
 ) :
     RecyclerView.Adapter<TakesAdapter.MyViewHolder>() {
 
@@ -63,6 +64,7 @@ class TakesAdapter(
         val buttonTaskChecked : FloatingActionButton = itemView.findViewById(R.id.medicine_home_check)
         val tvStock : TextView = itemView.findViewById(R.id.tv_stock)
         val stock : TextView = itemView.findViewById(R.id.stock_value)
+        val alertImage : ImageView = itemView.findViewById(R.id.alertSameSubstance)
     }
 
     /**
@@ -87,6 +89,25 @@ class TakesAdapter(
         context.run {
             holder.taskTitle.text = item.medicineName
         }
+
+        var itemSubActCode : Int? = null
+        var t = Thread {
+            itemSubActCode = db.medicineDao().getByCIS(item.task.medicineCIS)?.composition?.substance_code
+        }
+        t.start()
+        t.join()
+
+
+        if (itemSubActCode != null && itemSubActCode in listSubActiveDoublons){
+            holder.alertImage.visibility=View.VISIBLE
+        }else{
+            holder.alertImage.visibility=View.GONE
+        }
+
+        holder.alertImage.setOnLongClickListener {
+            Toast.makeText(context, R.string.toast_sub_active, Toast.LENGTH_LONG).show()
+            true
+        }
         holder.medicineInformation.text = item.task.type
 
         holder.stock.visibility = View.GONE
@@ -102,6 +123,7 @@ class TakesAdapter(
             }
         }
         holder.taskTime.text = this.context.getString(R.string.a_heures, item.hourWeight.hour)
+
 
         // Get the remaining time
         val hourSplited = getHoursMinutesRemaining(item.hourWeight)
@@ -194,6 +216,11 @@ class TakesAdapter(
 
     fun updateCurrentDate(newDate : Date) {
         this.currentDate.time = newDate.time
+        this.notifyDataSetChanged()
+    }
+
+    fun updateListDoublons(list : MutableList<Int?>) {
+        this.listSubActiveDoublons = list
         this.notifyDataSetChanged()
     }
 

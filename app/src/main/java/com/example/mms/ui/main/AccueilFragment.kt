@@ -52,6 +52,7 @@ class AccueilFragment : Fragment() {
     private lateinit var takesAdapter: TakesAdapter
     private lateinit var userMedicines: MutableList<Task>
     private lateinit var items: MutableList<ShowableHourWeight>
+    private lateinit var listDoublonsSubActiveCode : MutableList<Int?>
     private lateinit var db: AppDatabase
     private lateinit var tasksService: TasksService
     private val selectedDate = Date()
@@ -111,8 +112,29 @@ class AccueilFragment : Fragment() {
 
         updateSmiley()
 
+        listDoublonsSubActiveCode = mutableListOf()
+
+        var t = Thread {
+            var listSubActiveCode : MutableList<Int?> = mutableListOf()
+            for (item in items){
+                listSubActiveCode.add(db.medicineDao().getByCIS(item.task.medicineCIS)?.composition?.substance_code)
+            }
+            listDoublonsSubActiveCode =
+                listSubActiveCode
+                    .groupingBy { it }
+                    .eachCount()
+                    .filter { it.value >= 2 }
+                    .keys
+                    .toMutableList()
+
+        }
+        t.start()
+        t.join()
+
+
+
         setMonthAndYear(extractMonthAndYearFromDate(this.selectedDate.toString())!!.first, extractMonthAndYearFromDate(this.selectedDate.toString())!!.second)
-        takesAdapter = TakesAdapter(root.context, items, db, this.selectedDate, root) { updateSmiley() }
+        takesAdapter = TakesAdapter(root.context, items, db, this.selectedDate, root,listDoublonsSubActiveCode) { updateSmiley() }
         medicinesRV.layoutManager = LinearLayoutManager(root.context)
         medicinesRV.adapter = takesAdapter
 
@@ -138,6 +160,8 @@ class AccueilFragment : Fragment() {
                         userMedicines
                     )
                 )
+                takesAdapter.updateListDoublons(updateSubActiveDoublons())
+
                 takesAdapter.updateCurrentDate(stringToDate(clickedDay.date))
 
                 takesAdapter.notifyDataSetChanged()
@@ -187,6 +211,7 @@ class AccueilFragment : Fragment() {
             userMedicines.addAll(clickedDay.listTasks)
             items.clear()
             items.addAll(this.tasksService.createShowableHourWeightsFromTasks(userMedicines))
+            takesAdapter.updateListDoublons(updateSubActiveDoublons())
             takesAdapter.updateCurrentDate(stringToDate(clickedDay.date))
             takesAdapter.notifyDataSetChanged()
             binding.floatingActionButtonBackToday.hide()
@@ -251,6 +276,9 @@ class AccueilFragment : Fragment() {
         userMedicines.addAll(clickedDay.listTasks)
         items.clear()
         items.addAll(this.tasksService.createShowableHourWeightsFromTasks(userMedicines))
+
+        takesAdapter.updateListDoublons(updateSubActiveDoublons())
+
         takesAdapter.updateCurrentDate(stringToDate(clickedDay.date))
         takesAdapter.notifyDataSetChanged()
 
@@ -285,5 +313,26 @@ class AccueilFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    fun updateSubActiveDoublons() : MutableList<Int?>{
+        listDoublonsSubActiveCode.clear()
+        var t = Thread {
+            var listSubActiveCode : MutableList<Int?> = mutableListOf()
+            for (item in items){
+                listSubActiveCode.add(db.medicineDao().getByCIS(item.task.medicineCIS)?.composition?.substance_code)
+            }
+            listDoublonsSubActiveCode =
+                listSubActiveCode
+                    .groupingBy { it }
+                    .eachCount()
+                    .filter { it.value >= 2 }
+                    .keys
+                    .toMutableList()
+
+        }
+        t.start()
+        t.join()
+        return listDoublonsSubActiveCode
     }
 }
