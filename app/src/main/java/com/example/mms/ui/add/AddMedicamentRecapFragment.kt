@@ -136,7 +136,6 @@ class AddMedicamentRecapFragment : Fragment() {
             }
             t.start()
             t.join()
-
             if (isSubCodePresent){
                 confirmSameActiveSubstance()
             }else{
@@ -266,7 +265,6 @@ class AddMedicamentRecapFragment : Fragment() {
     private fun confirmSameActiveSubstance() {
         val dialog = Dialog(this.requireContext())
         dialog.setContentView(R.layout.custom_dialog_same_active_substance)
-
 
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         // We bind the onClickListener of the button btnInfoTask to the action of going to the page myTasks (dashboard)

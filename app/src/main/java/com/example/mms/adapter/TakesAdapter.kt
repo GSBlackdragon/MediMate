@@ -1,5 +1,6 @@
 package com.example.mms.adapter
 
+import android.annotation.SuppressLint
 import android.app.Dialog
 import android.content.Context
 import android.view.LayoutInflater
@@ -59,6 +60,7 @@ class TakesAdapter(
         val taskTitle: TextView = itemView.findViewById(R.id.medicine_title)
         val medicineImage  : ImageView = itemView.findViewById(R.id.medicine_image)
         val medicineInformation : TextView = itemView.findViewById(R.id.medicine_information)
+        val medicineTypeGeneric : TextView = itemView.findViewById(R.id.medicine_type_generic)
         val taskTime : TextView = itemView.findViewById(R.id.medicine_home_time)
         val timeRemaining : TextView = itemView.findViewById(R.id.medicine_home_time_remaining)
         val buttonTaskChecked : FloatingActionButton = itemView.findViewById(R.id.medicine_home_check)
@@ -84,6 +86,7 @@ class TakesAdapter(
      * @param holder the view holder
      * @param position the position of the item
      */
+    @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val item = this.items[position]
         context.run {
@@ -109,7 +112,7 @@ class TakesAdapter(
             true
         }
         holder.medicineInformation.text = item.task.type
-
+        holder.medicineTypeGeneric.text = "${item.hourWeight.weight} dose"
         holder.stock.visibility = View.GONE
         holder.tvStock.visibility = View.GONE
         // if the medicine is in the storage we display the stock

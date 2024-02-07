@@ -57,6 +57,7 @@ class ChooseMedicamentActivity : AppCompatActivity() {
             }
         }
 
+
         binding.btnNext.setOnClickListener {
             if (hashmapTaskId.size == medicamentsFound.size) {
                 this.goToMain()
