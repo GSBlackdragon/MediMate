@@ -3,10 +3,13 @@ package com.example.mms.adapter
 import android.annotation.SuppressLint
 import android.app.Dialog
 import android.content.Context
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.ScrollView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -209,7 +212,7 @@ class TakesAdapter(
             }
          //TODO get image by medicine type
         holder.medicineImage.setOnClickListener {
-            dialogMedicineInformations()
+            dialogMedicineInformations(item)
         }
     }
 
@@ -329,9 +332,46 @@ class TakesAdapter(
         dialog.show()
     }
 
-    private fun dialogMedicineInformations(){
+    private fun dialogMedicineInformations(item : ShowableHourWeight){
         val dialog = Dialog(context)
         dialog.setContentView(R.layout.custom_dialog_medicine_informations)
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        val medicineName = dialog.findViewById<TextView>(R.id.medicine_name)
+        val medicineType = dialog.findViewById<TextView>(R.id.medicine_type)
+        val medicineWeight = dialog.findViewById<TextView>(R.id.medicine_weight)
+        val medicineAdministration = dialog.findViewById<TextView>(R.id.medicine_administration)
+        val medicineHelpLink = dialog.findViewById<TextView>(R.id.medicine_help_link)
+        val medicineSubstance = dialog.findViewById<TextView>(R.id.medicine_substance)
+        val medicineSecurityStartDate = dialog.findViewById<TextView>(R.id.medicine_security_start_date)
+        val medicineSecurityEndDate = dialog.findViewById<TextView>(R.id.medicine_security_end_date)
+        val medicineSecurityLink = dialog.findViewById<TextView>(R.id.medicine_security_link)
+        val medicineSales = dialog.findViewById<TextView>(R.id.medicine_sales)
+        val medicinePrice = dialog.findViewById<TextView>(R.id.medicine_price)
+
+
+        medicineName.text = item.medicineName
+        medicineType.text = item.medicineType.generic
+        medicineWeight.text = item.hourWeight.weight.toString()
+
+
+        val t = Thread {
+            var medicine = db.medicineDao().getByCIS(
+                item.task.medicineCIS)
+            medicineAdministration.text=medicine?.usage?.route_administration
+            medicineHelpLink.text=medicine?.usage?.link_help
+            medicineSubstance.text=medicine?.composition?.substance_name
+            medicineSecurityStartDate.text=medicine?.security_informations?.start_date
+            medicineSecurityEndDate.text=medicine?.security_informations?.end_date
+            medicineSecurityLink.text=medicine?.security_informations?.text
+            medicineSales.text=medicine?.sales_info?.holder
+            medicinePrice.text= if (medicine?.sales_info?.is_on_sale == true) "Disponible à la vente" else "Indisponible à la vente"
+        }
+        t.start()
+        t.join()
+
+
+
 
 
         dialog.show()

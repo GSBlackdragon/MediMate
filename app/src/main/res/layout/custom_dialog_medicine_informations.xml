@@ -3,13 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@drawable/background_radius"
+    android:padding="20dp">
 
     <TextView
         android:id="@+id/textView19"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
         android:text="@string/informations_du_medicament"
         android:textSize="15sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -21,8 +22,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/nom_du_medicament"
+        android:textColor="@color/gray"
+        app:layout_constraintStart_toStartOf="@+id/medicine_name2"
+        app:layout_constraintTop_toBottomOf="@+id/medicine_name2" />
+
+    <TextView
+        android:id="@+id/medicine_name2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:layout_marginStart="20dp"
+        android:text="@string/nom_du_medicament"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView19" />
 
@@ -30,7 +39,15 @@
         android:id="@+id/medicine_type"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="20dp"
+        android:text="Type"
+        android:textColor="@color/gray"
+        app:layout_constraintStart_toStartOf="@+id/medicine_name"
+        app:layout_constraintTop_toBottomOf="@+id/medicine_type2" />
+
+    <TextView
+        android:id="@+id/medicine_type2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:text="Type"
         app:layout_constraintStart_toStartOf="@+id/medicine_name"
@@ -40,17 +57,35 @@
         android:id="@+id/medicine_weight"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="Dosage"
+        android:textColor="@color/gray"
+        app:layout_constraintStart_toStartOf="@+id/medicine_weight4"
+        app:layout_constraintTop_toTopOf="@+id/medicine_type" />
+
+    <TextView
+        android:id="@+id/medicine_weight4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:text="Dosage"
         app:layout_constraintStart_toEndOf="@+id/medicine_type"
-        app:layout_constraintTop_toTopOf="@+id/medicine_type" />
+        app:layout_constraintTop_toTopOf="@+id/medicine_type2" />
 
     <TextView
         android:id="@+id/medicine_administration"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Administration"
-        android:layout_marginTop="10dp"
+        android:textColor="@color/gray"
+        app:layout_constraintStart_toStartOf="@+id/medicine_type"
+        app:layout_constraintTop_toBottomOf="@+id/medicine_administration4" />
+
+    <TextView
+        android:id="@+id/medicine_administration4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="Administration"
         app:layout_constraintStart_toStartOf="@+id/medicine_type"
         app:layout_constraintTop_toBottomOf="@+id/medicine_type" />
 
@@ -59,24 +94,51 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Lien d'aide"
-        android:layout_marginStart="20dp"
-        app:layout_constraintStart_toEndOf="@+id/medicine_administration"
-        app:layout_constraintTop_toTopOf="@+id/medicine_administration" />
+        android:textColor="@color/gray"
+        app:layout_constraintStart_toStartOf="@+id/medicine_help_link3"
+        app:layout_constraintTop_toBottomOf="@+id/medicine_help_link3" />
+
+    <TextView
+        android:id="@+id/medicine_help_link3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="Lien d'aide"
+        app:layout_constraintStart_toStartOf="@+id/medicine_administration4"
+        app:layout_constraintTop_toBottomOf="@+id/medicine_administration" />
 
     <TextView
         android:id="@+id/medicine_substance"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
         android:text="Substance"
+        android:textColor="@color/gray"
+        app:layout_constraintStart_toStartOf="@+id/medicine_substance3"
+        app:layout_constraintTop_toBottomOf="@+id/medicine_substance3" />
+
+    <TextView
+        android:id="@+id/medicine_substance3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="Substance Active"
         app:layout_constraintStart_toStartOf="@+id/medicine_administration"
-        app:layout_constraintTop_toBottomOf="@+id/medicine_administration" />
+        app:layout_constraintTop_toBottomOf="@+id/medicine_help_link" />
 
     <TextView
         android:id="@+id/medicine_security_start_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:text="Date début"
+        android:textColor="@color/gray"
+        app:layout_constraintStart_toStartOf="@+id/medicine_security_start_date3"
+        app:layout_constraintTop_toBottomOf="@+id/medicine_security_start_date3" />
+
+    <TextView
+        android:id="@+id/medicine_security_start_date3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
         android:text="Date début"
         app:layout_constraintStart_toStartOf="@+id/medicine_substance"
         app:layout_constraintTop_toBottomOf="@+id/medicine_substance" />
@@ -86,26 +148,35 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Date fin"
+        android:textColor="@color/gray"
+        app:layout_constraintStart_toStartOf="@+id/medicine_security_end_date3"
+        app:layout_constraintTop_toBottomOf="@+id/medicine_security_end_date3" />
+
+    <TextView
+        android:id="@+id/medicine_security_end_date3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
-        app:layout_constraintStart_toEndOf="@+id/medicine_security_start_date"
-        app:layout_constraintTop_toTopOf="@+id/medicine_security_start_date" />
+        android:text="Date fin"
+        app:layout_constraintStart_toEndOf="@+id/medicine_security_start_date3"
+        app:layout_constraintTop_toTopOf="@+id/medicine_security_start_date3" />
 
     <TextView
         android:id="@+id/medicine_security_link"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Lien sécurité"
-        android:layout_marginStart="20dp"
-        app:layout_constraintStart_toEndOf="@+id/medicine_security_end_date"
-        app:layout_constraintTop_toTopOf="@+id/medicine_security_start_date" />
+        android:textColor="@color/gray"
+        app:layout_constraintStart_toStartOf="@+id/medicine_security_link3"
+        app:layout_constraintTop_toBottomOf="@+id/medicine_security_link3" />
 
     <TextView
-        android:id="@+id/medicine_availability"
+        android:id="@+id/medicine_security_link3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:text="Disponibilité"
-        app:layout_constraintStart_toStartOf="@+id/medicine_security_start_date"
+        android:layout_marginTop="20dp"
+        android:text="Lien sécurité"
+        app:layout_constraintStart_toStartOf="@+id/medicine_security_start_date3"
         app:layout_constraintTop_toBottomOf="@+id/medicine_security_start_date" />
 
     <TextView
@@ -113,16 +184,34 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Vendeur"
-        android:layout_marginTop="10dp"
+        android:textColor="@color/gray"
         app:layout_constraintStart_toStartOf="@+id/medicine_security_start_date"
-        app:layout_constraintTop_toBottomOf="@+id/medicine_availability" />
+        app:layout_constraintTop_toBottomOf="@+id/medicine_sales3" />
+
+    <TextView
+        android:id="@+id/medicine_sales3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="Vendeur"
+        app:layout_constraintStart_toStartOf="@+id/medicine_security_start_date"
+        app:layout_constraintTop_toBottomOf="@+id/medicine_security_link" />
 
     <TextView
         android:id="@+id/medicine_price"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="En Ventes ? "
-        android:layout_marginTop="10dp"
+        android:textColor="@color/gray"
+        app:layout_constraintStart_toStartOf="@+id/medicine_security_start_date"
+        app:layout_constraintTop_toBottomOf="@+id/medicine_price3" />
+
+    <TextView
+        android:id="@+id/medicine_price3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="En Ventes ? "
         app:layout_constraintStart_toStartOf="@+id/medicine_security_start_date"
         app:layout_constraintTop_toBottomOf="@+id/medicine_sales" />
 
