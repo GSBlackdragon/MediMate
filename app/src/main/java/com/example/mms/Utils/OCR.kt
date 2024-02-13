@@ -17,11 +17,13 @@ class OCR(private val db: AppDatabase) {
     private val recognizer = TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS)
     private lateinit var result: Text
 
+    //Verify LogCat, Async issues with main thread
     fun recognize(image: InputImage) {
-        recognizer.process(image)
-            .addOnSuccessListener { }
+        Tasks.await(
+            recognizer.process(image)
+            .addOnSuccessListener { result = it}
             .addOnFailureListener { throw Exception("Recognition failed") }
-
+        )
     }
     fun getMedicineInfo(): List<MedicationInfo> {
         return  emptyList()
