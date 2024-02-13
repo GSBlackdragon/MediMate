@@ -3,21 +3,27 @@ package com.example.mms.adapter
 import android.annotation.SuppressLint
 import android.app.Dialog
 import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.net.Uri
+import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import android.widget.ImageView
 import android.widget.ScrollView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mms.R
 import com.example.mms.Utils.areDatesOnSameDay
 import com.example.mms.Utils.getFormattedDate
 import com.example.mms.adapter.Interface.OnItemClickListener
+import com.example.mms.constant.LIEN_EFFETS_INDESIRABLES
 import com.example.mms.database.inApp.AppDatabase
 import com.example.mms.model.HourWeight
 import com.example.mms.model.ShowableHourWeight
@@ -40,6 +46,7 @@ import java.util.Date
  * @param funUpdateSmiley the function that updates the smiley
  */
 class TakesAdapter(
+
     private val context: Context,
     private val items: MutableList<ShowableHourWeight>,
     private val db : AppDatabase,
@@ -52,6 +59,9 @@ class TakesAdapter(
     RecyclerView.Adapter<TakesAdapter.MyViewHolder>() {
 
     // Services
+
+    private var SECURITY_LINK : String? = null
+    private var HELP_LINK : String? = null
     private val tasksService = TasksService(context)
     private val mStorageService = MedicineStorageService(context,view)
 
@@ -188,6 +198,7 @@ class TakesAdapter(
                                         item.medicineStorage,
                                         item.hourWeight.weight,
                                         item.medicineName,
+                                        item.task,
                                         this@TakesAdapter
                                     )
                                 }
@@ -282,7 +293,7 @@ class TakesAdapter(
             stock.text = sHw.medicineStorage.storage.toString()
             tvStock.setOnClickListener {
                 dialog.dismiss()
-                this.mStorageService.dialogGererStock(sHw.medicineStorage, sHw.medicineName, this)
+                this.mStorageService.dialogGererStock(sHw.medicineStorage, sHw.medicineName, this,null)
             }
         }else{
             tvStock.visibility = View.GONE
@@ -349,6 +360,19 @@ class TakesAdapter(
         val medicineSales = dialog.findViewById<TextView>(R.id.medicine_sales)
         val medicinePrice = dialog.findViewById<TextView>(R.id.medicine_price)
 
+        val medicineNameTitle = dialog.findViewById<TextView>(R.id.section_med_name)
+        val medicineTypeTitle = dialog.findViewById<TextView>(R.id.section_med_type)
+        val medicineWeightTitle = dialog.findViewById<TextView>(R.id.section_med_dosage)
+        val medicineAdministrationTitle = dialog.findViewById<TextView>(R.id.section_med_admin)
+        val medicineHelpLinkTitle = dialog.findViewById<TextView>(R.id.section_med_helplink)
+        val medicineSubstanceTitle = dialog.findViewById<TextView>(R.id.section_med_sub_act)
+        val medicineSecurityStartDateTitle = dialog.findViewById<TextView>(R.id.section_med_start_date)
+        val medicineSecurityEndDateTitle = dialog.findViewById<TextView>(R.id.section_med_end_date)
+        val medicineSecurityLinkTitle = dialog.findViewById<TextView>(R.id.section_med_secu_link)
+        val medicineSalesTitle = dialog.findViewById<TextView>(R.id.section_med_sales)
+        val medicinePriceTitle = dialog.findViewById<TextView>(R.id.section_med_issale)
+
+
 
         medicineName.text = item.medicineName
         medicineType.text = item.medicineType.generic
@@ -359,16 +383,57 @@ class TakesAdapter(
             var medicine = db.medicineDao().getByCIS(
                 item.task.medicineCIS)
             medicineAdministration.text=medicine?.usage?.route_administration
-            medicineHelpLink.text=medicine?.usage?.link_help
+            HELP_LINK=medicine?.usage?.link_help
             medicineSubstance.text=medicine?.composition?.substance_name
             medicineSecurityStartDate.text=medicine?.security_informations?.start_date
             medicineSecurityEndDate.text=medicine?.security_informations?.end_date
-            medicineSecurityLink.text=medicine?.security_informations?.text
+            SECURITY_LINK=medicine?.security_informations?.text
             medicineSales.text=medicine?.sales_info?.holder
             medicinePrice.text= if (medicine?.sales_info?.is_on_sale == true) "Disponible à la vente" else "Indisponible à la vente"
         }
         t.start()
         t.join()
+
+        when {
+            medicineAdministration.text==null -> medicineAdministrationTitle.visibility=View.GONE
+            medicineSubstance.text==null -> medicineSubstanceTitle.visibility=View.GONE
+            medicineSecurityStartDate.text==null -> medicineSecurityStartDateTitle.visibility=View.GONE
+            medicineSecurityEndDate.text==null -> medicineSecurityEndDateTitle.visibility=View.GONE
+            medicineSales.text==null -> medicineSalesTitle.visibility=View.GONE
+            medicinePrice.text==null -> medicinePriceTitle.visibility=View.GONE
+        }
+
+        if (HELP_LINK!=null && Patterns.WEB_URL.matcher(HELP_LINK).matches()){
+            medicineSecurityLink.text=context.getString(R.string.lien_aide)
+            medicineHelpLinkTitle.visibility=View.VISIBLE
+            medicineHelpLink.visibility=View.VISIBLE
+            medicineHelpLink.setOnClickListener {
+                // open link into browser
+                val i = Intent(Intent.ACTION_VIEW)
+                i.data = Uri.parse(HELP_LINK)
+                context.startActivity(i)
+            }
+        }else{
+            medicineHelpLinkTitle.visibility=View.GONE
+            medicineHelpLink.visibility=View.GONE
+        }
+
+
+
+        if (SECURITY_LINK!=null && Patterns.WEB_URL.matcher(SECURITY_LINK).matches()){
+            medicineSecurityLink.text=context.getString(R.string.lien_securite)
+            medicineSecurityLinkTitle.visibility=View.VISIBLE
+            medicineSecurityLink.visibility=View.VISIBLE
+            medicineSecurityLink.setOnClickListener {
+                // open link into browser
+                val intent = Intent(Intent.ACTION_VIEW,Uri.parse(SECURITY_LINK))
+                context.startActivity(intent)
+            }
+        }else{
+            medicineNameTitle.visibility=View.GONE
+            medicineSecurityLink.visibility=View.GONE
+        }
+
 
 
 

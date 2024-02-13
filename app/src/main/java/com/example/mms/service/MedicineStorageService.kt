@@ -24,9 +24,13 @@ import com.google.android.material.snackbar.Snackbar
  * @property view The view of the activity
  * @property db The local database
  */
-class MedicineStorageService(val context : Context, val view : View) {
+class MedicineStorageService(val context : Context, val view : View?) {
     private var db = SingletonDatabase.getDatabase(context)
 
+
+    fun getMedicineStorageByMedicineId(medicineId : Long) : MedicineStorage?{
+        return db.medicineStorageDao().getMedicineStorageByMedicineId(medicineId)
+    }
     /**
      * Update the storage of a medicine
      * If the storage is low, alert the user
@@ -85,7 +89,7 @@ class MedicineStorageService(val context : Context, val view : View) {
                 update = true
                 // Alert -> you stock is low -> buy more
                 val snackbar = Snackbar.make(
-                    view,
+                    view!!,
                     this.context.getString(R.string.stock_faible_pensez_racheter),
                     Snackbar.LENGTH_LONG)
 

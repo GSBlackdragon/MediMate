@@ -31,6 +31,12 @@ class TasksService(context: Context) {
     private var db = SingletonDatabase.getDatabase(context)
 
 
+
+
+    fun updateTask(task : Task){
+        db.taskDao().update(task)
+    }
+
     /**
      * Return a boolean regarding if the active substance is
      * already present in any active treatments during the the given period of time
@@ -150,6 +156,7 @@ class TasksService(context: Context) {
             now,
             now,
             now,
+            false,
             medicineCIS,
             this.db.userDao().getConnectedUser()?.email!!
         )
