@@ -10,7 +10,7 @@ import com.example.mms.model.Doctor
 interface DoctorDAO {
 
     @Query("SELECT * FROM Doctor")
-    fun getAll(): Doctor?
+    fun getAll(): List<Doctor>?
 
     @Query("SELECT * FROM Doctor WHERE rpps = :rpps")
     fun getDoctorById(rpps: Long): Doctor?

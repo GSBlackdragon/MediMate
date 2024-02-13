@@ -21,7 +21,11 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.mms.R
+import com.example.mms.adapter.DoctorAdapter
+import com.example.mms.adapter.Interface.OnItemClickListener
+import com.example.mms.adapter.TempDoctorAdapter
 import com.example.mms.constant.LIEN_EFFETS_INDESIRABLES
 import com.example.mms.database.inApp.SingletonDatabase
 import com.example.mms.databinding.FragmentConseilsBinding
@@ -70,7 +74,21 @@ class ConseilsFragment : Fragment() {
             dialogAddDoctor()
         }
 
-
+        val db = SingletonDatabase.getDatabase(this.requireContext())
+        var doctors = mutableListOf<Doctor>()
+        val tt = Thread {
+            val doctorDao = db.doctorDao()
+            doctors = doctorDao.getAll()?.toMutableList() ?: mutableListOf()
+        }
+        tt.start()
+        tt.join()
+        if (doctors.isNotEmpty()) {
+            val adapter = DoctorAdapter(doctors.toMutableList(), this.requireContext())
+            binding.listMedecins.adapter = adapter
+            binding.listMedecins.layoutManager = LinearLayoutManager(this.requireContext())
+        }else{
+            binding.listMedecins.visibility = View.GONE
+        }
 
         // MAP PART NOT FINISHED
 
@@ -124,6 +142,10 @@ class ConseilsFragment : Fragment() {
         val nameDoctor = dialog.findViewById<EditText>(R.id.et_search_doctor_name)
         val firstNameDoctor = dialog.findViewById<EditText>(R.id.et_search_doctor_firstname)
         val idDoctor = dialog.findViewById<EditText>(R.id.et_search_doctor_id)
+        val btnCancel = dialog.findViewById<Button>(R.id.btn_cancel)
+        btnCancel.setOnClickListener {
+            dialog.dismiss()
+        }
         btnSearch.setOnClickListener {
             // Call API
             if(nameDoctor.text.isEmpty() && idDoctor.text.isEmpty()) {
@@ -136,13 +158,61 @@ class ConseilsFragment : Fragment() {
                 api.getDoctor(Pair(firstName,lastName),id, object : ApiService.DoctorResultCallback{
                     override fun onSuccess(doctors: List<Doctor>?) {
                         Log.d("SUCCESS", doctors.toString())
+                        if (doctors != null) {
+                            if (doctors.isEmpty()) {
+                                Toast.makeText(this@ConseilsFragment.requireContext(), R.string.no_doctor_found, Toast.LENGTH_SHORT).show()
+                            } else {
+                                dialogChooseDoctors(doctors)
+                            }
+                        }
                     }
-
                     override fun onError(error: String) {
+                        Toast.makeText(this@ConseilsFragment.requireContext(), R.string.error, Toast.LENGTH_SHORT).show()
                         Log.d("ERROR", error)
                     }
                 })
+            }
+        }
+        dialog.show()
+    }
 
+    private fun dialogChooseDoctors(doctors: List<Doctor>) {
+        val dialog = Dialog(this.requireContext())
+        dialog.setContentView(R.layout.custom_dialog_choose_doctor)
+        val btnValidate = dialog.findViewById<Button>(R.id.btn_search_doctor)
+        val btnCancel = dialog.findViewById<Button>(R.id.btn_cancel)
+
+        val recyclerView = dialog.findViewById<androidx.recyclerview.widget.RecyclerView>(R.id.rv_list_doctors)
+        val adapter = TempDoctorAdapter(doctors.toMutableList(), this.requireContext())
+        recyclerView.adapter = adapter
+        recyclerView.layoutManager = LinearLayoutManager(this.requireContext())
+
+        btnCancel.setOnClickListener {
+            dialog.dismiss()
+        }
+        val doctorsChecked = mutableListOf<Doctor>()
+        adapter.setOnItemClickListener(object : OnItemClickListener {
+            override fun onItemClick(position: Int) {
+                val doctor = doctors[position]
+                if (doctorsChecked.contains(doctor)) {
+                    doctorsChecked.remove(doctor)
+                } else {
+                    doctorsChecked.add(doctor)
+                }
+            }
+        })
+        btnValidate.setOnClickListener {
+            if (doctorsChecked.isEmpty()) {
+                Toast.makeText(this.requireContext(), R.string.choose_doctor, Toast.LENGTH_SHORT).show()
+            } else {
+                val db = SingletonDatabase.getDatabase(this.requireContext())
+                val tt = Thread {
+                    val doctorDao = db.doctorDao()
+                    doctorDao.insertMany(doctorsChecked)
+                }
+                tt.start()
+                tt.join()
+                Toast.makeText(this.requireContext(), R.string.doctor_added, Toast.LENGTH_SHORT).show()
                 dialog.dismiss()
             }
         }

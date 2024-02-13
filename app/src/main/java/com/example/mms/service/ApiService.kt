@@ -129,17 +129,24 @@ class ApiService private constructor(context: Context) {
         val valueString: String? = null // Seul ce champ est nécessaire pour l'email
     )
     private fun extractEmail(jsonString: String): String? {
-        val json = Json { ignoreUnknownKeys = true }
-        val bundle = json.decodeFromString<Bundle>(jsonString)
-        bundle.entry.forEach { entry ->
-            entry.resource.extension.forEach { extension ->
-                extension.extension?.forEach { detail ->
-                    if (detail.url == "value") {
-                        return detail.valueString
+
+
+        try{
+            val json = Json { ignoreUnknownKeys = true }
+            val bundle = json.decodeFromString<Bundle>(jsonString)
+            bundle.entry.forEach { entry ->
+                entry.resource.extension.forEach { extension ->
+                    extension.extension?.forEach { detail ->
+                        if (detail.url == "value") {
+                            return detail.valueString
+                        }
                     }
                 }
             }
+        }catch(e:kotlinx.serialization.MissingFieldException){
+            return null
         }
+
         return null // Retourne null si aucun email n'est trouvé
     }
     private fun getDoctorbyIDGOUV(identifier: String, callback: (String) -> Unit, errorCallback: () -> Unit) {
@@ -151,7 +158,7 @@ class ApiService private constructor(context: Context) {
                     if (email != null) {
                         callback(email)
                     } else {
-                        errorCallback()
+                        callback("")
                     }
                 } catch (e: Exception) {
                     Log.d("json", "error: $e")
@@ -164,7 +171,6 @@ class ApiService private constructor(context: Context) {
             }) {
             override fun getHeaders(): MutableMap<String, String> = hashMapOf("ESANTE-API-KEY" to GouvKEY)
         }
-        Log.d("URLDEBUG", stringRequest.toString())
         queue.add(stringRequest)
     }
 
@@ -203,9 +209,14 @@ class ApiService private constructor(context: Context) {
         var lastName: String?,
         var firstName: String?,
         var title: String?,
-        var specialty: String?
+        var specialty: String?,
+        var email: String?,
+        var city: String?,
+        var zipcode: String?,
+        var address: String?,
+        var phoneNumber: String?
     ) {
-        fun toDoctor(): Doctor = Doctor(idRpps, lastName ?: "", firstName ?: "", title ?: "", specialty ?: "", "")
+        fun toDoctor(): Doctor = Doctor(idRpps, lastName ?: "", firstName ?: "", title ?: "", specialty ?: "", email ?: "", city ?: "", zipcode ?: "", address ?: "", phoneNumber ?: "")
     }
 
 
@@ -214,7 +225,6 @@ class ApiService private constructor(context: Context) {
         val stringRequest = object : StringRequest(Method.GET, url,
             { response ->
                 try {
-
                     val doctorResponse = json.decodeFromString<List<temporaryDoctor>>(response)
                     // Assurez-vous que temporaryDoctor a une fonction toDoctor() définie similairement à l'exemple précédent
                     callback(doctorResponse.map { it.toDoctor() })
@@ -250,7 +260,7 @@ class ApiService private constructor(context: Context) {
                     this.Doctor = doctor
                     getDoctorbyIDGOUV(identifier,
                         callback = { email ->
-                            doctor.email = email
+                            this.Doctor?.email = email
                         },
                         errorCallback = {
                             Log.d("error", "Une erreur est survenue lors de la récupération de l'email du docteur")
@@ -269,20 +279,36 @@ class ApiService private constructor(context: Context) {
         } else if (name != null) {
             getDoctorByName(name.second,name.first,
                 callback = { doctors ->
+                    val doctorsWithEmail = mutableListOf<Doctor>()
+                    var count = 0
                     doctors.map { doctor ->
+                        Log.d("Doctor dans map", doctor.toString())
                         this.Doctor = doctor
-                        getDoctorbyIDGOUV(doctor.rpps.toString(),
-                            callback = { email ->
-                                doctor.email = email
-                            },
-                            errorCallback = {
-                                Log.d("error", "Une erreur est survenue lors de la récupération de l'email du docteur")
-                                // Signaler une erreur
-                                resultCallback.onError("Une erreur est survenue lors de la récupération de l'email du docteur")
+                        if (this.Doctor?.email == "") {
+                            getDoctorbyIDGOUV(doctor.rpps.toString(),
+                                callback = { email ->
+                                    this.Doctor?.email = email
+                                    Log.d("Doctor pour chercher email", this.Doctor!!.toString())
+                                    doctorsWithEmail.add(this.Doctor!!)
+                                    count++
+                                    if (count == doctors.size && this.Doctor?.email != "") {
+                                        resultCallback.onSuccess(doctorsWithEmail)
+                                    }
+                                },
+                                errorCallback = {
+                                    // Signaler une erreur
+                                    resultCallback.onError("Une erreur est survenue lors de la récupération de l'email du docteur")
+                                }
+                            )
+                        }else{
+                            Log.d("Doctor email deja là", this.Doctor!!.toString())
+                            doctorsWithEmail.add(this.Doctor!!)
+                            count++
+                            if (count == doctors.size) {
+                                resultCallback.onSuccess(doctorsWithEmail)
                             }
-                        )
+                        }
                     }
-                    resultCallback.onSuccess(doctors)
                 },
                 errorCallback = {
                     Log.d("error", "Une erreur est survenue lors de la récupération des informations du docteur")

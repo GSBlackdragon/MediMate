@@ -1,6 +1,7 @@
 package com.example.mms.adapter
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -30,6 +31,7 @@ class DoctorAdapter(val doctorList : MutableList<Doctor>, val context : Context)
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val item = doctorList[position]
+        Log.d("DoctorAdapter", "onBindViewHolder: $item")
         holder.nomMedecin.text = item.firstname + " " + item.name
         holder.numMedecin.text = item.rpps.toString()
         holder.emailMedecin.text = item.email

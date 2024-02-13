@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="120dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <TextView
+        android:id="@+id/tv_doctor_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:text="Nom"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.100000024" />
+
+    <TextView
+        android:id="@+id/tv_doctor_firstname"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Prénom"
+        android:layout_marginStart="20dp"
+        app:layout_constraintStart_toEndOf="@+id/tv_doctor_name"
+        app:layout_constraintTop_toTopOf="@+id/tv_doctor_name" />
+
+    <TextView
+        android:id="@+id/tv_doctor_speciality"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:text="Spécialité"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_doctor_name"
+        app:layout_constraintVertical_bias="0.25" />
+
+    <TextView
+        android:id="@+id/tv_doctor_city"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Ville"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/tv_doctor_speciality"
+        app:layout_constraintTop_toBottomOf="@+id/tv_doctor_speciality"
+        app:layout_constraintVertical_bias="0.45" />
+
+    <CheckBox
+        android:id="@+id/checkbox_doctor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.8"
+        app:layout_constraintStart_toEndOf="@+id/tv_doctor_firstname"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

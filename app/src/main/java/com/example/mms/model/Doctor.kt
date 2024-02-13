@@ -17,9 +17,14 @@ class Doctor (
     var firstname: String,
     var title:String,
     var speciality: String,
-    var email:String=""){
+    var email:String="",
+    var city:String="",
+    var zipcode:String="",
+    var address:String="",
+    var phoneNumber:String="",
+    ){
 
     override fun toString(): String {
-        return "Doctor(rpps=$rpps, name='$name', firstname='$firstname', title='$title', speciality='$speciality', email='$email')"
+        return "Doctor(rpps=$rpps, name='$name', firstname='$firstname', title='$title', speciality='$speciality', email='$email', city='$city', zipCode='$zipcode', address='$address', phoneNumber='$phoneNumber')"
     }
 }
