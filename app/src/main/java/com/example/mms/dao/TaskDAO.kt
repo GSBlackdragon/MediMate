@@ -5,6 +5,7 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Update
 import com.example.mms.model.Cycle
 import com.example.mms.model.SpecificDaysHourWeight
 import com.example.mms.model.Takes
@@ -36,6 +37,9 @@ interface TaskDAO {
 
     @Query("SELECT * FROM task WHERE id = (SELECT MAX(id) FROM task)")
     fun getLastInserted(): Task?
+
+    @Update
+    fun update(task: Task)
 
     @Insert
     fun insertTake(takes: Takes)

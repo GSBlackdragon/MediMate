@@ -43,6 +43,10 @@ data class Task(
     var updatedAt: LocalDateTime = LocalDateTime.now(),
     var startDate: LocalDateTime = LocalDateTime.now(),
     var endDate: LocalDateTime = LocalDateTime.now(),
+    var stopOnStock : Boolean,
+
+
+
 
     @ColumnInfo(index = true)
     var medicineCIS: Long,
@@ -62,8 +66,10 @@ data class Task(
     @ColumnInfo(index = true)
     var doctor: Long? = null
 
+
+
 ) {
-    constructor() : this(0, "", LocalDateTime.now(), LocalDateTime.now(), LocalDateTime.now(),LocalDateTime.now(), 0, "", Cycle(), mutableListOf())
+    constructor() : this(0, "", LocalDateTime.now(), LocalDateTime.now(), LocalDateTime.now(),LocalDateTime.now(), false,0, "", Cycle(), mutableListOf())
 
     /**
      * The task is not empty, if the cycle is not empty, the specific days are not empty or the one take hour weight is not null

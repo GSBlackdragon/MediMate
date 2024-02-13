@@ -198,6 +198,7 @@ class TakesAdapter(
                                         item.medicineStorage,
                                         item.hourWeight.weight,
                                         item.medicineName,
+                                        item.task,
                                         this@TakesAdapter
                                     )
                                 }
@@ -292,7 +293,7 @@ class TakesAdapter(
             stock.text = sHw.medicineStorage.storage.toString()
             tvStock.setOnClickListener {
                 dialog.dismiss()
-                this.mStorageService.dialogGererStock(sHw.medicineStorage, sHw.medicineName, this)
+                this.mStorageService.dialogGererStock(sHw.medicineStorage, sHw.medicineName, this,null)
             }
         }else{
             tvStock.visibility = View.GONE

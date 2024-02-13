@@ -2,10 +2,13 @@ package com.example.mms.ui.add
 
 import android.app.DatePickerDialog
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import android.widget.Switch
+import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -27,6 +30,8 @@ class AddMedicamentDateDebutFinFragment : Fragment() {
     private var beginDate: LocalDateTime = LocalDateTime.now()
     private var endDate: LocalDateTime = LocalDateTime.now()
 
+    private var STOP_ON_STOCK : Boolean = false
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -36,6 +41,8 @@ class AddMedicamentDateDebutFinFragment : Fragment() {
         val root: View = binding.root
 
         viewModel = ViewModelProvider(requireActivity())[SharedAMViewModel::class.java]
+
+
 
         binding.backButton.root.setOnClickListener {
             // get back to the previous fragment
@@ -50,6 +57,28 @@ class AddMedicamentDateDebutFinFragment : Fragment() {
         // setup date picker dialog
         setupDatePickerDialog(binding.editBeginDate, beginDate, true, binding.editEndDate)
         setupDatePickerDialog(binding.editEndDate, endDate, false, binding.editBeginDate)
+
+        if (viewModel.storage.value!=null){
+            binding.switchStopOnStock.visibility=View.VISIBLE
+            binding.textStopOnStock.visibility=View.VISIBLE
+        }else{
+            binding.switchStopOnStock.visibility=View.GONE
+            binding.textStopOnStock.visibility=View.GONE
+        }
+
+        binding.switchStopOnStock.setOnClickListener {
+            if (binding.switchStopOnStock.isChecked){
+                binding.editEndDate.isActivated=true
+                STOP_ON_STOCK=true
+                binding.editEndDate.setBackgroundResource(R.color.gray)
+
+            }else{
+                binding.editEndDate.isActivated=false
+                STOP_ON_STOCK=false
+                binding.editEndDate.setBackgroundResource(androidx.transition.R.drawable.abc_edit_text_material)
+
+            }
+        }
 
         binding.nextButton.setOnClickListener {
             // take values from the form
@@ -69,8 +98,19 @@ class AddMedicamentDateDebutFinFragment : Fragment() {
                 toast.show()
             } else {
                 // save values in the view model
+                viewModel.taskData.value!!.stopOnStock=STOP_ON_STOCK
                 viewModel.taskData.value!!.startDate = this.beginDate
-                viewModel.taskData.value!!.endDate = this.endDate
+                if (STOP_ON_STOCK){
+                    var totalStock = viewModel.storage.value?.storage
+                    var totalWeight = viewModel.cycle.value?.hourWeights!!.map { it.weight }.sum()
+                    var totalDaysToAdd = totalStock?.div(totalWeight)
+                    viewModel.taskData.value!!.endDate = this.beginDate.plusDays(totalDaysToAdd!!.toLong()-1)
+
+                }else{
+                    viewModel.taskData.value!!.endDate = this.endDate
+                }
+
+
                 // go to next fragment
                 goTo(requireActivity(), R.id.action_start_end_date_to_recap)
             }
@@ -121,10 +161,15 @@ class AddMedicamentDateDebutFinFragment : Fragment() {
 
         // when the user click on the EditText, show the date picker dialog
         editText.setOnClickListener {
-            if (!start) {
-                datePickerDialog.datePicker.minDate = beginDate.toLocalDate().toEpochDay() * 24 * 60 * 60 * 1000
-            }
-            datePickerDialog.show()
+                if (!start) {
+                    datePickerDialog.datePicker.minDate = beginDate.toLocalDate().toEpochDay() * 24 * 60 * 60 * 1000
+                    if (!STOP_ON_STOCK){
+                        datePickerDialog.show()
+                    }
+                }else {
+                    datePickerDialog.show()
+                }
+
         }
 
         // Afficher la date initiale dans l'EditText

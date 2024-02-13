@@ -1,8 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <Switch
+        android:id="@+id/switchStopOnStock"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        app:layout_constraintStart_toStartOf="@+id/textView17"
+        app:layout_constraintTop_toBottomOf="@+id/textView17"
+        tools:ignore="UseSwitchCompatOrMaterialXml" />
 
     <include
         android:id="@+id/back_button"
@@ -59,6 +69,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/edit_beginDate"
         app:layout_constraintVertical_bias="0.2" />
+
+    <TextView
+        android:id="@+id/textStopOnStock"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:fontFamily="@font/poppins_bold"
+        android:text="@string/textstoponstock"
+        app:layout_constraintBottom_toBottomOf="@+id/switchStopOnStock"
+        app:layout_constraintStart_toEndOf="@+id/switchStopOnStock"
+        app:layout_constraintTop_toTopOf="@+id/switch4" />
 
     <EditText
         android:id="@+id/edit_endDate"
