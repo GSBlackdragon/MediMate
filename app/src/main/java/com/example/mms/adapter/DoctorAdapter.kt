@@ -21,7 +21,7 @@ class DoctorAdapter(val doctorList : MutableList<Doctor>, val context : Context)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
-        val view = LayoutInflater.from(context).inflate(R.layout.item_heure_dosage, parent, false)
+        val view = LayoutInflater.from(context).inflate(R.layout.item_conseil_medecin, parent, false)
         return MyViewHolder(view)
     }
 

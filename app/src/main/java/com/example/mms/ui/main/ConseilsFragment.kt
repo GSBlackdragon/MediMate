@@ -5,7 +5,6 @@ import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.Rect
 import android.net.Uri
 import android.os.Bundle
 import android.os.Looper
@@ -20,7 +19,6 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.mms.R
 import com.example.mms.adapter.DoctorAdapter
@@ -30,31 +28,24 @@ import com.example.mms.constant.LIEN_EFFETS_INDESIRABLES
 import com.example.mms.database.inApp.SingletonDatabase
 import com.example.mms.databinding.FragmentConseilsBinding
 import com.example.mms.model.Doctor
-import com.example.mms.model.Takes
 import com.example.mms.service.ApiService
-import com.example.mms.service.NotifService
 import org.osmdroid.api.IMapController
-import org.osmdroid.events.MapListener
-import org.osmdroid.events.ScrollEvent
-import org.osmdroid.events.ZoomEvent
-import org.osmdroid.tileprovider.tilesource.TileSourceFactory
 import org.osmdroid.views.MapView
-import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay
 import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.model.Marker
-import com.google.protobuf.Api
 import org.osmdroid.util.GeoPoint
 
 class ConseilsFragment : Fragment() {
 
     private var _binding: FragmentConseilsBinding? = null
     private lateinit var map: MapView
+    private lateinit var marker: Marker
     private lateinit var controller: IMapController
     private lateinit var myLocationOverlay: MyLocationNewOverlay
     private lateinit var fusedLocationClient: FusedLocationProviderClient
-    private lateinit var marker: Marker
+    private lateinit var doctorsAdded: MutableList<Doctor>
+    private lateinit var adapterDoctor : DoctorAdapter
 
     private val binding get() = _binding!!
 
@@ -71,23 +62,25 @@ class ConseilsFragment : Fragment() {
         val root: View = binding.root
 
         binding.ajoutMedecin.setOnClickListener {
-            dialogAddDoctor()
+            dialogAddDoctor(adapterDoctor)
         }
 
         val db = SingletonDatabase.getDatabase(this.requireContext())
-        var doctors = mutableListOf<Doctor>()
         val tt = Thread {
             val doctorDao = db.doctorDao()
-            doctors = doctorDao.getAll()?.toMutableList() ?: mutableListOf()
+            doctorsAdded = doctorDao.getAll()?.toMutableList() ?: mutableListOf()
         }
         tt.start()
         tt.join()
-        if (doctors.isNotEmpty()) {
-            val adapter = DoctorAdapter(doctors.toMutableList(), this.requireContext())
-            binding.listMedecins.adapter = adapter
-            binding.listMedecins.layoutManager = LinearLayoutManager(this.requireContext())
-        }else{
+
+        adapterDoctor = DoctorAdapter(doctorsAdded.toMutableList(), this.requireContext())
+        binding.listMedecins.adapter = adapterDoctor
+        binding.listMedecins.layoutManager = LinearLayoutManager(this.requireContext())
+
+        if (doctorsAdded.isEmpty()) {
             binding.listMedecins.visibility = View.GONE
+        } else {
+            binding.listMedecins.visibility = View.VISIBLE
         }
 
         // MAP PART NOT FINISHED
@@ -134,7 +127,7 @@ class ConseilsFragment : Fragment() {
         return root
     }
     // Geffroy Pascale
-    private fun dialogAddDoctor() {
+    private fun dialogAddDoctor(adapter: DoctorAdapter) {
         val dialog = Dialog(this.requireContext())
         val api = ApiService.getInstance(this.requireContext())
         dialog.setContentView(R.layout.custom_dialog_add_doctor)
@@ -162,7 +155,7 @@ class ConseilsFragment : Fragment() {
                             if (doctors.isEmpty()) {
                                 Toast.makeText(this@ConseilsFragment.requireContext(), R.string.no_doctor_found, Toast.LENGTH_SHORT).show()
                             } else {
-                                dialogChooseDoctors(doctors)
+                                dialogChooseDoctors(doctors,adapter, dialog.dismiss())
                             }
                         }
                     }
@@ -176,7 +169,7 @@ class ConseilsFragment : Fragment() {
         dialog.show()
     }
 
-    private fun dialogChooseDoctors(doctors: List<Doctor>) {
+    private fun dialogChooseDoctors(doctors: List<Doctor>, adapterDoctor: DoctorAdapter, prevDialog: Unit) {
         val dialog = Dialog(this.requireContext())
         dialog.setContentView(R.layout.custom_dialog_choose_doctor)
         val btnValidate = dialog.findViewById<Button>(R.id.btn_search_doctor)
@@ -209,10 +202,13 @@ class ConseilsFragment : Fragment() {
                 val tt = Thread {
                     val doctorDao = db.doctorDao()
                     doctorDao.insertMany(doctorsChecked)
+                    doctorsAdded = db.doctorDao().getAll()?.toMutableList() ?: mutableListOf()
                 }
                 tt.start()
                 tt.join()
                 Toast.makeText(this.requireContext(), R.string.doctor_added, Toast.LENGTH_SHORT).show()
+                adapterDoctor.notifyDataSetChanged()
+                prevDialog
                 dialog.dismiss()
             }
         }
