@@ -49,6 +49,7 @@ class AddActivity : AppCompatActivity() {
             finish()
         }
 
+        // Calling ScanLoading passing image URI in extra.
         val takePicture: ActivityResultLauncher<Uri?> = registerForActivityResult(
             ActivityResultContracts.TakePicture()
         ) { success ->
