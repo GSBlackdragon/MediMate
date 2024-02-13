@@ -144,17 +144,13 @@ class ApiService private constructor(context: Context) {
     }
     private fun getDoctorbyIDGOUV(identifier: String, callback: (String) -> Unit, errorCallback: () -> Unit) {
         val url = makeUrl(identifier, 1)
-
         val stringRequest = object : StringRequest(Method.GET, url,
             { response ->
                 try {
-                    Log.d("URLDEBUG", response)
                     val email = extractEmail(response)
                     if (email != null) {
-                        Log.d("URLDEBUG", email)
                         callback(email)
                     } else {
-                        Log.d("extractEmail", "Aucun email trouvé dans la réponse")
                         errorCallback()
                     }
                 } catch (e: Exception) {
@@ -168,6 +164,7 @@ class ApiService private constructor(context: Context) {
             }) {
             override fun getHeaders(): MutableMap<String, String> = hashMapOf("ESANTE-API-KEY" to GouvKEY)
         }
+        Log.d("URLDEBUG", stringRequest.toString())
         queue.add(stringRequest)
     }
 
@@ -220,7 +217,6 @@ class ApiService private constructor(context: Context) {
 
                     val doctorResponse = json.decodeFromString<List<temporaryDoctor>>(response)
                     // Assurez-vous que temporaryDoctor a une fonction toDoctor() définie similairement à l'exemple précédent
-                    Log.d("byname", "success: ${doctorResponse.map { it.toDoctor() }}")
                     callback(doctorResponse.map { it.toDoctor() })
 
 
@@ -242,23 +238,19 @@ class ApiService private constructor(context: Context) {
 
 
     interface DoctorResultCallback {
-        fun onSuccess(doctor: Doctor?)
+        fun onSuccess(doctors: List<Doctor>?)
         fun onError(error: String)
     }
 
     fun getDoctor(name: Pair<String, String>?, identifier: String?, resultCallback: DoctorResultCallback) {
-        this.Doctor =null
+        this.Doctor = null
         if (identifier != null) {
             getDoctorbyIDInstamed(identifier,
                 callback = { doctor ->
-                    Log.d("DEBUGINSTAMED", doctor.toString())
                     this.Doctor = doctor
                     getDoctorbyIDGOUV(identifier,
                         callback = { email ->
-                            this.Doctor!!.email = email
-                            Log.d("doctor", this.Doctor.toString())
-                            // Opération terminée avec succès, retourner le Doctor
-                            resultCallback.onSuccess(this.Doctor)
+                            doctor.email = email
                         },
                         errorCallback = {
                             Log.d("error", "Une erreur est survenue lors de la récupération de l'email du docteur")
@@ -266,6 +258,7 @@ class ApiService private constructor(context: Context) {
                             resultCallback.onError("Une erreur est survenue lors de la récupération de l'email du docteur")
                         }
                     )
+                    resultCallback.onSuccess(listOf(doctor))
                 },
                 errorCallback = {
                     Log.d("error", "Une erreur est survenue lors de la récupération des informations du docteur")
@@ -276,31 +269,20 @@ class ApiService private constructor(context: Context) {
         } else if (name != null) {
             getDoctorByName(name.second,name.first,
                 callback = { doctors ->
-                    var found = false
-                    doctors.forEach { doctor ->
-                        Log.d("if", "${ doctor.firstname.uppercase() } ${ name.first.uppercase() } && ${doctor.name.uppercase()} == ${name.second.uppercase()}")
-                        if (doctor.firstname.uppercase() == name.first.uppercase() && doctor.name.uppercase() == name.second.uppercase()) {
-                            this.Doctor = doctor
-                            found = true
-                            getDoctorbyIDGOUV(doctor.rpps.toString(),
-                                callback = { email ->
-                                    this.Doctor!!.email = email
-                                    Log.d("doctor", this.Doctor.toString())
-                                    // Opération terminée avec succès, retourner le Doctor
-                                    resultCallback.onSuccess(this.Doctor)
-                                },
-                                errorCallback = {
-                                    Log.d("error", "Une erreur est survenue lors de la récupération de l'email du docteur")
-                                    // Signaler une erreur
-                                    resultCallback.onError("Une erreur est survenue lors de la récupération de l'email du docteur")
-                                }
-                            )
-                        }
+                    doctors.map { doctor ->
+                        this.Doctor = doctor
+                        getDoctorbyIDGOUV(doctor.rpps.toString(),
+                            callback = { email ->
+                                doctor.email = email
+                            },
+                            errorCallback = {
+                                Log.d("error", "Une erreur est survenue lors de la récupération de l'email du docteur")
+                                // Signaler une erreur
+                                resultCallback.onError("Une erreur est survenue lors de la récupération de l'email du docteur")
+                            }
+                        )
                     }
-                    if (!found) {
-                        // Aucun docteur trouvé
-                        resultCallback.onSuccess(null)
-                    }
+                    resultCallback.onSuccess(doctors)
                 },
                 errorCallback = {
                     Log.d("error", "Une erreur est survenue lors de la récupération des informations du docteur")
