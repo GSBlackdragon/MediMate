@@ -1,6 +1,7 @@
 package com.example.mms.ui.main
 
 import android.Manifest
+import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -12,6 +13,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.EditText
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -22,7 +25,9 @@ import com.example.mms.R
 import com.example.mms.constant.LIEN_EFFETS_INDESIRABLES
 import com.example.mms.database.inApp.SingletonDatabase
 import com.example.mms.databinding.FragmentConseilsBinding
+import com.example.mms.model.Doctor
 import com.example.mms.model.Takes
+import com.example.mms.service.ApiService
 import com.example.mms.service.NotifService
 import org.osmdroid.api.IMapController
 import org.osmdroid.events.MapListener
@@ -35,6 +40,7 @@ import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.model.Marker
+import com.google.protobuf.Api
 import org.osmdroid.util.GeoPoint
 
 class ConseilsFragment : Fragment() {
@@ -60,83 +66,10 @@ class ConseilsFragment : Fragment() {
         _binding = FragmentConseilsBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        // set text
-        val smsBtn = binding.itemMedecin.btnSms
-        val mailBtn = binding.itemMedecin.btnMail
-
-        val name = binding.itemMedecin.nomMedecin
-        val number = binding.itemMedecin.numeroMedecin
-        val mail = binding.itemMedecin.mailMedecin
-
-        name.text = sp?.getString("nom", "")
-        number.text = sp?.getString("numero", "")
-        mail.text = sp?.getString("mail", "")
-
-        if (name.text == "" && number.text == "" && mail.text == "") {
-            name.text = getString(R.string.aucun_medecin_enregistre)
-            number.text = getString(R.string.cliquez_sur_le_crayon)
-            mail.text = getString(R.string.pour_ajouter_un_medecin)
+        binding.ajoutMedecin.setOnClickListener {
+            dialogAddDoctor()
         }
 
-        // set the state of the buttons
-        if (number.text == getString(R.string.cliquez_sur_le_crayon) || number.text == "") {
-            smsBtn.setBackgroundResource(R.drawable.button_style_3_disable)
-            smsBtn.setTextColor(resources.getColor(R.color.clickable_blue_disable))
-            smsBtn.isEnabled = false
-        } else {
-            smsBtn.setBackgroundResource(R.drawable.button_style_3)
-            smsBtn.setTextColor(resources.getColor(R.color.clickable_blue))
-            smsBtn.isEnabled = true
-        }
-        if (mail.text == getString(R.string.pour_ajouter_un_medecin) || mail.text == "") {
-            mailBtn.setBackgroundResource(R.drawable.button_style_3_disable)
-            mailBtn.setTextColor(resources.getColor(R.color.clickable_blue_disable))
-            mailBtn.isEnabled = false
-        } else {
-            mailBtn.setBackgroundResource(R.drawable.button_style_3)
-            mailBtn.setTextColor(resources.getColor(R.color.clickable_blue))
-            mailBtn.isEnabled = true
-        }
-
-        // We set the listener to open the sms app with the intent action send to and the phone number as data
-        smsBtn.setOnClickListener {
-            val phoneNumber = number.text.toString()
-            if (phoneNumber.isNotEmpty()) {
-                val smsUri = Uri.parse("smsto:$phoneNumber")
-                val smsIntent = Intent(Intent.ACTION_SENDTO, smsUri)
-                try {
-                    startActivity(smsIntent)
-                } catch (ex: Exception) {
-                    Toast.makeText(this.requireContext(), getString(R.string.erreur_ouverture_sms), Toast.LENGTH_SHORT).show()
-                }
-            } else {
-                Toast.makeText(this.requireContext(), getString(R.string.aucun_numero_telephone), Toast.LENGTH_SHORT).show()
-            }
-        }
-
-        // We set the listener to open the mail app with the intent action send to and the mail address as data
-        mailBtn.setOnClickListener {
-            val mailAddress = mail.text.toString()
-            if (mailAddress.isNotEmpty()) {
-                val emailIntent = Intent(Intent.ACTION_SENDTO).apply {
-                    data = Uri.parse("mailto:")
-                    putExtra(Intent.EXTRA_EMAIL, arrayOf(mailAddress))
-                }
-                try {
-                    startActivity(emailIntent)
-                } catch (ex: Exception) {
-                    Toast.makeText(this.requireContext(), getString(R.string.erreur_lors_de_ouverture_mails), Toast.LENGTH_SHORT).show()
-                }
-            } else {
-                Toast.makeText(this.requireContext(), getString(R.string.aucune_adresse_mail), Toast.LENGTH_SHORT).show()
-            }
-        }
-
-        binding.itemMedecin.medecinModifier.setOnClickListener {
-            val navHostFragment = requireActivity().supportFragmentManager.findFragmentById(R.id.nav_host_fragment_activity_main) as NavHostFragment
-            val navController = navHostFragment.navController
-            navController.navigate(R.id.action_navigation_notifications_to_navigation_modify_medecin)
-        }
 
 
         // MAP PART NOT FINISHED
@@ -181,6 +114,39 @@ class ConseilsFragment : Fragment() {
 
 
         return root
+    }
+    // Geffroy Pascale
+    private fun dialogAddDoctor() {
+        val dialog = Dialog(this.requireContext())
+        val api = ApiService.getInstance(this.requireContext())
+        dialog.setContentView(R.layout.custom_dialog_add_doctor)
+        val btnSearch = dialog.findViewById<Button>(R.id.btn_search_doctor)
+        val nameDoctor = dialog.findViewById<EditText>(R.id.et_search_doctor_name)
+        val firstNameDoctor = dialog.findViewById<EditText>(R.id.et_search_doctor_firstname)
+        val idDoctor = dialog.findViewById<EditText>(R.id.et_search_doctor_id)
+        btnSearch.setOnClickListener {
+            // Call API
+            if(nameDoctor.text.isEmpty() && idDoctor.text.isEmpty()) {
+                Toast.makeText(this.requireContext(), getString(R.string.fill_fields), Toast.LENGTH_SHORT).show()
+            } else {
+                var id : String? = idDoctor.text.toString()
+                if (id!!.isEmpty()) id = null
+                val lastName = nameDoctor.text.toString()
+                val firstName = firstNameDoctor.text.toString()
+                api.getDoctor(Pair(firstName,lastName),id, object : ApiService.DoctorResultCallback{
+                    override fun onSuccess(doctors: List<Doctor>?) {
+                        Log.d("SUCCESS", doctors.toString())
+                    }
+
+                    override fun onError(error: String) {
+                        Log.d("ERROR", error)
+                    }
+                })
+
+                dialog.dismiss()
+            }
+        }
+        dialog.show()
     }
 
     override fun onRequestPermissionsResult(

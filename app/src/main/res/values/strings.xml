@@ -246,4 +246,8 @@
     <string name="toast_sub_active">Doublon de substance active</string>
     <string name="lien_aide">Lien d\'aide</string>
     <string name="lien_securite">Lien de sécurité</string>
+    <string name="ajouter_medecin">Ajouter un nouveau médecin</string>
+    <string name="recherche_par_nom">Recherche par nom</string>
+    <string name="search">Rechercher</string>
+    <string name="doctor_not_found">Aucun docteur trouvé</string>
 </resources>
