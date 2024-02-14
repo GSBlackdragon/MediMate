@@ -277,36 +277,36 @@ class ApiService private constructor(context: Context) {
                 }
             )
         } else if (name != null) {
-            getDoctorByName(name.second,name.first,
+            getDoctorByName(name.second, name.first,
                 callback = { doctors ->
                     val doctorsWithEmail = mutableListOf<Doctor>()
-                    var count = 0
-                    doctors.map { doctor ->
-                        Log.d("Doctor dans map", doctor.toString())
-                        this.Doctor = doctor
-                        if (this.Doctor?.email == "") {
+                    val emailsReceived = MutableList(doctors.size) { false } // Suivi des emails récupérés
+                    doctors.forEachIndexed { index, doctor ->
+                        if (doctor.email.isNotEmpty()) {
+                            doctorsWithEmail.add(doctor)
+                            emailsReceived[index] = true
+                            if (emailsReceived.all { it }) {
+                                resultCallback.onSuccess(doctorsWithEmail)
+                            }
+                        } else {
                             getDoctorbyIDGOUV(doctor.rpps.toString(),
                                 callback = { email ->
-                                    this.Doctor?.email = email
-                                    Log.d("Doctor pour chercher email", this.Doctor!!.toString())
-                                    doctorsWithEmail.add(this.Doctor!!)
-                                    count++
-                                    if (count == doctors.size && this.Doctor?.email != "") {
+                                    doctor.email = email
+                                    if (email.isNotEmpty()) {
+                                        doctorsWithEmail.add(doctor)
+                                    }
+                                    emailsReceived[index] = true
+                                    if (emailsReceived.all { it }) {
                                         resultCallback.onSuccess(doctorsWithEmail)
                                     }
                                 },
                                 errorCallback = {
-                                    // Signaler une erreur
-                                    resultCallback.onError("Une erreur est survenue lors de la récupération de l'email du docteur")
+                                    emailsReceived[index] = true
+                                    if (emailsReceived.all { it }) {
+                                        resultCallback.onSuccess(doctorsWithEmail)
+                                    }
                                 }
                             )
-                        }else{
-                            Log.d("Doctor email deja là", this.Doctor!!.toString())
-                            doctorsWithEmail.add(this.Doctor!!)
-                            count++
-                            if (count == doctors.size) {
-                                resultCallback.onSuccess(doctorsWithEmail)
-                            }
                         }
                     }
                 },
