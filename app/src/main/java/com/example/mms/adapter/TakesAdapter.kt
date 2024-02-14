@@ -347,6 +347,13 @@ class TakesAdapter(
         dialog.setContentView(R.layout.custom_dialog_medicine_informations)
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
+        val layoutParams = WindowManager.LayoutParams()
+        layoutParams.copyFrom(dialog.window?.attributes)
+        layoutParams.width = WindowManager.LayoutParams.WRAP_CONTENT
+        layoutParams.height = (context.resources.displayMetrics.heightPixels * 0.8).toInt()
+
+        dialog.window?.attributes = layoutParams
+
         val medicineName = dialog.findViewById<TextView>(R.id.medicine_name)
         val medicineType = dialog.findViewById<TextView>(R.id.medicine_type)
         val medicineWeight = dialog.findViewById<TextView>(R.id.medicine_weight)
