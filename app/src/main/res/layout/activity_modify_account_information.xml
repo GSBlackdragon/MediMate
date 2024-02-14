@@ -9,28 +9,27 @@
         layout="@layout/back_button" />
 
     <TextView
+        android:id="@+id/textView21"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/modifier_vos_informations"
         android:textSize="20sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/text_nom"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/back_button" />
 
     <TextView
         android:id="@+id/text_nom"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/nom"
+        android:layout_marginTop="20dp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.1"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.26" />
+        app:layout_constraintTop_toBottomOf="@+id/textView21" />
 
     <EditText
         android:id="@+id/edit_nom"
@@ -132,15 +131,14 @@
         app:layout_constraintStart_toStartOf="@+id/text_poids"
         app:layout_constraintTop_toTopOf="@+id/edit_taille" />
 
-    <!---
+
     <TextView
         android:id="@+id/text_soucis"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/soucis"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-
+        android:layout_marginTop="20dp"
         app:layout_constraintHorizontal_bias="0.1"
         app:layout_constraintStart_toStartOf="@+id/edit_prenom"
         app:layout_constraintTop_toBottomOf="@+id/edit_birthdate"
@@ -227,7 +225,7 @@
         app:layout_constraintStart_toEndOf="@+id/edit_allergies"
         app:layout_constraintTop_toTopOf="@+id/edit_allergies"
         app:tint="@color/black" />
-        -->
+
 
     <Button
         android:id="@+id/btn_modify_validate"

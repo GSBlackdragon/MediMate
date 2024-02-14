@@ -11,15 +11,22 @@
         android:label="CAInformationsFragment"
         tools:layout="@layout/fragment_create_account_informations">
         <action
-            android:id="@+id/action_navigation_CAInformations_to_navigation_CAPin"
-            app:destination="@id/navigation_CAPin" />
+            android:id="@+id/action_info_to_diseases"
+            app:destination="@id/navigation_CADiseases" />
     </fragment>
 
     <fragment
         android:id="@+id/navigation_CADiseases"
         android:name="com.example.mms.ui.createAccount.CADiseasesFragment"
         android:label="CADiseasesFragment"
-        tools:layout="@layout/fragment_create_account_diseases"/>
+        tools:layout="@layout/fragment_create_account_diseases">
+        <action
+            android:id="@+id/action_diseases_to_informations"
+            app:destination="@id/navigation_CAInformations" />
+        <action
+            android:id="@+id/action_diseases_to_pin"
+            app:destination="@id/navigation_CAPin" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_CAPin"
@@ -27,7 +34,7 @@
         android:label="CAPinFragment"
         tools:layout="@layout/fragment_create_account_pin">
         <action
-            android:id="@+id/action_navigation_CAPin_to_navigation_CAInformations"
-            app:destination="@id/navigation_CAInformations" />
+            android:id="@+id/action_pin_to_diseases"
+            app:destination="@id/navigation_CADiseases" />
     </fragment>
 </navigation>
