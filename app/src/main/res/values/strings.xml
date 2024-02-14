@@ -255,4 +255,5 @@
     <string name="choose_doctor">Aucun docteur sélectionné</string>
     <string name="doctor_result">Résultat de vos docteurs</string>
     <string name="doctor_added">Docteur(s) ajoutés !</string>
+    <string name="delete_medecin">Médecin supprimé</string>
 </resources>

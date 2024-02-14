@@ -27,7 +27,7 @@ class TempDoctorAdapter(
     class MyViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView) {
         val name = itemView.findViewById<TextView>(R.id.tv_doctor_name)
         val firstName = itemView.findViewById<TextView>(R.id.tv_doctor_firstname)
-        val speciality = itemView.findViewById<TextView>(R.id.tv_doctor_speciality)
+        val title = itemView.findViewById<TextView>(R.id.tv_doctor_title)
         val city = itemView.findViewById<TextView>(R.id.tv_doctor_city)
         val isSelected = itemView.findViewById<CheckBox>(R.id.checkbox_doctor)
     }
@@ -45,7 +45,7 @@ class TempDoctorAdapter(
         val item = tempDoctors[position]
         holder.name.text = item.name
         holder.firstName.text = item.firstname
-        holder.speciality.text = item.speciality
+        holder.title.text = item.title
         holder.city.text = item.city
 
         holder.isSelected.setOnCheckedChangeListener { _, isChecked ->

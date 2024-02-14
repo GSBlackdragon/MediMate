@@ -32,7 +32,7 @@
         app:layout_constraintVertical_bias="0.133" />
 
     <TextView
-        android:id="@+id/numeroMedecin"
+        android:id="@+id/titleMedecin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
@@ -46,7 +46,7 @@
         app:layout_constraintVertical_bias="0.686" />
 
     <TextView
-        android:id="@+id/mailMedecin"
+        android:id="@+id/cityMedecin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
@@ -59,17 +59,17 @@
         app:layout_constraintVertical_bias="0.952" />
 
     <ImageView
-        android:id="@+id/medecinModifier"
+        android:id="@+id/medecinDelete"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/baseline_pen_24"
-        android:contentDescription="@string/modifier"
+        android:contentDescription="@string/deleted"
+        android:src="@drawable/baseline_delete_24"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintHorizontal_bias="0.98"
+        app:layout_constraintStart_toEndOf="@+id/nomMedecin"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.05"
-        app:layout_constraintHorizontal_bias="0.98" />
+        app:layout_constraintVertical_bias="0.05" />
 
     <View
         android:id="@+id/separator"
