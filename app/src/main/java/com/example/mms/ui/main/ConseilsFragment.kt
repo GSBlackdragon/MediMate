@@ -174,10 +174,10 @@ class ConseilsFragment : Fragment() {
                 tt.join()
                 Toast.makeText(this.requireContext(), R.string.doctor_added, Toast.LENGTH_SHORT).show()
                 Log.d("DOCTORS", doctorsAdded.size.toString())
-                this.adapterDoctor.notifyItemInserted(doctorsAdded.size - 1)
-                this.adapterDoctor.notifyItemRangeInserted(doctorsAdded.size - 1, doctorsAdded.size)
                 prevDialog
                 dialog.dismiss()
+                this.adapterDoctor.notifyDataSetChanged()
+                this.adapterDoctor.updateList(doctorsAdded)
             }
         }
         dialog.show()

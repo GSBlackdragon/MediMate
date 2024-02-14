@@ -16,7 +16,7 @@ import com.example.mms.database.inApp.AppDatabase
 import com.example.mms.model.Doctor
 
 class DoctorAdapter(
-    val doctorList : MutableList<Doctor>,
+    var doctorList : MutableList<Doctor>,
     val context : Context,
     val db : AppDatabase
     )  : RecyclerView.Adapter<DoctorAdapter.MyViewHolder>() {
@@ -35,6 +35,9 @@ class DoctorAdapter(
         return MyViewHolder(view)
     }
 
+    fun updateList(list : MutableList<Doctor>){
+        this.doctorList=list
+    }
     override fun getItemCount(): Int {
         return doctorList.size
     }
