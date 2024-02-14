@@ -33,29 +33,30 @@ class ScanLoading : AppCompatActivity() {
         binding.textLoading.text = getString(R.string.chargement_scan)
 
         val imageUri = intent.getParcelableExtra<Uri>("capturedImageUri")
-        Log.d("Nathan", "Coucou")
-        try {
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
 
-            val image = InputImage.fromFilePath(this@ScanLoading, imageUri!!)
+                val image = InputImage.fromFilePath(this@ScanLoading, imageUri!!)
 
-            val ocr = OCR(SingletonDatabase.getDatabase(this@ScanLoading))
-            ocr.recognize(image)
-            val docList = ocr.getDoctorInfo()
-            val medList = ocr.getMedicineInfo()
+                val ocr = OCR(SingletonDatabase.getDatabase(this@ScanLoading))
+                ocr.recognize(image)
+                val docList = ocr.getDoctorInfo()
+                val medList = ocr.getMedicineInfo()
 
-            startActivity(
-                Intent(this@ScanLoading, ChooseMedicamentActivity::class.java)
-                    .putExtra(
-                        "medicamentFound",
-                        medList as ArrayList<OCR.MedicationInfo>
-                    )
-            )
-            finish()
+                startActivity(
+                    Intent(this@ScanLoading, ChooseMedicamentActivity::class.java)
+                        .putExtra(
+                            "medicamentFound",
+                            medList as ArrayList<OCR.MedicationInfo>
+                        )
+                )
+                finish()
 
-        } catch (e: Exception) {
-            Log.d("Image Error", e.toString())
-            Toast.makeText(this, getString(R.string.erreur_prise_photo), Toast.LENGTH_SHORT).show()
-            finish()
+            } catch (e: Exception) {
+                Log.d("Image Error", e.toString())
+                Toast.makeText(this@ScanLoading, getString(R.string.erreur_prise_photo), Toast.LENGTH_SHORT).show()
+                finish()
+            }
         }
             /*
             CoroutineScope(Dispatchers.IO).launch {

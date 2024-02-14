@@ -3,6 +3,7 @@ package com.example.mms.Utils
 import android.content.Context
 import android.os.Parcel
 import android.os.Parcelable
+import android.util.Log
 import com.example.mms.database.inApp.AppDatabase
 import com.example.mms.ui.add.ScanLoading
 import com.google.android.gms.tasks.Tasks
@@ -21,12 +22,15 @@ class OCR(private val db: AppDatabase) {
     fun recognize(image: InputImage) {
         Tasks.await(
             recognizer.process(image)
-            .addOnSuccessListener { result = it}
+            .addOnSuccessListener { result = it; Log.d("Image Success", "Image read correctly")}
             .addOnFailureListener { throw Exception("Recognition failed") }
         )
     }
     fun getMedicineInfo(): List<MedicationInfo> {
-        return  emptyList()
+
+        result.textBlocks.forEach { block -> Log.d("TextBlock", block.text) }
+
+        return emptyList()
     }
 
     fun getDoctorInfo(): List<String> {
