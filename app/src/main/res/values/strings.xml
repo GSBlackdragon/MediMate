@@ -256,4 +256,5 @@
     <string name="doctor_result">Résultat de vos docteurs</string>
     <string name="doctor_added">Docteur(s) ajoutés !</string>
     <string name="delete_medecin">Médecin supprimé</string>
+    <string name="storage_continuer">Veuillez remplir tous les champs avant de continuer</string>
 </resources>

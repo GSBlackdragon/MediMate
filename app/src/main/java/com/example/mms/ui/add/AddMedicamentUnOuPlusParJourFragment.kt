@@ -44,7 +44,10 @@ class AddMedicamentUnOuPlusParJourFragment : Fragment() {
             goTo(requireActivity(),R.id.action_AMUnOuPlusParJour_Fragment_to_AMPlus_Fragment)
         }
 
-        hourWeightList.add(HourWeight(0, "08:00", 1))
+        if (this.hourWeightList.isEmpty()){
+            hourWeightList.add(HourWeight(0, "08:00", 1))
+        }
+
 
         // create an adapter to display the list of hourWeight
         this.hourWeightAdapter = HourWeightAdapter(this.requireContext(), hourWeightList)

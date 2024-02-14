@@ -11,8 +11,10 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.findNavController
 import com.example.mms.database.inApp.SingletonDatabase
 import com.example.mms.R
+import com.example.mms.Utils.goTo
 import com.example.mms.databinding.FragmentAddMedicament1Binding
 import com.example.mms.model.medicines.Medicine
 
@@ -21,15 +23,18 @@ class AddMedicament1Fragment : Fragment() {
     private var _binding: FragmentAddMedicament1Binding? = null
     private val binding get() = _binding!!
 
+    private lateinit var viewModel: SharedAMViewModel
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val viewModel = ViewModelProvider(requireActivity())[SharedAMViewModel::class.java]
+        this.viewModel = ViewModelProvider(requireActivity())[SharedAMViewModel::class.java]
 
         _binding = FragmentAddMedicament1Binding.inflate(inflater, container, false)
         val root: View = binding.root
+
 
         var medicines: List<Medicine> = mutableListOf()
         val mapFormesDosagesLiveData = MutableLiveData<MutableMap<String, MutableList<String>>>()

@@ -39,7 +39,10 @@ class AddMedicamentCycleHourWeightFragment: Fragment() {
 
         val root: View = binding.root
 
-        this.hourWeightList.add(HourWeight(0, "08:00", 1))
+        if (this.hourWeightList.isEmpty()){
+            this.hourWeightList.add(HourWeight(0, "08:00", 1))
+        }
+
 
         // Creation of the adapter
         this.hourWeightAdapter = HourWeightAdapter(this.requireContext(), this.hourWeightList)

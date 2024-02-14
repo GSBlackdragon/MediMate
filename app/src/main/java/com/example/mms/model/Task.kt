@@ -43,7 +43,7 @@ data class Task(
     var updatedAt: LocalDateTime = LocalDateTime.now(),
     var startDate: LocalDateTime = LocalDateTime.now(),
     var endDate: LocalDateTime = LocalDateTime.now(),
-    var stopOnStock : Boolean,
+    var stopOnStock : Boolean = false,
 
 
 

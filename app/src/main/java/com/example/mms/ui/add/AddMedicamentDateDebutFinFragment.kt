@@ -43,10 +43,22 @@ class AddMedicamentDateDebutFinFragment : Fragment() {
         viewModel = ViewModelProvider(requireActivity())[SharedAMViewModel::class.java]
 
 
+        binding.switchStopOnStock.isChecked = viewModel.taskData.value!!.stopOnStock
+        if (binding.switchStopOnStock.isChecked){
+            binding.editEndDate.isActivated=true
+            STOP_ON_STOCK=true
+            binding.editEndDate.setBackgroundResource(R.color.gray)
+
+        }else{
+            binding.editEndDate.isActivated=false
+            STOP_ON_STOCK=false
+            binding.editEndDate.setBackgroundResource(androidx.transition.R.drawable.abc_edit_text_material)
+
+        }
 
         binding.backButton.root.setOnClickListener {
             // get back to the previous fragment
-            findNavController().popBackStack(viewModel.previousFragmentId.value!!, false)
+            goTo(requireActivity(), R.id.action_start_end_date_to_storage)
         }
 
         // init form

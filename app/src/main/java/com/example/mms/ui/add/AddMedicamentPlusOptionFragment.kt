@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.example.mms.R
 import com.example.mms.Utils.goTo
 import com.example.mms.databinding.FragmentAddMedicamentPlusOptionBinding
@@ -21,8 +22,11 @@ class AddMedicamentPlusOptionFragment : Fragment() {
     ): View {
         val viewModel = ViewModelProvider(requireActivity())[SharedAMViewModel::class.java]
 
+        viewModel.setPreviousFragmentId(findNavController().currentDestination!!.id)
+
         _binding = FragmentAddMedicamentPlusOptionBinding.inflate(inflater, container, false)
         val root: View = binding.root
+
 
         binding.backButton.buttonArrowBack.setOnClickListener {
             goTo(requireActivity(), R.id.action_AMPlus_Fragment_to_AM2_Fragment)

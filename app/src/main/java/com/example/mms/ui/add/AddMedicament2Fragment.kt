@@ -2,6 +2,7 @@ package com.example.mms.ui.add
 
 import android.app.Activity.RESULT_CANCELED
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,7 +11,9 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.findNavController
 import com.example.mms.R
+import com.example.mms.Utils.goTo
 import com.example.mms.constant.TYPE_PRIS_AUTRE
 import com.example.mms.constant.TYPE_PRIS_JOURNALIERE
 import com.example.mms.constant.TYPE_PRIS_PONCTUELLE
@@ -31,12 +34,13 @@ class AddMedicament2Fragment : Fragment() {
         _binding = FragmentAddMedicament2Binding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        binding.backButton.buttonArrowBack.setOnClickListener {
-            requireActivity().setResult(RESULT_CANCELED)
-            requireActivity().finish()
-        }
+
+
+
 
         this.viewModel = ViewModelProvider(requireActivity())[SharedAMViewModel::class.java]
+
+        viewModel.setPreviousFragmentId(findNavController().currentDestination!!.id)
 
         for (radio in listOf(
             binding.radioUnPlusieursFoisParJour,
@@ -46,6 +50,10 @@ class AddMedicament2Fragment : Fragment() {
             radio.setOnClickListener {
                 this.setTypeIntoViewModel(radio.id)
             }
+        }
+
+        binding.backButton.buttonArrowBack.setOnClickListener {
+            goTo(requireActivity(), R.id.action_AM2_Fragment_to_AM1Fragment)
         }
 
         binding.nextButton.setOnClickListener {

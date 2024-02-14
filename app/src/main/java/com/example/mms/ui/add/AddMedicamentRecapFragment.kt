@@ -15,6 +15,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.mms.MainActivity
 import com.example.mms.R
@@ -54,6 +55,7 @@ class AddMedicamentRecapFragment : Fragment() {
         viewModel = ViewModelProvider(requireActivity())[SharedAMViewModel::class.java]
         tasksService = TasksService(requireContext())
         db = SingletonDatabase.getDatabase(requireContext())
+
 
         _binding = FragmentAddRecapBinding.inflate(inflater, container, false)
         val root: View = binding.root

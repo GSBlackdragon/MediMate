@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.example.mms.R
 import com.example.mms.Utils.dateToString
 import com.example.mms.Utils.goTo
@@ -30,6 +31,8 @@ class AddMedicamentCycleFragment: Fragment() {
         viewModel = ViewModelProvider(requireActivity())[SharedAMViewModel::class.java]
         _binding = FragmentAddMedicamentCycleBinding.inflate(inflater, container, false)
 
+        viewModel.setPreviousFragmentId(findNavController().currentDestination!!.id)
+
         val root: View = binding.root
 
         val cycle = viewModel.cycle.value
@@ -40,7 +43,6 @@ class AddMedicamentCycleFragment: Fragment() {
         }
 
         binding.backButton.buttonArrowBack.setOnClickListener {
-            this.viewModel.clearFrequencyData()
             goTo(requireActivity(), R.id.action_AMCycle_to_AM2_Fragment)
         }
 

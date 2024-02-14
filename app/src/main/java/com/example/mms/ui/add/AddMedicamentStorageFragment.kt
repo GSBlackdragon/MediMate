@@ -4,10 +4,12 @@ import android.graphics.Color
 import android.os.Bundle
 import android.text.InputFilter
 import android.text.InputType
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -56,6 +58,7 @@ class AddMedicamentStorageFragment : Fragment() {
 
 
         // set storage informations
+        Log.d("cc",medicineStorage.toString())
         if (medicineStorage != null) {
             if (isInDb) binding.tvAlreadyStored.visibility = View.VISIBLE
 
@@ -96,24 +99,35 @@ class AddMedicamentStorageFragment : Fragment() {
                 val storage = binding.constraintLayoutStorage.getViewById(R.id.edit_actual_storage) as EditText
                 val alertValue = binding.constraintLayoutStorage.getViewById(R.id.edit_alert_storage) as EditText
 
-                // get the id of the medicine
-                var medicineId : Long = 0
-                val tt = Thread {
-                    medicineId = db.medicineDao().getMedicineIdByName(viewModel.medicineName.value!!)
+                if (storage.text.toString().isNotEmpty() && alertValue.text.toString().isNotEmpty()) {
+                    // get the id of the medicine
+                    var medicineId : Long = 0
+                    val tt = Thread {
+                        medicineId = db.medicineDao().getMedicineIdByName(viewModel.medicineName.value!!)
+                    }
+                    tt.start()
+                    tt.join()
+
+                    val obj = MedicineStorage(
+                        medicineId,
+                        storage.text.toString().toInt(),
+                        alertValue.text.toString().toInt()
+                    )
+
+                    // save the storage informations
+                    viewModel.setStorage(obj)
+                    goTo(requireActivity(), R.id.action_storage_to_start_end_date)
+                }else{
+                    Toast.makeText(
+                        this.requireContext(),
+                        this.requireContext().getString(R.string.storage_continuer),
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
-                tt.start()
-                tt.join()
 
-                val obj = MedicineStorage(
-                    medicineId,
-                    storage.text.toString().toInt(),
-                    alertValue.text.toString().toInt()
-                )
-
-                // save the storage informations
-                viewModel.setStorage(obj)
+            }else{
+                goTo(requireActivity(), R.id.action_storage_to_start_end_date)
             }
-            goTo(requireActivity(), R.id.action_storage_to_start_end_date)
         }
 
         return root
