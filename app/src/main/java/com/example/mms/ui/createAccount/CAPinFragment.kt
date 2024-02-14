@@ -42,7 +42,7 @@ class CAPinFragment : Fragment() {
         val navController = navHostFragment.navController
 
         binding.codePin.backButton.buttonArrowBack.setOnClickListener {
-            navController.navigate(com.example.mms.R.id.action_navigation_CAPin_to_navigation_CAInformations)
+            navController.navigate(com.example.mms.R.id.action_pin_to_diseases)
         }
 
         // set text and styles

@@ -124,7 +124,7 @@ class CAInformationsFragment : Fragment() {
                 val navHostFragment =
                     requireActivity().supportFragmentManager.findFragmentById(R.id.nav_create_account) as NavHostFragment
                 val navController = navHostFragment.navController
-                navController.navigate(R.id.action_navigation_CAInformations_to_navigation_CAPin)
+                navController.navigate(R.id.action_info_to_diseases)
             } else {
                 Toast.makeText(context, R.string.check_fields, Toast.LENGTH_SHORT).show()
             }

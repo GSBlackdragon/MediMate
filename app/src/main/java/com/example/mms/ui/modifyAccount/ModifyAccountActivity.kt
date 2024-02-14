@@ -50,7 +50,7 @@ class ModifyAccountActivity : AppCompatActivity() {
                 binding.editTaille.filters =  arrayOf(InputFilter.LengthFilter(3))
 
                 // Partie soucis de santé / allergies / régime non implémentée
-                /**
+
                 binding.buttonAddHealthDisease.setOnClickListener {
                     val selectedHealthDiseases = user.listHealthDiseases?.split(",")!!.toList()
                     val dialog = CustomDialogDiseasses(this, listHealthDiseases, selectedHealthDiseases) {
@@ -96,7 +96,7 @@ class ModifyAccountActivity : AppCompatActivity() {
                         dialog.updateSelectedItems(updatedSelectedAllergies)
                     }
                 }
-                **/
+
                 binding.editBirthdate.keyListener = null
                 binding.editBirthdate.isFocusable = false
 
