@@ -63,7 +63,20 @@ class CADiseasesFragment : Fragment() {
                         }
                     }
                     viewModel.setUserData(currentUser)
-                    binding.editSoucis.setText(getString(R.string.elements_selectionnes, it.size.toString()))
+
+                    /*
+                    Displaying selected diseases in-line
+                    */
+                    var display = ""
+                    for (element in it) {
+                        display += if (element==it.last()){
+                            element
+                        }else{
+                            "$element, "
+                        }
+
+                    }
+                    binding.editSoucis.text = display
                 }
             dialog.show()
 
@@ -86,7 +99,20 @@ class CADiseasesFragment : Fragment() {
                     }
                 }
                 viewModel.setUserData(currentUser)
-                binding.editAllergies.setText(getString(R.string.elements_selectionnes, it.size.toString()))
+
+                /*
+                Displaying selected diseases in-line
+                 */
+                var display = ""
+                for (element in it) {
+                    display += if (element==it.last()){
+                        element
+                    }else{
+                        "$element, "
+                    }
+
+                }
+                binding.editAllergies.text = display
             }
             dialog.show()
 
@@ -109,7 +135,19 @@ class CADiseasesFragment : Fragment() {
                     }
                 }
                 viewModel.setUserData(currentUser)
-                binding.editRegime.setText(getString(R.string.elements_selectionnes, it.size.toString()))
+                /*
+                Displaying selected diseases in-line
+                 */
+                var display = ""
+                for (element in it) {
+                    display += if (element==it.last()){
+                        element
+                    }else{
+                        "$element, "
+                    }
+
+                }
+                binding.editRegime.text = display
             }
             dialog.show()
 
