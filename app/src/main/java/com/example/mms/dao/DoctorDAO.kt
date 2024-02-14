@@ -1,6 +1,7 @@
 package com.example.mms.dao
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
@@ -41,6 +42,8 @@ interface DoctorDAO {
 
     @Query("DELETE FROM Doctor")
     fun deleteAll()
+    @Delete
+    fun deleteDoctor(doctor: Doctor)
 
 
 }

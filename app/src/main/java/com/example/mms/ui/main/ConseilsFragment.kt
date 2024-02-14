@@ -56,14 +56,9 @@ class ConseilsFragment : Fragment() {
     ): View {
 
         val viewModel = ViewModelProvider(requireActivity())[MainViewModel::class.java]
-        val sp = context?.getSharedPreferences("medecinInfo", Context.MODE_PRIVATE)
 
         _binding = FragmentConseilsBinding.inflate(inflater, container, false)
         val root: View = binding.root
-
-        binding.ajoutMedecin.setOnClickListener {
-            dialogAddDoctor(adapterDoctor)
-        }
 
         val db = SingletonDatabase.getDatabase(this.requireContext())
         val tt = Thread {
@@ -73,7 +68,7 @@ class ConseilsFragment : Fragment() {
         tt.start()
         tt.join()
 
-        adapterDoctor = DoctorAdapter(doctorsAdded.toMutableList(), this.requireContext())
+        adapterDoctor = DoctorAdapter(doctorsAdded.toMutableList(), this.requireContext(),db)
         binding.listMedecins.adapter = adapterDoctor
         binding.listMedecins.layoutManager = LinearLayoutManager(this.requireContext())
 
@@ -83,38 +78,9 @@ class ConseilsFragment : Fragment() {
             binding.listMedecins.visibility = View.VISIBLE
         }
 
-        // MAP PART NOT FINISHED
-
-        /**map = binding.itemMap.osmmap
-        map.setTileSource(TileSourceFactory.USGS_SAT)
-        map.setMultiTouchControls(true)
-        map.mapCenter
-        map.getLocalVisibleRect(Rect())
-
-        myLocationOverlay = MyLocationNewOverlay(GpsMyLocationProvider(this.requireContext()), map)
-        controller = map.controller
-
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this.requireActivity())
-        requestLocation()
-
-        controller.setZoom(15.0)
-        map.overlays.add(myLocationOverlay)
-
-        map.addMapListener(object : MapListener {
-            override fun onScroll(event: ScrollEvent?): Boolean {
-                // event?.source?.getMapCenter()
-                Log.e("CC", "onCreate:la ${event?.source?.mapCenter?.latitude}")
-                Log.e("CC", "onCreate:lo ${event?.source?.mapCenter?.longitude}")
-                //  Log.e("TAG", "onScroll   x: ${event?.x}  y: ${event?.y}", )
-                return true
-            }
-
-            override fun onZoom(event: ZoomEvent?): Boolean {
-                //  event?.zoomLevel?.let { controller.setZoom(it) }
-                Log.e("CC", "onZoom zoom level: ${event?.zoomLevel}   source:  ${event?.source}")
-                return false;
-            }
-        })**/
+        binding.ajoutMedecin.setOnClickListener {
+            dialogAddDoctor()
+        }
 
         binding.effetIndesirable.setOnClickListener {
             // open link into browser
@@ -127,7 +93,7 @@ class ConseilsFragment : Fragment() {
         return root
     }
     // Geffroy Pascale
-    private fun dialogAddDoctor(adapter: DoctorAdapter) {
+    private fun dialogAddDoctor() {
         val dialog = Dialog(this.requireContext())
         val api = ApiService.getInstance(this.requireContext())
         dialog.setContentView(R.layout.custom_dialog_add_doctor)
@@ -155,7 +121,7 @@ class ConseilsFragment : Fragment() {
                             if (doctors.isEmpty()) {
                                 Toast.makeText(this@ConseilsFragment.requireContext(), R.string.no_doctor_found, Toast.LENGTH_SHORT).show()
                             } else {
-                                dialogChooseDoctors(doctors,adapter, dialog.dismiss())
+                                dialogChooseDoctors(doctors, dialog.dismiss())
                             }
                         }
                     }
@@ -169,7 +135,7 @@ class ConseilsFragment : Fragment() {
         dialog.show()
     }
 
-    private fun dialogChooseDoctors(doctors: List<Doctor>, adapterDoctor: DoctorAdapter, prevDialog: Unit) {
+    private fun dialogChooseDoctors(doctors: List<Doctor>, prevDialog: Unit) {
         val dialog = Dialog(this.requireContext())
         dialog.setContentView(R.layout.custom_dialog_choose_doctor)
         val btnValidate = dialog.findViewById<Button>(R.id.btn_search_doctor)
@@ -207,7 +173,9 @@ class ConseilsFragment : Fragment() {
                 tt.start()
                 tt.join()
                 Toast.makeText(this.requireContext(), R.string.doctor_added, Toast.LENGTH_SHORT).show()
-                adapterDoctor.notifyDataSetChanged()
+                Log.d("DOCTORS", doctorsAdded.size.toString())
+                this.adapterDoctor.notifyItemInserted(doctorsAdded.size - 1)
+                this.adapterDoctor.notifyItemRangeInserted(doctorsAdded.size - 1, doctorsAdded.size)
                 prevDialog
                 dialog.dismiss()
             }
@@ -258,3 +226,36 @@ class ConseilsFragment : Fragment() {
         _binding = null
     }
 }
+
+// MAP PART NOT FINISHED
+
+/**map = binding.itemMap.osmmap
+map.setTileSource(TileSourceFactory.USGS_SAT)
+map.setMultiTouchControls(true)
+map.mapCenter
+map.getLocalVisibleRect(Rect())
+
+myLocationOverlay = MyLocationNewOverlay(GpsMyLocationProvider(this.requireContext()), map)
+controller = map.controller
+
+fusedLocationClient = LocationServices.getFusedLocationProviderClient(this.requireActivity())
+requestLocation()
+
+controller.setZoom(15.0)
+map.overlays.add(myLocationOverlay)
+
+map.addMapListener(object : MapListener {
+override fun onScroll(event: ScrollEvent?): Boolean {
+// event?.source?.getMapCenter()
+Log.e("CC", "onCreate:la ${event?.source?.mapCenter?.latitude}")
+Log.e("CC", "onCreate:lo ${event?.source?.mapCenter?.longitude}")
+//  Log.e("TAG", "onScroll   x: ${event?.x}  y: ${event?.y}", )
+return true
+}
+
+override fun onZoom(event: ZoomEvent?): Boolean {
+//  event?.zoomLevel?.let { controller.setZoom(it) }
+Log.e("CC", "onZoom zoom level: ${event?.zoomLevel}   source:  ${event?.source}")
+return false;
+}
+})**/
