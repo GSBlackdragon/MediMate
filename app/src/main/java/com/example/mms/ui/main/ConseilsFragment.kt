@@ -56,6 +56,7 @@ class ConseilsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
 
+
         val viewModel = ViewModelProvider(requireActivity())[MainViewModel::class.java]
 
         _binding = FragmentConseilsBinding.inflate(inflater, container, false)
