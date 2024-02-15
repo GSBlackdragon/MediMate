@@ -87,7 +87,7 @@
     <string name="need_to_add_taking_in_list">Please add at least one hour of intake</string>
     <string name="acceder_votre_messagerie">Access your mailbox</string>
     <string name="activer_la_localisation">Activate localization</string>
-    <string name="lier_la_biometrie">Link biometrics \\n to my account</string>
+    <string name="lier_la_biometrie">Link biometrics \n to my account</string>
     <string name="recapitulatif_de_votre_tache">Summary of your task</string>
     <string name="valider">Confirm</string>
     <string name="date_prochaine_prise">Next shooting date :</string>

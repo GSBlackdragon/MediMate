@@ -72,11 +72,7 @@ class ConseilsFragment : Fragment() {
         binding.listMedecins.adapter = adapterDoctor
         binding.listMedecins.layoutManager = LinearLayoutManager(this.requireContext())
 
-        if (doctorsAdded.isEmpty()) {
-            binding.listMedecins.visibility = View.GONE
-        } else {
-            binding.listMedecins.visibility = View.VISIBLE
-        }
+
 
         binding.ajoutMedecin.setOnClickListener {
             dialogAddDoctor()
@@ -172,12 +168,14 @@ class ConseilsFragment : Fragment() {
                 }
                 tt.start()
                 tt.join()
+                this.adapterDoctor.updateList(doctorsAdded)
+                this.adapterDoctor.notifyDataSetChanged()
                 Toast.makeText(this.requireContext(), R.string.doctor_added, Toast.LENGTH_SHORT).show()
                 Log.d("DOCTORS", doctorsAdded.size.toString())
                 prevDialog
                 dialog.dismiss()
-                this.adapterDoctor.notifyDataSetChanged()
-                this.adapterDoctor.updateList(doctorsAdded)
+
+
             }
         }
         dialog.show()
