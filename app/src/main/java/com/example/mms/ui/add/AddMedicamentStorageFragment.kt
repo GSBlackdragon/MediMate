@@ -57,9 +57,8 @@ class AddMedicamentStorageFragment : Fragment() {
         binding.switch1.isChecked = storageIsChecked!!
         binding.tvAlreadyStored.visibility = View.GONE
         binding.constraintLayoutStorage.getViewById(R.id.edit_alert_storage).isEnabled = false
-        binding.constraintLayoutStorage.getViewById(R.id.edit_actual_storage).isEnabled = false
-
-
+        val alertValue = binding.constraintLayoutStorage.getViewById(R.id.edit_alert_storage) as EditText
+        alertValue.isEnabled = false
         // set storage informations
         if (medicineStorage != null) {
             if (isInDb) binding.tvAlreadyStored.visibility = View.VISIBLE
@@ -105,6 +104,14 @@ class AddMedicamentStorageFragment : Fragment() {
                 val alertValue = binding.constraintLayoutStorage.getViewById(R.id.edit_alert_storage) as EditText
 
                 if (storage.text.toString().isNotEmpty() && alertValue.text.toString().isNotEmpty()) {
+                    if (alertValue.text.toString().toInt() > storage.text.toString().toInt()){
+                        Toast.makeText(
+                            this.requireContext(),
+                            this.requireContext().getString(R.string.storage_alert),
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        return@setOnClickListener
+                    }
                     // get the id of the medicine
                     var medicineId : Long = 0
                     val tt = Thread {
