@@ -45,7 +45,11 @@ class DoctorAdapter(
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val item                    = doctorList[position]
         holder.nomMedecin.text      = item.firstname + " " + item.name
-        holder.titleMedecin.text    = item.title
+        if (item.title.isEmpty()) {
+            holder.titleMedecin.text = item.speciality
+        }else {
+            holder.titleMedecin.text = item.title
+        }
         holder.cityMedecin.text     = item.city
         holder.btnDelete.setOnClickListener {
             val tt = Thread {

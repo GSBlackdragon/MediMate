@@ -14,6 +14,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -93,15 +94,23 @@ class ConseilsFragment : Fragment() {
         val dialog = Dialog(this.requireContext())
         val api = ApiService.getInstance(this.requireContext())
         dialog.setContentView(R.layout.custom_dialog_add_doctor)
-        val btnSearch = dialog.findViewById<Button>(R.id.btn_search_doctor)
-        val nameDoctor = dialog.findViewById<EditText>(R.id.et_search_doctor_name)
+        val btnSearch       = dialog.findViewById<Button>(R.id.btn_search_doctor)
+        val nameDoctor      = dialog.findViewById<EditText>(R.id.et_search_doctor_name)
         val firstNameDoctor = dialog.findViewById<EditText>(R.id.et_search_doctor_firstname)
-        val idDoctor = dialog.findViewById<EditText>(R.id.et_search_doctor_id)
-        val btnCancel = dialog.findViewById<Button>(R.id.btn_cancel)
+        val idDoctor        = dialog.findViewById<EditText>(R.id.et_search_doctor_id)
+        val btnCancel       = dialog.findViewById<Button>(R.id.btn_cancel)
+        val progressBar     = dialog.findViewById<ProgressBar>(R.id.progressBar_doctor_search)
+        progressBar.visibility = View.GONE
         btnCancel.setOnClickListener {
             dialog.dismiss()
         }
         btnSearch.setOnClickListener {
+            btnSearch.isEnabled = false
+            nameDoctor.isEnabled = false
+            firstNameDoctor.isEnabled = false
+            idDoctor.isEnabled = false
+            progressBar.visibility = View.VISIBLE
+            progressBar.isIndeterminate = true
             // Call API
             if(nameDoctor.text.isEmpty() && idDoctor.text.isEmpty()) {
                 Toast.makeText(this.requireContext(), getString(R.string.fill_fields), Toast.LENGTH_SHORT).show()
@@ -112,6 +121,11 @@ class ConseilsFragment : Fragment() {
                 val firstName = firstNameDoctor.text.toString()
                 api.getDoctor(Pair(firstName,lastName),id, object : ApiService.DoctorResultCallback{
                     override fun onSuccess(doctors: List<Doctor>?) {
+                        btnSearch.isEnabled = true
+                        progressBar.visibility = View.GONE
+                        nameDoctor.isEnabled = true
+                        firstNameDoctor.isEnabled = true
+                        idDoctor.isEnabled = true
                         Log.d("SUCCESS", doctors.toString())
                         if (doctors != null) {
                             if (doctors.isEmpty()) {
@@ -122,6 +136,11 @@ class ConseilsFragment : Fragment() {
                         }
                     }
                     override fun onError(error: String) {
+                        btnSearch.isEnabled = true
+                        progressBar.visibility = View.GONE
+                        nameDoctor.isEnabled = true
+                        firstNameDoctor.isEnabled = true
+                        idDoctor.isEnabled = true
                         Toast.makeText(this@ConseilsFragment.requireContext(), R.string.error, Toast.LENGTH_SHORT).show()
                         Log.d("ERROR", error)
                     }
