@@ -39,6 +39,9 @@ class SharedAMViewModel : ViewModel() {
     private val _storage = MutableLiveData<MedicineStorage?>(null)
     val storage: LiveData<MedicineStorage?> get() = _storage
 
+    private val _storageIsChecked = MutableLiveData(false)
+    val storageIsChecked: LiveData<Boolean> get() = _storageIsChecked
+
     private val _fromOCR = MutableLiveData(false)
     val fromOCR: LiveData<Boolean> get() = _fromOCR
 
@@ -72,6 +75,10 @@ class SharedAMViewModel : ViewModel() {
 
     fun setFromOCR(fromOCR: Boolean) {
         _fromOCR.value = fromOCR
+    }
+
+    fun setStorageIsChecked(isChecked: Boolean) {
+        _storageIsChecked.value = isChecked
     }
 
     fun clearFrequencyData() {

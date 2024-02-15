@@ -70,7 +70,7 @@ class AddMedicamentDateDebutFinFragment : Fragment() {
         setupDatePickerDialog(binding.editBeginDate, beginDate, true, binding.editEndDate)
         setupDatePickerDialog(binding.editEndDate, endDate, false, binding.editBeginDate)
 
-        if (viewModel.storage.value!=null){
+        if (viewModel.storageIsChecked.value!!){
             binding.switchStopOnStock.visibility=View.VISIBLE
             binding.textStopOnStock.visibility=View.VISIBLE
         }else{

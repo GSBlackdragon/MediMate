@@ -39,32 +39,36 @@ class AddMedicamentStorageFragment : Fragment() {
         viewModel = ViewModelProvider(requireActivity())[SharedAMViewModel::class.java]
         db = SingletonDatabase.getDatabase(requireContext())
 
-        var medicineStorage = viewModel.storage.value
-
+        var medicineStorage     = viewModel.storage.value
+        var storageIsChecked    = viewModel.storageIsChecked.value
         var isInDb = false
-        val t = Thread {
-            val medicineId = db.medicineDao().getMedicineIdByName(viewModel.medicineName.value!!)
-            medicineStorage = db.medicineStorageDao().getMedicineStorageByMedicineId(medicineId)
-            if (medicineStorage != null) isInDb = true
+        if(medicineStorage == null) {
+            val t = Thread {
+                val medicineId = db.medicineDao().getMedicineIdByName(viewModel.medicineName.value!!)
+                medicineStorage = db.medicineStorageDao().getMedicineStorageByMedicineId(medicineId)
+                if (medicineStorage != null) isInDb = true
+            }
+            t.start()
+            t.join()
         }
-        t.start()
-        t.join()
+
 
         // set options
-        binding.switch1.isChecked = false
+        binding.switch1.isChecked = storageIsChecked!!
         binding.tvAlreadyStored.visibility = View.GONE
         binding.constraintLayoutStorage.getViewById(R.id.edit_alert_storage).isEnabled = false
         binding.constraintLayoutStorage.getViewById(R.id.edit_actual_storage).isEnabled = false
 
 
         // set storage informations
-        Log.d("cc",medicineStorage.toString())
         if (medicineStorage != null) {
             if (isInDb) binding.tvAlreadyStored.visibility = View.VISIBLE
 
-            binding.switch1.isChecked = true
-            binding.constraintLayoutStorage.getViewById(R.id.edit_alert_storage).isEnabled = true
-            binding.constraintLayoutStorage.getViewById(R.id.edit_actual_storage).isEnabled = true
+            binding.switch1.isChecked = storageIsChecked
+            if (storageIsChecked) {
+                binding.constraintLayoutStorage.getViewById(R.id.edit_alert_storage).isEnabled = true
+                binding.constraintLayoutStorage.getViewById(R.id.edit_actual_storage).isEnabled = true
+            }
             val storage = binding.constraintLayoutStorage.getViewById(R.id.edit_actual_storage) as EditText
             storage.setText(medicineStorage!!.storage.toString())
             val alertValue = binding.constraintLayoutStorage.getViewById(R.id.edit_alert_storage) as EditText
@@ -80,6 +84,7 @@ class AddMedicamentStorageFragment : Fragment() {
 
         binding.switch1.setOnCheckedChangeListener { _, isChecked ->
             // change the style of the layout depending on the switch
+            storageIsChecked = isChecked
             if (isChecked) {
                 binding.constraintLayoutStorage.setBackgroundColor(Color.WHITE)
                 binding.constraintLayoutStorage.getViewById(R.id.edit_alert_storage).isEnabled = true
@@ -116,6 +121,7 @@ class AddMedicamentStorageFragment : Fragment() {
 
                     // save the storage informations
                     viewModel.setStorage(obj)
+                    viewModel.setStorageIsChecked(storageIsChecked!!)
                     goTo(requireActivity(), R.id.action_storage_to_start_end_date)
                 }else{
                     Toast.makeText(
@@ -126,6 +132,7 @@ class AddMedicamentStorageFragment : Fragment() {
                 }
 
             }else{
+                viewModel.setStorageIsChecked(storageIsChecked!!)
                 goTo(requireActivity(), R.id.action_storage_to_start_end_date)
             }
         }
