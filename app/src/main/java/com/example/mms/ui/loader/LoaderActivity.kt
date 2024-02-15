@@ -18,6 +18,7 @@ import com.example.mms.database.inApp.SingletonDatabase
 import com.example.mms.database.jsonMedicines.MedicineJsonDatabase
 import com.example.mms.databinding.LoaderBinding
 import com.example.mms.broadcast.MidnightAlarmReceiver
+import com.example.mms.model.SideInfoMedicine
 import com.example.mms.model.User
 import com.example.mms.service.NotifService
 import com.example.mms.service.TasksService
@@ -25,7 +26,11 @@ import com.example.mms.service.UpdateDataService
 import com.example.mms.ui.login.LoginActivity
 import com.example.mms.ui.welcome.WelcomeActivity
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.serialization.Serializable
 import java.util.Calendar
+
+import kotlinx.serialization.*
+import kotlinx.serialization.json.*
 
 class LoaderActivity : AppCompatActivity() {
     private lateinit var binding: LoaderBinding
@@ -52,7 +57,7 @@ class LoaderActivity : AppCompatActivity() {
         // == Update the medicines database ==
         updateDataService = UpdateDataService(this)
 
-        Thread {
+        val t =Thread {
             val mediDB = db.medicineDao()
 
             if (mediDB.getNbElements() == 0) {
@@ -110,7 +115,30 @@ class LoaderActivity : AppCompatActivity() {
                     this.showSnackbar()
                     this.nextPage()
                 })
+        }
+        t.start()
+        t.join()
+        Thread{
+            @Serializable
+            data class SideInfo(
+                val Warning: List<String>,
+                val Allergie: List<String>,
+                val Content: String
+            )
+
+            var map = Json.decodeFromString<Map<String, SideInfo>>(this.assets.open("databases/sideEffect.json").bufferedReader().use {
+            it.readText()
+        })
+            var storage = mutableListOf<SideInfoMedicine>()
+            map.forEach(){
+                storage.add(SideInfoMedicine(it.key, it.value.Warning.toString().replace("[","").replace("]",""), it.value.Allergie.toString().replace("[","").replace("]",""), it.value.Content,""))
+            }
+            Thread{
+                db.sideInfoMedicineDao().insertMany(storage)
+            }.start()
+
         }.start()
+
     }
 
     private fun nextPage() {
