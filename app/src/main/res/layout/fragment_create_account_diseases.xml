@@ -23,7 +23,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.1" />
-
+    <!--
     <TextView
         android:id="@+id/text_soucis"
         android:layout_width="wrap_content"
@@ -86,18 +86,18 @@
         app:layout_constraintStart_toEndOf="@+id/edit_regime"
         app:layout_constraintTop_toTopOf="@+id/edit_regime"
         app:tint="@color/black" />
-
+    -->
 
     <TextView
         android:id="@+id/text_allergies"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="50dp"
         android:text="@string/allergies"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.1"
-        app:layout_constraintStart_toStartOf="@+id/text_soucis"
-        app:layout_constraintTop_toBottomOf="@+id/edit_regime"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView22"
         app:layout_constraintVertical_bias="0.15" />
 
     <TextView
@@ -133,6 +133,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.95" />
+
+    <TextView
+        android:id="@+id/textView22"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:text="@string/s_lectionner_vos_allergies"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="@+id/textView2"
+        app:layout_constraintStart_toStartOf="@+id/textView2"
+        app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

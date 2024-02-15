@@ -49,7 +49,7 @@ class CADiseasesFragment : Fragment() {
         }
 
         val currentUser = viewModel.userData.value!!
-
+        /*
         binding.buttonAddHealthDisease.setOnClickListener {
             val selectedHealthDiseases =
                 viewModel.userData.value!!.listHealthDiseases.split(",").toList()
@@ -87,6 +87,8 @@ class CADiseasesFragment : Fragment() {
             }
         }
 
+         */
+
 
         binding.buttonAddAllergies.setOnClickListener {
             val selectedAllergies = viewModel.userData.value!!.listAllergies.split(",").toList()
@@ -123,7 +125,7 @@ class CADiseasesFragment : Fragment() {
             }
         }
 
-
+        /*
         binding.buttonAddDietPlan.setOnClickListener {
             val selectedDietPlan = viewModel.userData.value!!.listDietPlan.split(",").toList()
             val dialog = CustomDialogDiseasses(root.context, listDietPlan, selectedDietPlan) {
@@ -156,6 +158,8 @@ class CADiseasesFragment : Fragment() {
                 dialog.updateSelectedItems(updatedSelectedAllergies)
             }
         }
+
+         */
 
         return root
     }

@@ -63,7 +63,7 @@ class RecyclerViewContentTest {
             throw Exception("No user connected")
         }
         var task = Task(0, "", LocalDateTime.now(), LocalDateTime.now(), LocalDateTime.now(),
-            LocalDateTime.now(), 66057393, userConnected!!.email, Cycle(), mutableListOf()
+            LocalDateTime.now(), false,66057393, userConnected!!.email, Cycle(), mutableListOf()
         )
         try {
             tasksService.storeTask(task)
