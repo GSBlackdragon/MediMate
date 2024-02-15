@@ -131,7 +131,7 @@
         app:layout_constraintStart_toStartOf="@+id/text_poids"
         app:layout_constraintTop_toTopOf="@+id/edit_taille" />
 
-
+    <!--
     <TextView
         android:id="@+id/text_soucis"
         android:layout_width="wrap_content"
@@ -194,18 +194,16 @@
         app:layout_constraintTop_toTopOf="@+id/edit_regime"
         app:tint="@color/black" />
 
-
+    -->
     <TextView
         android:id="@+id/text_allergies"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
         android:text="@string/allergies"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.1"
-        app:layout_constraintStart_toStartOf="@+id/text_soucis"
-        app:layout_constraintTop_toBottomOf="@+id/edit_regime"
-        app:layout_constraintVertical_bias="0.15" />
+        app:layout_constraintStart_toStartOf="@+id/edit_prenom"
+        app:layout_constraintTop_toBottomOf="@+id/edit_birthdate" />
 
     <TextView
         android:id="@+id/edit_allergies"

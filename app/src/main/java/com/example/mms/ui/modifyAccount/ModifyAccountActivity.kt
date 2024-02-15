@@ -50,7 +50,7 @@ class ModifyAccountActivity : AppCompatActivity() {
                 binding.editTaille.filters =  arrayOf(InputFilter.LengthFilter(3))
 
                 // Partie soucis de santé / allergies / régime non implémentée
-
+                /*
                 binding.buttonAddHealthDisease.setOnClickListener {
                     val selectedHealthDiseases = user.listHealthDiseases?.split(",")!!.toList()
                     val dialog = CustomDialogDiseasses(this, listHealthDiseases, selectedHealthDiseases) {
@@ -66,13 +66,26 @@ class ModifyAccountActivity : AppCompatActivity() {
                         dialog.updateSelectedItems(updatedSelectedAllergies)
                     }
                 }
+
+                 */
                 binding.buttonAddAllergies.setOnClickListener {
                     val selectedAllergies = user.listAllergies.split(",").toList()
                     val dialog = CustomDialogDiseasses(this, listAllergies, selectedAllergies) {
                         it.forEachIndexed { index, allergie ->
                             user.listAllergies += if (index < it.size - 1) { "$allergie," } else { allergie }
+                        }/*
+                        Displaying selected diseases in-line
+                         */
+                        var display = ""
+                        for (element in it) {
+                            display += if (element==it.last()){
+                                element
+                            }else{
+                                "$element, "
+                            }
+
                         }
-                        binding.editAllergies.text = getString(R.string.elements_selectionnes, it.size.toString())
+                        binding.editAllergies.text = display
                     }
                     dialog.show()
 
@@ -81,6 +94,7 @@ class ModifyAccountActivity : AppCompatActivity() {
                         dialog.updateSelectedItems(updatedSelectedAllergies)
                     }
                 }
+                /*
                 binding.buttonAddDietPlan.setOnClickListener {
                     val selectedDietPlan = user.listDietPlan.split(",").toList()
                     val dialog = CustomDialogDiseasses(this, listDietPlan, selectedDietPlan) {
@@ -96,6 +110,8 @@ class ModifyAccountActivity : AppCompatActivity() {
                         dialog.updateSelectedItems(updatedSelectedAllergies)
                     }
                 }
+
+                 */
 
                 binding.editBirthdate.keyListener = null
                 binding.editBirthdate.isFocusable = false
