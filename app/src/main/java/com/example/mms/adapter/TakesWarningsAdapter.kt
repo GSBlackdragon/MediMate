@@ -15,8 +15,9 @@ import com.example.mms.R
  *
  * @param context the context of the activity
  * @param warnings the list of warnings
+ * @param allergyName the name of the potential allergy
  */
-class TakesWarningsAdapter(private val context: Context, private val warnings: List<String>) :
+class TakesWarningsAdapter(private val context: Context, private val warnings: List<String>, private val allergyName : String) :
     RecyclerView.Adapter<TakesWarningsAdapter.MyViewHolder>() {
         // interface for the click listener
     private var itemClickListener: OnItemClickListener? = null
@@ -43,17 +44,17 @@ class TakesWarningsAdapter(private val context: Context, private val warnings: L
 
         when(item){
             "allaitement" -> holder.iconWarning.setImageResource(R.drawable.icon_allaitement)
-            "enceintes" -> holder.iconWarning.setImageResource(R.drawable.icon_femme_enceinte)
             "enceinte" -> holder.iconWarning.setImageResource(R.drawable.icon_femme_enceinte)
             "enfant" -> holder.iconWarning.setImageResource(R.drawable.icon_risque_enfant)
+            "allergie" -> holder.iconWarning.setImageResource(R.drawable.icon_allergie)
         }
 
         holder.itemView.setOnClickListener {
             when(item){
                 "allaitement" -> Toast.makeText(context, R.string.toast_allaitement, Toast.LENGTH_LONG).show()
-                "enceintes" -> Toast.makeText(context, R.string.toast_femme_enceinte, Toast.LENGTH_LONG).show()
                 "enceinte" -> Toast.makeText(context, R.string.toast_femme_enceinte, Toast.LENGTH_LONG).show()
                 "enfant" -> Toast.makeText(context, R.string.toast_risque_enfant, Toast.LENGTH_LONG).show()
+                "allergie" -> Toast.makeText(context, context.getString(R.string.toast_allergie,allergyName), Toast.LENGTH_LONG).show()
             }
 
         }

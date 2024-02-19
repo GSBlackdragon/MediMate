@@ -32,6 +32,7 @@ import com.example.mms.model.ShowableHourWeight
 import com.example.mms.model.Takes
 import com.example.mms.model.Task
 import com.example.mms.service.MedicineStorageService
+import com.example.mms.service.SideInfoService
 import com.example.mms.service.TasksService
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -66,6 +67,8 @@ class TakesAdapter(
     private var HELP_LINK : String? = null
     private val tasksService = TasksService(context)
     private val mStorageService = MedicineStorageService(context,view)
+    private val sideInfoService = SideInfoService(context)
+
 
     /**
      * Class that represents the view holder of the recycler view
@@ -110,14 +113,22 @@ class TakesAdapter(
         }
 
         val layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-        var itemWarnings : List<String> = listOf()
+        var itemWarnings : List<String> = mutableListOf()
+        var isUserAllergic : Pair<Boolean,String> = Pair(false,"")
         var warningThread = Thread {
-            itemWarnings = db.sideInfoMedicineDao().getById(item.task.medicineCIS.toString())?.warning!!.split(",")
-            itemWarnings = itemWarnings.map { it.trim().lowercase() }.distinct()
+            var itemWarningsTemp : MutableList<String> = db.sideInfoMedicineDao().getById(item.task.medicineCIS.toString())?.warning!!.split(",").toMutableList()
+            isUserAllergic = sideInfoService.knowIfMedicineIsInAllergicListOfUser(item.task.medicineCIS)
+            if (isUserAllergic.first){
+                itemWarningsTemp.add("allergie")
+            }
+            itemWarnings = itemWarningsTemp.map { it.trim().lowercase() }.distinct()
+
+
         }
         warningThread.start()
         warningThread.join()
-        var warningsAdapter = TakesWarningsAdapter(context, itemWarnings)
+        var warningsAdapter = TakesWarningsAdapter(context, itemWarnings.toList(),isUserAllergic.second)
+
         holder.recyclerViewIconsWarning.layoutManager = layoutManager
         holder.recyclerViewIconsWarning.adapter=warningsAdapter
 

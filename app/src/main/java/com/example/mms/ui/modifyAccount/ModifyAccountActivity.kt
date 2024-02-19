@@ -43,6 +43,7 @@ class ModifyAccountActivity : AppCompatActivity() {
                 binding.editTaille.setText(user.height.toString())
                 binding.editPoids.setText(user.weight.toString())
                 binding.editBirthdate.setText(user.birthday)
+                binding.editAllergies.setText(user.listAllergies)
 
                 binding.editPoids.inputType = InputType.TYPE_CLASS_NUMBER
                 binding.editPoids.filters = arrayOf(InputFilter.LengthFilter(3))
@@ -69,23 +70,17 @@ class ModifyAccountActivity : AppCompatActivity() {
 
                  */
                 binding.buttonAddAllergies.setOnClickListener {
-                    val selectedAllergies = user.listAllergies.split(",").toList()
+                    val selectedAllergies = user.listAllergies.split(",").toList().map { it.trim() }
                     val dialog = CustomDialogDiseasses(this, listAllergies, selectedAllergies) {
-                        it.forEachIndexed { index, allergie ->
-                            user.listAllergies += if (index < it.size - 1) { "$allergie," } else { allergie }
-                        }/*
-                        Displaying selected diseases in-line
-                         */
-                        var display = ""
+                        user.listAllergies=""
                         for (element in it) {
-                            display += if (element==it.last()){
+                            user.listAllergies += if (element==it.last()){
                                 element
                             }else{
                                 "$element, "
                             }
-
                         }
-                        binding.editAllergies.text = display
+                        binding.editAllergies.text = user.listAllergies
                     }
                     dialog.show()
 

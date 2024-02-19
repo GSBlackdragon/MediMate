@@ -94,8 +94,8 @@ class CAPinFragment : Fragment() {
             button.setOnClickListener {
                 listCodePin[currentIndex].setText(button.text.toString())
                 currentIndex++
-                if (currentIndex > 3) {
-                    currentIndex = 3
+                if (currentIndex > 4) {
+                    currentIndex = 4
                 }
             }
         }

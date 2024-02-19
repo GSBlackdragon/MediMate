@@ -40,6 +40,7 @@ class CADiseasesFragment : Fragment() {
         val navController = navHostFragment.navController
 
 
+
         binding.backButton.buttonArrowBack.setOnClickListener {
             navController.navigate(R.id.action_diseases_to_informations)
         }
@@ -49,6 +50,8 @@ class CADiseasesFragment : Fragment() {
         }
 
         val currentUser = viewModel.userData.value!!
+        binding.editAllergies.setText(currentUser.listAllergies)
+
         /*
         binding.buttonAddHealthDisease.setOnClickListener {
             val selectedHealthDiseases =
@@ -91,13 +94,14 @@ class CADiseasesFragment : Fragment() {
 
 
         binding.buttonAddAllergies.setOnClickListener {
-            val selectedAllergies = viewModel.userData.value!!.listAllergies.split(",").toList()
+            val selectedAllergies = viewModel.userData.value!!.listAllergies.split(",").toList().map { it.trim() }
             val dialog = CustomDialogDiseasses(root.context, listAllergies, selectedAllergies) {
-                it.forEachIndexed { index, allergie ->
-                    currentUser.listAllergies += if (index < it.size - 1) {
-                        "$allergie,"
-                    } else {
-                        allergie
+                currentUser.listAllergies=""
+                for (element in it) {
+                    currentUser.listAllergies += if (element==it.last()){
+                        element
+                    }else{
+                        "$element, "
                     }
                 }
                 viewModel.setUserData(currentUser)
@@ -105,16 +109,7 @@ class CADiseasesFragment : Fragment() {
                 /*
                 Displaying selected diseases in-line
                  */
-                var display = ""
-                for (element in it) {
-                    display += if (element==it.last()){
-                        element
-                    }else{
-                        "$element, "
-                    }
-
-                }
-                binding.editAllergies.text = display
+                binding.editAllergies.text = currentUser.listAllergies
             }
             dialog.show()
 
