@@ -262,4 +262,6 @@
     <string name="toast_femme_enceinte">Ce médicament présente des risques chez la femme enceinte</string>
     <string name="toast_allaitement">Ce médicament présente des risques durant l\'allaitement</string>
     <string name="toast_risque_enfant">Ce médicament peut présenter des risques chez l\'enfant</string>
+    <string name="allergie_dectectee">Une allergie a été détectée</string>
+    <string name="allergie_dectectee_message">Le médicament que vous essayez d\'ajouter présente une substance active (%s) à laquelle vous êtes allergique</string>
 </resources>
