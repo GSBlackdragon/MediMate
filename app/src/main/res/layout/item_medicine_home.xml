@@ -2,20 +2,35 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    style="@style/BoxShadow"
     android:layout_width="match_parent"
-    android:layout_height="130sp"
-    style="@style/BoxShadow">
+    android:layout_height="130sp">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/warningIconsRecyclerView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="20dp"
+        android:layoutDirection="ltr"
+        android:orientation="horizontal"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintBottom_toTopOf="@+id/medicine_title"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/alertSameSubstance"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:itemCount="3" />
 
     <TextView
         android:id="@+id/medicine_home_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="10h00"
-        app:layout_constraintBottom_toTopOf="@+id/medicine_image"
+        app:layout_constraintBottom_toBottomOf="@+id/warningIconsRecyclerView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.05"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@+id/warningIconsRecyclerView" />
 
     <TextView
         android:id="@+id/medicine_home_time_remaining"
@@ -33,8 +48,8 @@
         android:id="@+id/tv_stock"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/stock"
         android:layout_marginStart="20dp"
+        android:text="@string/stock"
         app:layout_constraintStart_toEndOf="@+id/medicine_home_time_remaining"
         app:layout_constraintTop_toTopOf="@+id/medicine_home_time_remaining" />
 
@@ -43,21 +58,20 @@
         android:id="@+id/stock_value"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="10"
         android:layout_marginStart="10dp"
+        android:text="10"
         app:layout_constraintStart_toEndOf="@+id/tv_stock"
         app:layout_constraintTop_toTopOf="@+id/tv_stock" />
 
     <ImageView
         android:id="@+id/medicine_image"
-        android:layout_width="68dp"
-        android:layout_height="77dp"
+        android:layout_width="61dp"
+        android:layout_height="70dp"
         app:layout_constraintBottom_toBottomOf="@+id/medicine_home_time_remaining"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/medicine_title"
-        app:layout_constraintVertical_bias="0.0"
         app:srcCompat="@drawable/sachet" />
 
     <TextView
@@ -72,7 +86,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/medicine_image"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.3" />
+        app:layout_constraintVertical_bias="0.37" />
 
     <TextView
         android:id="@+id/medicine_information"
@@ -111,23 +125,23 @@
         android:id="@+id/medicine_home_check"
         android:layout_width="40dp"
         android:layout_height="40dp"
+        android:layout_marginEnd="20dp"
         android:src="@drawable/baseline_check_24"
         app:backgroundTint="@color/clickable_blue"
         app:fabCustomSize="40dp"
-        android:layout_marginEnd="20dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/medicine_home_time_remaining"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@+id/medicine_title" />
 
     <ImageView
         android:id="@+id/alertSameSubstance"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="15dp"
-        android:layout_marginTop="3dp"
         android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/medicine_home_time"
         app:layout_constraintStart_toEndOf="@+id/medicine_home_time"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/medicine_home_time"
         app:srcCompat="@drawable/baseline_warning_amber_24" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

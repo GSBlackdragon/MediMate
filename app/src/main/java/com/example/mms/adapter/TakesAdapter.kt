@@ -7,6 +7,7 @@ import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
+import android.util.Log
 import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
@@ -18,6 +19,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat.startActivity
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mms.R
 import com.example.mms.Utils.areDatesOnSameDay
@@ -80,6 +82,7 @@ class TakesAdapter(
         val tvStock : TextView = itemView.findViewById(R.id.tv_stock)
         val stock : TextView = itemView.findViewById(R.id.stock_value)
         val alertImage : ImageView = itemView.findViewById(R.id.alertSameSubstance)
+        val recyclerViewIconsWarning : RecyclerView = itemView.findViewById(R.id.warningIconsRecyclerView)
     }
 
     /**
@@ -105,6 +108,19 @@ class TakesAdapter(
         context.run {
             holder.taskTitle.text = item.medicineName
         }
+
+        val layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        var itemWarnings : List<String> = listOf()
+        var warningThread = Thread {
+            itemWarnings = db.sideInfoMedicineDao().getById(item.task.medicineCIS.toString())?.warning!!.split(",")
+            itemWarnings = itemWarnings.map { it.trim().lowercase() }.distinct()
+        }
+        warningThread.start()
+        warningThread.join()
+        var warningsAdapter = TakesWarningsAdapter(context, itemWarnings)
+        holder.recyclerViewIconsWarning.layoutManager = layoutManager
+        holder.recyclerViewIconsWarning.adapter=warningsAdapter
+
 
         var itemSubActCode : Int? = null
         var t = Thread {
@@ -343,6 +359,7 @@ class TakesAdapter(
     }
 
     private fun dialogMedicineInformations(item : ShowableHourWeight){
+
         val dialog = Dialog(context)
         dialog.setContentView(R.layout.custom_dialog_medicine_informations)
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))

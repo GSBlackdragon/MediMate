@@ -259,4 +259,7 @@
     <string name="storage_continuer">Veuillez remplir tous les champs avant de continuer</string>
     <string name="storage_alert">"La valeur d'alerte ne peut pas être inférieur à la valeur de stockage "</string>
     <string name="s_lectionner_vos_allergies">Sélectionner vos allergies</string>
+    <string name="toast_femme_enceinte">Ce médicament présente des risques chez la femme enceinte</string>
+    <string name="toast_allaitement">Ce médicament présente des risques durant l\'allaitement</string>
+    <string name="toast_risque_enfant">Ce médicament peut présenter des risques chez l\'enfant</string>
 </resources>
