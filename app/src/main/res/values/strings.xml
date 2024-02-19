@@ -259,4 +259,6 @@
     <string name="storage_continuer">Veuillez remplir tous les champs avant de continuer</string>
     <string name="storage_alert">"La valeur d'alerte ne peut pas être inférieur à la valeur de stockage "</string>
     <string name="s_lectionner_vos_allergies">Sélectionner vos allergies</string>
+    <string name="allergie_dectectee">Une allergie a été détectée</string>
+    <string name="allergie_dectectee_message">Le médicament que vous essayez d\'ajouter présente une substance active (%s) à laquelle vous êtes allergique</string>
 </resources>

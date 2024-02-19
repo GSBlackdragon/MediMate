@@ -29,8 +29,10 @@ import com.example.mms.model.Cycle
 import com.example.mms.model.Task
 import com.example.mms.model.medicines.Medicine
 import com.example.mms.service.NotifService
+import com.example.mms.service.SideInfoService
 import com.example.mms.service.TasksService
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import org.w3c.dom.Text
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.Locale
@@ -40,6 +42,7 @@ class AddMedicamentRecapFragment : Fragment() {
     private var _binding: FragmentAddRecapBinding? = null
     private val binding get() = _binding!!
     private lateinit var tasksService: TasksService
+    private lateinit var sideInfoService: SideInfoService
     private lateinit var viewModel: SharedAMViewModel
 
     private lateinit var saveFunction: (Task) -> Unit
@@ -54,6 +57,7 @@ class AddMedicamentRecapFragment : Fragment() {
     ): View {
         viewModel = ViewModelProvider(requireActivity())[SharedAMViewModel::class.java]
         tasksService = TasksService(requireContext())
+        sideInfoService = SideInfoService(requireContext())
         db = SingletonDatabase.getDatabase(requireContext())
 
 
@@ -128,6 +132,7 @@ class AddMedicamentRecapFragment : Fragment() {
         binding.btnTaskValidate.setOnClickListener {
             // check if the same active substance is already present in the active treatments
             var isSubCodePresent = false
+            var isUserAllergic = Pair(false,"")
             val t = Thread {
                 isSubCodePresent = tasksService.isSubCodeInActiveSubstanceCode(
                     db.medicineDao().getByCIS(
@@ -135,10 +140,14 @@ class AddMedicamentRecapFragment : Fragment() {
                         viewModel.taskData.value!!.startDate,
                         viewModel.taskData.value!!.endDate
                 )
+                isUserAllergic = sideInfoService.knowIfMedicineIsInAllergicListOfUser(viewModel.taskData.value!!.medicineCIS)
+                Log.d("isSubCodePresent", isUserAllergic.toString())
             }
             t.start()
             t.join()
-            if (isSubCodePresent){
+            if (isUserAllergic.first){
+                confirmUserAllergic(isUserAllergic.second)
+            }else if (isSubCodePresent ){
                 confirmSameActiveSubstance()
             }else{
                 saveAndRedirect()
@@ -148,6 +157,8 @@ class AddMedicamentRecapFragment : Fragment() {
 
         return root
     }
+
+
 
     /**
      * Save a cycle in database
@@ -280,6 +291,39 @@ class AddMedicamentRecapFragment : Fragment() {
         btnCancel.setOnClickListener {
             dialog.dismiss()
         }
+
+        val textTitle = dialog.findViewById<TextView>(R.id.title_active_substance)
+        textTitle.text = getString(R.string.duplication_substance_active)
+
+        val textMid = dialog.findViewById<TextView>(R.id.text_active_substance)
+        textMid.text = getString(R.string.sub_active_deja_presente)
+
+        dialog.show()
+    }
+
+    private fun confirmUserAllergic(second: String) {
+        val dialog = Dialog(this.requireContext())
+        dialog.setContentView(R.layout.custom_dialog_same_active_substance)
+
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        // We bind the onClickListener of the button btnInfoTask to the action of going to the page myTasks (dashboard)
+        val btnInfoTask = dialog.findViewById<TextView>(R.id.btn_confirm_active_sub)
+        btnInfoTask.setOnClickListener {
+            saveAndRedirect()
+            dialog.dismiss()
+        }
+
+        val btnCancel = dialog.findViewById<TextView>(R.id.btn_cancel_active_sub)
+        btnCancel.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        val textTitle = dialog.findViewById<TextView>(R.id.title_active_substance)
+        textTitle.text = getString(R.string.allergie_dectectee)
+
+        val textMid = dialog.findViewById<TextView>(R.id.text_active_substance)
+        textMid.text = getString(R.string.allergie_dectectee_message, second)
+
         dialog.show()
     }
 }
