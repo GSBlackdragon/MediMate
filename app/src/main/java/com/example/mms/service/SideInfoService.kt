@@ -15,7 +15,8 @@ class SideInfoService(context : Context) {
         val userAllergies = user.listAllergies.split(",").toList().map { it.trim();it.lowercase() }
         val allergicOfMedicine = sideInfoMedicine.allergie.split(",").toList().map { it.lowercase();it.trim() }
         val resList = userAllergies.intersect(allergicOfMedicine.toSet())
-        return Pair(resList.isNotEmpty(),resList.first())
+        if (resList.isEmpty()) return Pair(false,"")
+        return Pair(true,resList.first())
     }
 
 }
