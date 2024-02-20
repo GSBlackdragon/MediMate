@@ -42,7 +42,10 @@ class LockedActivity : AppCompatActivity() {
 
         db = SingletonDatabase.getDatabase(this)
 
-        if (userEmail != null) { binding.userEmail.text = cryptEmail(userEmail) }else { binding.userEmail.isVisible = false }
+        if (userEmail != null) {
+            binding.userEmail.text = cryptEmail(userEmail)
+        }
+        binding.userEmail.isVisible = (userEmail!=null)
 
         // Biometric
         val executor = ContextCompat.getMainExecutor(this)

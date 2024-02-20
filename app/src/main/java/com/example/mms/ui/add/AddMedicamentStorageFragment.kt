@@ -44,7 +44,7 @@ class AddMedicamentStorageFragment : Fragment() {
             val t = Thread {
                 val medicineId = db.medicineDao().getMedicineIdByName(viewModel.medicineName.value!!)
                 medicineStorage = db.medicineStorageDao().getMedicineStorageByMedicineId(medicineId)
-                if (medicineStorage != null) isInDb = true
+                isInDb = (medicineStorage != null)
             }
             t.start()
             t.join()
@@ -62,10 +62,9 @@ class AddMedicamentStorageFragment : Fragment() {
             if (isInDb) binding.tvAlreadyStored.visibility = View.VISIBLE
 
             binding.switch1.isChecked = storageIsChecked
-            if (storageIsChecked) {
-                binding.constraintLayoutStorage.getViewById(R.id.edit_alert_storage).isEnabled = true
-                binding.constraintLayoutStorage.getViewById(R.id.edit_actual_storage).isEnabled = true
-            }
+            binding.constraintLayoutStorage.getViewById(R.id.edit_alert_storage).isEnabled = storageIsChecked
+            binding.constraintLayoutStorage.getViewById(R.id.edit_actual_storage).isEnabled = storageIsChecked
+
             val storage = binding.constraintLayoutStorage.getViewById(R.id.edit_actual_storage) as EditText
             storage.setText(medicineStorage!!.storage.toString())
             val alertValue = binding.constraintLayoutStorage.getViewById(R.id.edit_alert_storage) as EditText
@@ -82,15 +81,14 @@ class AddMedicamentStorageFragment : Fragment() {
         binding.switch1.setOnCheckedChangeListener { _, isChecked ->
             // change the style of the layout depending on the switch
             storageIsChecked = isChecked
+            binding.constraintLayoutStorage.getViewById(R.id.edit_alert_storage).isEnabled = isChecked
+            binding.constraintLayoutStorage.getViewById(R.id.edit_actual_storage).isEnabled = isChecked
             if (isChecked) {
                 binding.constraintLayoutStorage.setBackgroundColor(Color.WHITE)
-                binding.constraintLayoutStorage.getViewById(R.id.edit_alert_storage).isEnabled = true
-                binding.constraintLayoutStorage.getViewById(R.id.edit_actual_storage).isEnabled = true
             } else {
                 binding.constraintLayoutStorage.setBackgroundColor(resources.getColor(R.color.light_gray))
-                binding.constraintLayoutStorage.getViewById(R.id.edit_alert_storage).isEnabled = false
-                binding.constraintLayoutStorage.getViewById(R.id.edit_actual_storage).isEnabled = false
             }
+
         }
 
         binding.editActualStorage.inputType = InputType.TYPE_CLASS_NUMBER
