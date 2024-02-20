@@ -130,7 +130,7 @@ class LoaderActivity : AppCompatActivity() {
             it.readText()
         })
             var storage = mutableListOf<SideInfoMedicine>()
-            map.forEach(){
+            map.forEach {
                 storage.add(SideInfoMedicine(it.key, it.value.Warning.toString().replace("[","").replace("]",""), it.value.Allergie.toString().replace("[","").replace("]",""), it.value.Content,""))
             }
             Thread{

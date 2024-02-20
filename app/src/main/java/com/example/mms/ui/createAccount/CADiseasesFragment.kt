@@ -50,7 +50,7 @@ class CADiseasesFragment : Fragment() {
         }
 
         val currentUser = viewModel.userData.value!!
-        binding.editAllergies.setText(currentUser.listAllergies)
+        binding.editAllergies.text = currentUser.listAllergies
 
 
         binding.buttonAddAllergies.setOnClickListener {

@@ -47,7 +47,7 @@ class UpdateDataService(context: Context) {
                 callback(false)
             }
 
-            callback(this.mongoVersion!!.updated_documents_cis.isNotEmpty())
+            callback(this.mongoVersion!!.updatedDocumentsCis.isNotEmpty())
         }, callbackError)
     }
 
@@ -71,7 +71,7 @@ class UpdateDataService(context: Context) {
      * Get the number of items to download
      */
     fun numberOfItemsToDownload(): Int {
-        return this.mongoVersion?.updated_documents_cis?.size ?: 0
+        return this.mongoVersion?.updatedDocumentsCis?.size ?: 0
     }
 
     /**
@@ -85,7 +85,7 @@ class UpdateDataService(context: Context) {
      * Check if the update is finish
      */
     fun isFinish(): Boolean {
-        return this.nbMedicinesToDownload >= this.mongoVersion!!.updated_documents_cis.size
+        return this.nbMedicinesToDownload >= this.mongoVersion!!.updatedDocumentsCis.size
     }
 
     /**
@@ -102,7 +102,7 @@ class UpdateDataService(context: Context) {
         }
 
         // get the next medicine to download
-        val actualMedicineCIS = this.mongoVersion!!.updated_documents_cis[this.nbMedicinesToDownload]
+        val actualMedicineCIS = this.mongoVersion!!.updatedDocumentsCis[this.nbMedicinesToDownload]
 
         // call the api to get the medicine
         this.apiService.getMedicine(actualMedicineCIS,

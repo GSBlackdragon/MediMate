@@ -7,25 +7,20 @@ import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
-import android.util.Log
 import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.ImageView
-import android.widget.ScrollView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mms.R
 import com.example.mms.Utils.areDatesOnSameDay
 import com.example.mms.Utils.getFormattedDate
-import com.example.mms.adapter.Interface.OnItemClickListener
-import com.example.mms.constant.LIEN_EFFETS_INDESIRABLES
 import com.example.mms.database.inApp.AppDatabase
 import com.example.mms.model.HourWeight
 import com.example.mms.model.ShowableHourWeight
@@ -399,8 +394,6 @@ class TakesAdapter(
         val medicinePrice = dialog.findViewById<TextView>(R.id.medicine_price)
 
         val medicineNameTitle = dialog.findViewById<TextView>(R.id.section_med_name)
-        val medicineTypeTitle = dialog.findViewById<TextView>(R.id.section_med_type)
-        val medicineWeightTitle = dialog.findViewById<TextView>(R.id.section_med_dosage)
         val medicineAdministrationTitle = dialog.findViewById<TextView>(R.id.section_med_admin)
         val medicineHelpLinkTitle = dialog.findViewById<TextView>(R.id.section_med_helplink)
         val medicineSubstanceTitle = dialog.findViewById<TextView>(R.id.section_med_sub_act)

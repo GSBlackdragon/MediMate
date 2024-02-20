@@ -7,8 +7,8 @@ import androidx.activity.result.contract.ActivityResultContract
 import com.example.mms.model.User
 import com.example.mms.ui.modifyAccount.ModifyAccountActivity
 
-class ModifiyAccountContrat : ActivityResultContract<Void?, User>() {
-    override fun createIntent(context: Context, input: Void?): Intent {
+class ModifiyAccountContrat : ActivityResultContract<Unit?, User>() {
+    override fun createIntent(context: Context, input: Unit?): Intent {
         return Intent(context, ModifyAccountActivity::class.java)
     }
 

@@ -25,20 +25,7 @@ val listDietPlan = listOf(
     "Flexitarien",
     "Weight Watchers"
 )
-/*
-val listAllergies = listOf(
-    "Arachides",
-    "Lait",
-    "Blé",
-    "Fruits à coque",
-    "Soja",
-    "Oeufs",
-    "Poisson",
-    "Crustacés",
-    "Sésame",
-    "Moutarde"
-)
-*/
+
 val listAllergies = listOf(
     "Blé",
     "Tiaprofénique",

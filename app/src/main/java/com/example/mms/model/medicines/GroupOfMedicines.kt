@@ -32,7 +32,7 @@ data class GroupOfMedicines(
     }
 
     fun getMedicinesByName(targetName: String): List<Medicine> {
-        val normalizedName = Normalizer.normalize(targetName, Normalizer.Form.NFD);
+        val normalizedName = Normalizer.normalize(targetName, Normalizer.Form.NFD)
 
         for (medicines in this.medicines) {
             if (medicines.name == normalizedName) {

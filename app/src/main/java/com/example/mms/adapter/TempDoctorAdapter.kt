@@ -52,7 +52,7 @@ class TempDoctorAdapter(
         }
         holder.city.text = item.city
 
-        holder.isSelected.setOnCheckedChangeListener { _, isChecked ->
+        holder.isSelected.setOnCheckedChangeListener { _, _ ->
             itemClickListener?.onItemClick(position)
         }
 

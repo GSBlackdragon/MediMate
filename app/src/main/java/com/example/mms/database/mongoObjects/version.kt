@@ -7,12 +7,12 @@ import kotlinx.serialization.Serializable
  * model to store the version and the updated documents cis
  *
  * @property version The version of the database
- * @property updated_documents_cis The cis of the updated documents
+ * @property updatedDocumentsCis The cis of the updated documents
  */
 @Serializable
 class MongoVersion (
     var version: Int,
-    var updated_documents_cis: List<Int>,
+    var updatedDocumentsCis: List<Int>,
 ) {
     /**
      * Converts the MongoVersion to a Version
@@ -29,6 +29,6 @@ class MongoVersion (
      * @return The string representation of the MongoVersion
      */
     override fun toString(): String {
-        return "MongoVersion(version=$version, updated_documents_cis=${updated_documents_cis.size})"
+        return "MongoVersion(version=$version, updated_documents_cis=${updatedDocumentsCis.size})"
     }
 }

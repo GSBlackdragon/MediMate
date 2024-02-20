@@ -30,7 +30,7 @@ class ProfilFragment : Fragment() {
     private val binding get() = _binding!!
 
     // We use this to get the result of the ModifyAccountActivity
-    val modifyContrat : ActivityResultLauncher<Void?> = registerForActivityResult(
+    val modifyContrat : ActivityResultLauncher<Unit?> = registerForActivityResult(
         ModifiyAccountContrat()
     ) {
         if (it.name != "") {
@@ -61,8 +61,8 @@ class ProfilFragment : Fragment() {
                     R.string.ans
                 )
             binding.userSex.text = it.sexe
-            binding.userWeight.text = "${it.weight.toString()} " + resources.getString(R.string.kg)
-            binding.userHeight.text = "${it.height.toString()} " + resources.getString(R.string.cm)
+            binding.userWeight.text = "${it.weight} " + resources.getString(R.string.kg)
+            binding.userHeight.text = "${it.height} " + resources.getString(R.string.cm)
         }
 
         // With room we have to launch a thread to get access to the database

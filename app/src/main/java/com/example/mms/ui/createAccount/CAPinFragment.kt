@@ -38,11 +38,11 @@ class CAPinFragment : Fragment() {
         val root: View = binding.root
 
         val navHostFragment =
-            requireActivity().supportFragmentManager.findFragmentById(com.example.mms.R.id.nav_create_account) as NavHostFragment
+            requireActivity().supportFragmentManager.findFragmentById(R.id.nav_create_account) as NavHostFragment
         val navController = navHostFragment.navController
 
         binding.codePin.backButton.buttonArrowBack.setOnClickListener {
-            navController.navigate(com.example.mms.R.id.action_pin_to_diseases)
+            navController.navigate(R.id.action_pin_to_diseases)
         }
 
         // set text and styles

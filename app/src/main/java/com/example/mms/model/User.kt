@@ -34,8 +34,7 @@ data class User (
         parcel.readString()!!,
         parcel.readString()!!,
         parcel.readByte() != 0.toByte()
-    ) {
-    }
+    )
 
     override fun toString(): String {
         return "$name $surname"

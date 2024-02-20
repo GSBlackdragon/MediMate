@@ -43,7 +43,7 @@ class ModifyAccountActivity : AppCompatActivity() {
                 binding.editTaille.setText(user.height.toString())
                 binding.editPoids.setText(user.weight.toString())
                 binding.editBirthdate.setText(user.birthday)
-                binding.editAllergies.setText(user.listAllergies)
+                binding.editAllergies.text = user.listAllergies
 
                 binding.editPoids.inputType = InputType.TYPE_CLASS_NUMBER
                 binding.editPoids.filters = arrayOf(InputFilter.LengthFilter(3))
