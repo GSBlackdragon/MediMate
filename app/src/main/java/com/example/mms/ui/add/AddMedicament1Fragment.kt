@@ -11,10 +11,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.fragment.findNavController
-import com.example.mms.database.inApp.SingletonDatabase
 import com.example.mms.R
-import com.example.mms.Utils.goTo
+import com.example.mms.database.inApp.SingletonDatabase
 import com.example.mms.databinding.FragmentAddMedicament1Binding
 import com.example.mms.model.medicines.Medicine
 

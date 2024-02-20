@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.mms.R
 import com.example.mms.database.inApp.AppDatabase
 import com.example.mms.model.HourWeight
-import org.apache.xpath.operations.Bool
 
 /**
  * Adapter for the hour weight list

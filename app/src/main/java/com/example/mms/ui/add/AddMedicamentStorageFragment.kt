@@ -2,9 +2,7 @@ package com.example.mms.ui.add
 
 import android.graphics.Color
 import android.os.Bundle
-import android.text.InputFilter
 import android.text.InputType
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup

@@ -3,7 +3,6 @@ package com.example.mms.broadcast
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.util.Log
 import com.example.mms.model.Takes
 import com.example.mms.service.NotifService
 import com.example.mms.service.TasksService

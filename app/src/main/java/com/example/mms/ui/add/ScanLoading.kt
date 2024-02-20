@@ -5,17 +5,12 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.util.Log
-import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
 import com.example.mms.R
 import com.example.mms.Utils.OCR
 import com.example.mms.database.inApp.SingletonDatabase
-import com.example.mms.databinding.ActivityAddTaskBinding
 import com.example.mms.databinding.LoaderBinding
 import com.googlecode.tesseract.android.TessBaseAPI
 import kotlinx.coroutines.CoroutineScope

@@ -14,12 +14,12 @@ import androidx.biometric.BiometricManager
 import androidx.biometric.BiometricPrompt
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
-import com.example.mms.database.inApp.AppDatabase
-import com.example.mms.database.inApp.SingletonDatabase
 import com.example.mms.MainActivity
 import com.example.mms.R
 import com.example.mms.Utils.cryptEmail
 import com.example.mms.Utils.hashString
+import com.example.mms.database.inApp.AppDatabase
+import com.example.mms.database.inApp.SingletonDatabase
 import com.example.mms.databinding.ActivityLockedBinding
 
 class LockedActivity : AppCompatActivity() {

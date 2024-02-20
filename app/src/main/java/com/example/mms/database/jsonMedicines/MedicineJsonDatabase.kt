@@ -2,7 +2,6 @@ package com.example.mms.database.jsonMedicines
 
 import android.content.Context
 import com.example.mms.dao.MedicineDAO
-import com.example.mms.model.medicines.GroupOfMedicines
 import com.example.mms.model.medicines.Medicine
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json

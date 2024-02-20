@@ -8,11 +8,9 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment
 import com.example.mms.R
+import com.example.mms.constant.listAllergies
 import com.example.mms.database.inApp.AppDatabase
 import com.example.mms.database.inApp.SingletonDatabase
-import com.example.mms.constant.listAllergies
-import com.example.mms.constant.listDietPlan
-import com.example.mms.constant.listHealthDiseases
 import com.example.mms.databinding.FragmentCreateAccountDiseasesBinding
 import com.example.mms.ui.createAccount.Dialog.CustomDialogDiseasses
 

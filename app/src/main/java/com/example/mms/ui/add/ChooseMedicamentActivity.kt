@@ -17,7 +17,6 @@ import com.example.mms.contrat.AddTaskFromOCR
 import com.example.mms.database.inApp.AppDatabase
 import com.example.mms.database.inApp.SingletonDatabase
 import com.example.mms.databinding.ActivityChooseMedicamentBinding
-import com.example.mms.ui.main.AccueilFragment
 
 class ChooseMedicamentActivity : AppCompatActivity() {
 

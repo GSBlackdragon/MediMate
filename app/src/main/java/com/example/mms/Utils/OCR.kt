@@ -2,16 +2,11 @@ package com.example.mms.Utils
 
 import android.os.Parcel
 import android.os.Parcelable
-import android.util.Log
 import androidx.core.text.isDigitsOnly
 import com.example.mms.database.inApp.AppDatabase
-import com.example.mms.database.inApp.SingletonDatabase
-import com.example.mms.ui.add.AddActivity
-import com.example.mms.ui.add.ScanLoading
 import edu.stanford.nlp.simple.Document
-import kotlinx.serialization.Serializable
-import kotlin.math.abs
 import java.util.regex.Pattern
+import kotlin.math.abs
 
 class OCR(private val db: AppDatabase) {
 

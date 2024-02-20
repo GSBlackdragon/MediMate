@@ -7,9 +7,9 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.mms.adapter.Interface.OnItemClickListener
 import com.example.mms.R
 import com.example.mms.Utils.cryptEmail
+import com.example.mms.adapter.Interface.OnItemClickListener
 import com.example.mms.model.User
 
 /**

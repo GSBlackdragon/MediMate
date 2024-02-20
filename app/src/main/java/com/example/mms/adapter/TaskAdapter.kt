@@ -2,7 +2,6 @@ package com.example.mms.adapter
 
 import android.app.Dialog
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,7 +15,6 @@ import com.example.mms.model.HourWeight
 import com.example.mms.model.MedicineStorage
 import com.example.mms.model.Task
 import com.example.mms.model.medicines.Medicine
-import com.example.mms.service.MedicineStorageService
 import com.example.mms.service.TasksService
 
 /**

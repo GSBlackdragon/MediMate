@@ -6,28 +6,22 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.os.Environment
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.EditText
-import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.mms.R
 import com.example.mms.adapter.Interface.OnItemClickListener
 import com.example.mms.adapter.MediProposalsAdapter
 import com.example.mms.database.inApp.SingletonDatabase
-import com.example.mms.R
 import com.example.mms.databinding.ActivityAddTaskBinding
 import java.io.File
-import java.io.FileOutputStream
 
 
 class AddActivity : AppCompatActivity() {

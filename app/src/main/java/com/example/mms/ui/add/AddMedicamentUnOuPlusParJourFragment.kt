@@ -10,11 +10,11 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.mms.adapter.HourWeightAdapter
-import com.example.mms.adapter.Interface.OnItemClickListener
 import com.example.mms.R
 import com.example.mms.Utils.goTo
 import com.example.mms.Utils.hourMinuteToString
+import com.example.mms.adapter.HourWeightAdapter
+import com.example.mms.adapter.Interface.OnItemClickListener
 import com.example.mms.databinding.FragmentAddMedicamentUnPlusieursParJourBinding
 import com.example.mms.model.Cycle
 import com.example.mms.model.HourWeight

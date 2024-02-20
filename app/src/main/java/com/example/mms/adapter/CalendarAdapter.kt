@@ -10,13 +10,12 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
-import com.example.mms.adapter.Interface.CalendarAdapterInterface
-import com.example.mms.adapter.Interface.OnItemClickListener
 import com.example.mms.R
 import com.example.mms.Utils.dateToLocalDatetime
 import com.example.mms.Utils.extractMonthAndYearFromDate
 import com.example.mms.Utils.stringToDate
-import com.example.mms.constant.EngToFr
+import com.example.mms.adapter.Interface.CalendarAdapterInterface
+import com.example.mms.adapter.Interface.OnItemClickListener
 import com.example.mms.model.CalendarDay
 import java.time.format.TextStyle
 import java.util.Locale

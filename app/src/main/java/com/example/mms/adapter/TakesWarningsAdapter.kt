@@ -7,8 +7,8 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
-import com.example.mms.adapter.Interface.OnItemClickListener
 import com.example.mms.R
+import com.example.mms.adapter.Interface.OnItemClickListener
 
 /**
  * Adapter for the recycler view of the takes warnings

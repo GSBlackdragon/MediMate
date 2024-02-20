@@ -9,7 +9,6 @@ import android.view.View
 import android.widget.EditText
 import android.widget.FrameLayout
 import android.widget.TextView
-import androidx.recyclerview.widget.RecyclerView
 import com.example.mms.R
 import com.example.mms.adapter.TakesAdapter
 import com.example.mms.database.inApp.SingletonDatabase

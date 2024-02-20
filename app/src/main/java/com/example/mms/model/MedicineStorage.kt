@@ -2,7 +2,6 @@ package com.example.mms.model
 
 import androidx.room.Entity
 import androidx.room.ForeignKey
-import androidx.room.PrimaryKey
 import com.example.mms.model.medicines.Medicine
 
 @Entity(

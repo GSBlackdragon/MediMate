@@ -13,11 +13,11 @@ import android.widget.FrameLayout
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.example.mms.R
+import com.example.mms.broadcast.MidnightAlarmReceiver
 import com.example.mms.database.inApp.AppDatabase
 import com.example.mms.database.inApp.SingletonDatabase
 import com.example.mms.database.jsonMedicines.MedicineJsonDatabase
 import com.example.mms.databinding.LoaderBinding
-import com.example.mms.broadcast.MidnightAlarmReceiver
 import com.example.mms.model.SideInfoMedicine
 import com.example.mms.model.User
 import com.example.mms.service.NotifService
@@ -26,11 +26,9 @@ import com.example.mms.service.UpdateDataService
 import com.example.mms.ui.login.LoginActivity
 import com.example.mms.ui.welcome.WelcomeActivity
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.serialization.Serializable
-import java.util.Calendar
-
 import kotlinx.serialization.*
 import kotlinx.serialization.json.*
+import java.util.Calendar
 
 class LoaderActivity : AppCompatActivity() {
     private lateinit var binding: LoaderBinding

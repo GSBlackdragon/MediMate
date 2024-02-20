@@ -3,22 +3,20 @@ package com.example.mms.ui.main
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.ActivityResultLauncher
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.example.mms.database.inApp.AppDatabase
-import com.example.mms.database.inApp.SingletonDatabase
 import com.example.mms.R
 import com.example.mms.Utils.getAgeFromStringBirthDate
 import com.example.mms.contrat.ModifiyAccountContrat
+import com.example.mms.database.inApp.AppDatabase
+import com.example.mms.database.inApp.SingletonDatabase
 import com.example.mms.databinding.FragmentProfilBinding
 import com.example.mms.service.TasksService
 import com.example.mms.ui.loader.LoaderActivity
-import com.example.mms.ui.modifyAccount.ModifyAccountActivity
 import com.example.mms.ui.settings.SettingsActivity
 
 class ProfilFragment : Fragment() {

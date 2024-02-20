@@ -3,12 +3,11 @@ package com.example.mms.ui.createAccount.Dialog
 import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.widget.Button
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.mms.adapter.DialogAdapter
 import com.example.mms.R
+import com.example.mms.adapter.DialogAdapter
 
 class CustomDialogDiseasses(
     context: Context,

@@ -5,21 +5,14 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.InputFilter
 import android.text.InputType
-import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.NavHostFragment
-import com.example.mms.database.inApp.AppDatabase
-import com.example.mms.database.inApp.SingletonDatabase
 import com.example.mms.R
 import com.example.mms.constant.listAllergies
-import com.example.mms.constant.listDietPlan
-import com.example.mms.constant.listHealthDiseases
+import com.example.mms.database.inApp.AppDatabase
+import com.example.mms.database.inApp.SingletonDatabase
 import com.example.mms.databinding.ActivityModifyAccountInformationBinding
 import com.example.mms.ui.createAccount.Dialog.CustomDialogDiseasses
-import com.example.mms.ui.main.MainViewModel
-import com.example.mms.ui.main.ProfilFragment
 import java.util.Calendar
 
 class ModifyAccountActivity : AppCompatActivity() {
@@ -50,9 +43,6 @@ class ModifyAccountActivity : AppCompatActivity() {
                 binding.editTaille.inputType = InputType.TYPE_CLASS_NUMBER
                 binding.editTaille.filters =  arrayOf(InputFilter.LengthFilter(3))
 
-                /*
-
-                 */
                 binding.buttonAddAllergies.setOnClickListener {
                     //Selecting the current allergies selected to pass it to the dialog in order to display the current allergies as already selected
                     val selectedAllergies = user.listAllergies.split(",").toList().map { it.trim() }

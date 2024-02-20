@@ -12,10 +12,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.mms.MainActivity
 import com.example.mms.R
@@ -31,12 +29,9 @@ import com.example.mms.model.medicines.Medicine
 import com.example.mms.service.NotifService
 import com.example.mms.service.SideInfoService
 import com.example.mms.service.TasksService
-import com.google.android.material.bottomnavigation.BottomNavigationView
-import org.w3c.dom.Text
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.Locale
-import java.util.concurrent.LinkedBlockingQueue
 
 class AddMedicamentRecapFragment : Fragment() {
     private var _binding: FragmentAddRecapBinding? = null

@@ -1,10 +1,8 @@
 package com.example.mms.service
 
 import android.content.Context
-import android.util.Log
 import com.example.mms.database.inApp.SingletonDatabase
 import com.example.mms.database.mongoObjects.MongoVersion
-import com.example.mms.errors.ConnectionFailed
 import com.example.mms.model.Version
 
 /**

@@ -2,24 +2,19 @@ package com.example.mms.ui.add
 
 import android.app.DatePickerDialog
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
-import android.widget.Switch
-import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.findNavController
 import com.example.mms.R
 import com.example.mms.Utils.dateToString
 import com.example.mms.Utils.goTo
 import com.example.mms.databinding.FragmentAddMedicamentStartEndDateBinding
 import java.time.LocalDateTime
 import java.util.Calendar
-import java.util.Date
 
 class AddMedicamentDateDebutFinFragment : Fragment() {
 

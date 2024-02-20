@@ -1,9 +1,7 @@
 package com.example.mms.service
 
 import android.content.Context
-import android.util.Log
 import com.example.mms.database.inApp.SingletonDatabase
-import kotlin.reflect.typeOf
 
 class SideInfoService(context : Context) {
     private val db = SingletonDatabase.getDatabase(context)

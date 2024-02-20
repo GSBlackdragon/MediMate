@@ -2,7 +2,6 @@ package com.example.mms.ui.main
 
 import android.Manifest
 import android.app.Dialog
-import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -30,12 +29,12 @@ import com.example.mms.database.inApp.SingletonDatabase
 import com.example.mms.databinding.FragmentConseilsBinding
 import com.example.mms.model.Doctor
 import com.example.mms.service.ApiService
-import org.osmdroid.api.IMapController
-import org.osmdroid.views.MapView
-import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.maps.model.Marker
+import org.osmdroid.api.IMapController
 import org.osmdroid.util.GeoPoint
+import org.osmdroid.views.MapView
+import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay
 
 class ConseilsFragment : Fragment() {
 
