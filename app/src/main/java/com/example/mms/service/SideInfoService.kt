@@ -8,6 +8,13 @@ import kotlin.reflect.typeOf
 class SideInfoService(context : Context) {
     private val db = SingletonDatabase.getDatabase(context)
 
+    /**
+     * Return a pair of a boolean and a string regarding if the current user is allergic to the medicine and if so,
+     * return the active substance to which the current user is allergic to
+     *
+     * @param codeCIS The CIS code of the medicine to check
+     * @return A pair of a Boolean (True if the user is allergic to the drug, False else) and a String (Empty string if Boolean false, the active substance involved in the allergy else)
+     */
     fun knowIfMedicineIsInAllergicListOfUser(codeCIS: Long): Pair<Boolean,String> {
         val user = db.userDao().getConnectedUser()
         val sideInfoMedicine = db.sideInfoMedicineDao().getById(codeCIS.toString())

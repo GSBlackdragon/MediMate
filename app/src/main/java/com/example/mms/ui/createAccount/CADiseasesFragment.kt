@@ -52,50 +52,13 @@ class CADiseasesFragment : Fragment() {
         val currentUser = viewModel.userData.value!!
         binding.editAllergies.setText(currentUser.listAllergies)
 
-        /*
-        binding.buttonAddHealthDisease.setOnClickListener {
-            val selectedHealthDiseases =
-                viewModel.userData.value!!.listHealthDiseases.split(",").toList()
-            val dialog =
-                CustomDialogDiseasses(root.context, listHealthDiseases, selectedHealthDiseases) {
-                    it.forEachIndexed { index, healthDisease ->
-                        currentUser.listHealthDiseases += if (index < it.size - 1) {
-                            "$healthDisease,"
-                        } else {
-                            healthDisease
-                        }
-                    }
-                    viewModel.setUserData(currentUser)
-
-                    /*
-                    Displaying selected diseases in-line
-                    */
-                    var display = ""
-                    for (element in it) {
-                        display += if (element==it.last()){
-                            element
-                        }else{
-                            "$element, "
-                        }
-
-                    }
-                    binding.editSoucis.text = display
-                }
-            dialog.show()
-
-            dialog.setOnDismissListener {
-                val updatedSelectedAllergies =
-                    viewModel.userData.value!!.listAllergies.split(",").toList()
-                dialog.updateSelectedItems(updatedSelectedAllergies)
-            }
-        }
-
-         */
-
 
         binding.buttonAddAllergies.setOnClickListener {
+            //Selecting the current allergies selected to pass it to the dialog in order to display the current allergies as already selected
             val selectedAllergies = viewModel.userData.value!!.listAllergies.split(",").toList().map { it.trim() }
+
             val dialog = CustomDialogDiseasses(root.context, listAllergies, selectedAllergies) {
+                //Adding back the new selected allergies to the current allergy list of the current user
                 currentUser.listAllergies=""
                 for (element in it) {
                     currentUser.listAllergies += if (element==it.last()){
@@ -113,48 +76,13 @@ class CADiseasesFragment : Fragment() {
             }
             dialog.show()
 
+            //Updating current user allergies to what was selected in the dialog when it dismisses
             dialog.setOnDismissListener {
                 val updatedSelectedAllergies =
                     viewModel.userData.value!!.listAllergies.split(",").toList()
                 dialog.updateSelectedItems(updatedSelectedAllergies)
             }
         }
-
-        /*
-        binding.buttonAddDietPlan.setOnClickListener {
-            val selectedDietPlan = viewModel.userData.value!!.listDietPlan.split(",").toList()
-            val dialog = CustomDialogDiseasses(root.context, listDietPlan, selectedDietPlan) {
-                it.forEachIndexed { index, dietPlan ->
-                    currentUser.listDietPlan += if (index < it.size - 1) {
-                        "$dietPlan,"
-                    } else {
-                        dietPlan
-                    }
-                }
-                viewModel.setUserData(currentUser)
-                /*
-                Displaying selected diseases in-line
-                 */
-                var display = ""
-                for (element in it) {
-                    display += if (element==it.last()){
-                        element
-                    }else{
-                        "$element, "
-                    }
-
-                }
-                binding.editRegime.text = display
-            }
-            dialog.show()
-
-            dialog.setOnDismissListener {
-                val updatedSelectedAllergies = currentUser.listDietPlan.split(",").toList()
-                dialog.updateSelectedItems(updatedSelectedAllergies)
-            }
-        }
-
-         */
 
         return root
     }

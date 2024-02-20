@@ -242,7 +242,7 @@
     <string name="duplication_substance_active">Duplication de substance active détecté</string>
     <string name="souhaitez_vous_l_ajouter_quand_m_me">Souhaitez-vous l\'ajouter quand même ?</string>
     <string name="sub_active_deja_presente">Le médicament que vous essayez d\'ajouter présente une substance active déjà présente dans vos traitements en cours</string>
-    <string name="_1000_mg_sachet">1000 mg - Sachet</string>
+    <string name="_1000_mg_sachet" translatable="false">1000 mg - Sachet</string>
     <string name="toast_sub_active">Doublon de substance active</string>
     <string name="lien_aide">Lien d\'aide</string>
     <string name="lien_securite">Lien de sécurité</string>

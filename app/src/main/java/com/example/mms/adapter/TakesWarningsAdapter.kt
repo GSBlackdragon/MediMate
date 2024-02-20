@@ -38,10 +38,10 @@ class TakesWarningsAdapter(private val context: Context, private val warnings: L
         return MyViewHolder(view)
     }
 
-    // function that returns the number of items
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val item = warnings[position]
 
+        //Displaying the right icon regarding the warning type
         when(item){
             "allaitement" -> holder.iconWarning.setImageResource(R.drawable.icon_allaitement)
             "enceinte" -> holder.iconWarning.setImageResource(R.drawable.icon_femme_enceinte)
@@ -49,6 +49,7 @@ class TakesWarningsAdapter(private val context: Context, private val warnings: L
             "allergie" -> holder.iconWarning.setImageResource(R.drawable.icon_allergie)
         }
 
+        //Attaching the right toast to the item regarding the warning type
         holder.itemView.setOnClickListener {
             when(item){
                 "allaitement" -> Toast.makeText(context, R.string.toast_allaitement, Toast.LENGTH_LONG).show()

@@ -33,6 +33,9 @@ class DialogAdapter(
         }
     }
 
+    /**
+     * Function to get the current selected items of the dialog
+     */
     fun getSelectedItems(): List<String> {
         val resultList = mutableListOf<String>()
         for (i in 0 until selectedItems.size()) {
@@ -72,6 +75,10 @@ class DialogAdapter(
 
     override fun getItemCount() = dataList.size
 
+    /**
+     * Function updating selected values of the current dialog
+     * @param selectedItemsList the list of items that must be updated as selected
+     */
     fun updateSelection(selectedItemsList: List<String>) {
         selectedItemsList.forEach { selectedItem ->
             val index = dataList.indexOf(selectedItem)

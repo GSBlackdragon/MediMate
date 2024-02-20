@@ -112,41 +112,45 @@ class TakesAdapter(
             holder.taskTitle.text = item.medicineName
         }
 
+        //Horizontal layout for the warning icons
         val layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+
+        /*Gathering all informations about the current warnings set on the specific medicine and checking
+         if the currentUser is allergic to the medicine in any way to display warning icons later
+         */
         var itemWarnings : List<String> = mutableListOf()
         var isUserAllergic : Pair<Boolean,String> = Pair(false,"")
-        var warningThread = Thread {
-            var itemWarningsTemp : MutableList<String> = db.sideInfoMedicineDao().getById(item.task.medicineCIS.toString())?.warning!!.split(",").toMutableList()
+        val warningThread = Thread {
+            val itemWarningsTemp : MutableList<String> = db.sideInfoMedicineDao().getById(item.task.medicineCIS.toString())?.warning!!.split(",").toMutableList()
             isUserAllergic = sideInfoService.knowIfMedicineIsInAllergicListOfUser(item.task.medicineCIS)
             if (isUserAllergic.first){
                 itemWarningsTemp.add("allergie")
             }
             itemWarnings = itemWarningsTemp.map { it.trim().lowercase() }.distinct()
-
-
         }
         warningThread.start()
         warningThread.join()
-        var warningsAdapter = TakesWarningsAdapter(context, itemWarnings.toList(),isUserAllergic.second)
+        val warningsAdapter = TakesWarningsAdapter(context, itemWarnings.toList(),isUserAllergic.second)
 
         holder.recyclerViewIconsWarning.layoutManager = layoutManager
         holder.recyclerViewIconsWarning.adapter=warningsAdapter
 
-
+        //Retrieving active substance code of the current drug to check if there is any active substance duplication
         var itemSubActCode : Int? = null
-        var t = Thread {
+        val t = Thread {
             itemSubActCode = db.medicineDao().getByCIS(item.task.medicineCIS)?.composition?.substance_code
         }
         t.start()
         t.join()
 
-
+        //Displaying, if necessary, the "active substance duplication" warning icon
         if (itemSubActCode != null && itemSubActCode in listSubActiveDoublons){
             holder.alertImage.visibility=View.VISIBLE
         }else{
             holder.alertImage.visibility=View.GONE
         }
 
+        //Toast when the warning icon is clicked
         holder.alertImage.setOnLongClickListener {
             Toast.makeText(context, R.string.toast_sub_active, Toast.LENGTH_LONG).show()
             true

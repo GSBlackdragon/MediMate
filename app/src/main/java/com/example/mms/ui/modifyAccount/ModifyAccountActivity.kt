@@ -50,28 +50,14 @@ class ModifyAccountActivity : AppCompatActivity() {
                 binding.editTaille.inputType = InputType.TYPE_CLASS_NUMBER
                 binding.editTaille.filters =  arrayOf(InputFilter.LengthFilter(3))
 
-                // Partie soucis de santé / allergies / régime non implémentée
                 /*
-                binding.buttonAddHealthDisease.setOnClickListener {
-                    val selectedHealthDiseases = user.listHealthDiseases?.split(",")!!.toList()
-                    val dialog = CustomDialogDiseasses(this, listHealthDiseases, selectedHealthDiseases) {
-                        it.forEachIndexed { index, healthDisease ->
-                            user.listHealthDiseases += if (index < it.size - 1) { "$healthDisease," } else { healthDisease }
-                        }
-                        binding.editSoucis.text = getString(R.string.elements_selectionnes, it.size.toString())
-                    }
-                    dialog.show()
-
-                    dialog.setOnDismissListener {
-                        val updatedSelectedAllergies = user.listAllergies.split(",").toList()
-                        dialog.updateSelectedItems(updatedSelectedAllergies)
-                    }
-                }
 
                  */
                 binding.buttonAddAllergies.setOnClickListener {
+                    //Selecting the current allergies selected to pass it to the dialog in order to display the current allergies as already selected
                     val selectedAllergies = user.listAllergies.split(",").toList().map { it.trim() }
                     val dialog = CustomDialogDiseasses(this, listAllergies, selectedAllergies) {
+                        //Adding back the new selected allergies to the current allergy list of the current user
                         user.listAllergies=""
                         for (element in it) {
                             user.listAllergies += if (element==it.last()){
@@ -84,29 +70,12 @@ class ModifyAccountActivity : AppCompatActivity() {
                     }
                     dialog.show()
 
+                    //Updating current user allergies to what was selected in the dialog when it dismisses
                     dialog.setOnDismissListener {
                         val updatedSelectedAllergies = user.listAllergies.split(",").toList()
                         dialog.updateSelectedItems(updatedSelectedAllergies)
                     }
                 }
-                /*
-                binding.buttonAddDietPlan.setOnClickListener {
-                    val selectedDietPlan = user.listDietPlan.split(",").toList()
-                    val dialog = CustomDialogDiseasses(this, listDietPlan, selectedDietPlan) {
-                        it.forEachIndexed { index, dietPlan ->
-                            user.listDietPlan += if (index < it.size - 1) { "$dietPlan," } else { dietPlan }
-                        }
-                        binding.editRegime.text = getString(R.string.elements_selectionnes, it.size.toString())
-                    }
-                    dialog.show()
-
-                    dialog.setOnDismissListener {
-                        val updatedSelectedAllergies = user.listDietPlan.split(",").toList()
-                        dialog.updateSelectedItems(updatedSelectedAllergies)
-                    }
-                }
-
-                 */
 
                 binding.editBirthdate.keyListener = null
                 binding.editBirthdate.isFocusable = false
