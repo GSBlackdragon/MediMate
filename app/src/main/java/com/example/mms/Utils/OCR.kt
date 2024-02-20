@@ -1,21 +1,22 @@
 package com.example.mms.Utils
 
-import android.content.Context
 import android.icu.text.Normalizer2
 import android.os.Parcel
 import android.os.Parcelable
 import android.util.Log
 import com.example.mms.database.inApp.AppDatabase
 import com.example.mms.model.medicines.Medicine
-import com.example.mms.ui.add.ScanLoading
 import com.google.android.gms.tasks.Tasks
 import com.google.mlkit.vision.common.InputImage
 import com.google.mlkit.vision.text.Text
 import com.google.mlkit.vision.text.TextRecognition
 import com.google.mlkit.vision.text.latin.TextRecognizerOptions
-import org.apache.commons.text.similarity.JaroWinklerSimilarity
-import java.net.URI
-import java.text.Normalizer
+import org.apache.commons.text.similarity.FuzzyScore
+import org.apache.commons.text.similarity.HammingDistance
+import org.apache.commons.text.similarity.LevenshteinDistance
+import org.apache.commons.text.similarity.LongestCommonSubsequence
+import org.apache.commons.text.similarity.LongestCommonSubsequenceDistance
+import java.util.Locale
 
 class OCR(private val db: AppDatabase) {
 
@@ -29,23 +30,30 @@ class OCR(private val db: AppDatabase) {
     fun recognize(image: InputImage) {
         Tasks.await(
             recognizer.process(image)
-            .addOnSuccessListener { result = it; Log.d("Image Success", "Image read correctly")}
-            .addOnFailureListener { throw Exception("Recognition failed") }
+            .addOnSuccessListener { result = it; Log.d("Image Recovery", "Success : image read correctly")}
+            .addOnFailureListener { Log.d("Image Recovery", "Failure : image not read"); throw Exception("Recognition failed") }
         )
     }
     fun getMedicineInfo(): List<MedicationInfo> {
 
         val medicines = db.medicineDao().getAll()
         val detectedMedicines = mutableListOf<Medicine>()
-        val jws = JaroWinklerSimilarity()
-        val reg = Regex("\\(\\)")
+        val jws = FuzzyScore(Locale.FRENCH)
+        val reg = Regex("[()\\-<>]")
+
+        val airomir = medicines.find { it.code_cis == 66086181L }?.let { "${it.composition?.substance_name} ${it.name} ${it.type.weight}" }
+        val score = jws.fuzzyScore(
+            "1/ Salbutamol AlROMIR 100MCG/DOSE AUTOHALER 200  1 Flacon".uppercase(),
+            airomir!!.replace(reg, "")
+        )
+        Log.d("JWS Score", "${airomir.replace(reg, "")} -> $score")
 
         result.textBlocks.forEach { it.lines.forEach { line ->
             if(line.text.length > 10) {
                 medicines.forEach { med ->
                     val medString = "${med.composition?.substance_name} ${med.name} ${med.type.weight}"
-                    val score = jws.apply(line.text.replace(reg, ""), medString.replace(reg, ""))
-                    if(score > 0.60) {
+                    val score = jws.fuzzyScore(line.text.replace(reg, ""), medString.replace(reg, ""))
+                    if(score > 38) {
                         detectedMedicines.add(med)
                         Log.d("JWS Score", "${line.text.replace(reg, "")} -> ${medString.replace(reg, "")} : $score")
                     }
