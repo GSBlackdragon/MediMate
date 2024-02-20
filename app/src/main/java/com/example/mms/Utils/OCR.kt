@@ -38,15 +38,17 @@ class OCR(private val db: AppDatabase) {
         val medicines = db.medicineDao().getAll()
         val detectedMedicines = mutableListOf<Medicine>()
         val jws = JaroWinklerSimilarity()
-        Log.d("MedList", medicines.map { it.name }.toString())
-
-        //result.textBlocks.forEach { block -> block.lines.forEach { line -> line.elements.forEach { Log.d("ScanElements", it.text) } } }
+        val reg = Regex("\\(\\)")
 
         result.textBlocks.forEach { it.lines.forEach { line ->
             if(line.text.length > 10) {
                 medicines.forEach { med ->
-                    val score = jws.apply(line.text, "${med.name} ${med.type.weight}")
-                    if(score > 0.60) {detectedMedicines.add(med); Log.d("JWS Score", "${line.text} -> ${med.name} ${med.type.weight} : $score")}
+                    val medString = "${med.composition?.substance_name} ${med.name} ${med.type.weight}"
+                    val score = jws.apply(line.text.replace(reg, ""), medString.replace(reg, ""))
+                    if(score > 0.60) {
+                        detectedMedicines.add(med)
+                        Log.d("JWS Score", "${line.text.replace(reg, "")} -> ${medString.replace(reg, "")} : $score")
+                    }
                 }
             }
         } }
