@@ -265,4 +265,5 @@
     <string name="allergie_dectectee">Une allergie a été détectée</string>
     <string name="allergie_dectectee_message">Le médicament que vous essayez d\'ajouter présente une substance active (%s) à laquelle vous êtes allergique</string>
     <string name="toast_allergie">Ce médicament présente une substance active (%s) à laquelle vous êtes allergique</string>
+    <string name="recherche_par_id">Recherche par ID</string>
 </resources>

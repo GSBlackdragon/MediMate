@@ -7,6 +7,7 @@ import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
+import android.util.Log
 import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
@@ -246,7 +247,16 @@ class TakesAdapter(
                     dialogDetails(item, false, position)
                 }
             }
-         //TODO get image by medicine type
+
+        when (item.medicineType.generic!!) {
+            "comprime" -> holder.medicineImage.setImageResource(R.drawable.comprime)
+            "suppositoire" -> holder.medicineImage.setImageResource(R.drawable.suppositoire)
+            "solution buvable" -> holder.medicineImage.setImageResource(R.drawable.sirop)
+            "suspension" -> holder.medicineImage.setImageResource(R.drawable.pipette)
+            "gelule" -> holder.medicineImage.setImageResource(R.drawable.gelule)
+            else -> holder.medicineImage.setImageResource(R.drawable.medicaments)
+        }
+
         holder.medicineImage.setOnClickListener {
             dialogMedicineInformations(item)
         }
@@ -266,9 +276,6 @@ class TakesAdapter(
         this.notifyDataSetChanged()
     }
 
-    fun getImageByMedicineType(task: Task) {
-         //TODO
-    }
 
     /**
      * Function that returns the remaining time

@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="275dp"
-    android:layout_height="250dp"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_width="380dp"
+    android:layout_height="300dp">
 
     <Button
         android:id="@+id/btn_cancel"
         style="@style/CustomButtonStyle1"
         android:layout_width="30dp"
         android:layout_height="30dp"
-        android:layout_marginTop="5dp"
         android:layout_marginEnd="5dp"
         android:text="X"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_manage_storage"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@+id/tv_manage_storage" />
 
     <TextView
         android:id="@+id/tv_manage_storage"
@@ -22,7 +22,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:text="@string/ajouter_medecin"
-        android:textSize="13sp"
+        android:textSize="15sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toStartOf="@+id/btn_cancel"
         app:layout_constraintStart_toStartOf="parent"
@@ -32,9 +32,9 @@
         android:id="@+id/textView18"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="30dp"
         android:text="@string/nom"
-        android:textSize="12sp"
+        android:textSize="13sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.09"
         app:layout_constraintStart_toStartOf="parent"
@@ -42,12 +42,12 @@
 
     <EditText
         android:id="@+id/et_search_doctor_name"
-        android:layout_width="100dp"
-        android:layout_height="40dp"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
         android:paddingStart="10dp"
-        android:textSize="11sp"
         android:paddingEnd="10dp"
+        android:textSize="15sp"
         app:layout_constraintStart_toStartOf="@+id/textView18"
         app:layout_constraintTop_toBottomOf="@+id/textView18" />
 
@@ -55,21 +55,20 @@
         android:id="@+id/textView19"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
         android:layout_marginStart="10dp"
         android:text="@string/prenom"
-        android:textSize="12sp"
+        android:textSize="13sp"
         app:layout_constraintStart_toEndOf="@+id/et_search_doctor_name"
-        app:layout_constraintTop_toBottomOf="@+id/tv_manage_storage" />
+        app:layout_constraintTop_toTopOf="@+id/textView18" />
 
     <EditText
         android:id="@+id/et_search_doctor_firstname"
-        android:layout_width="100dp"
-        android:layout_height="40dp"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
         android:paddingStart="10dp"
         android:paddingEnd="10dp"
-        android:textSize="11sp"
+        android:textSize="15sp"
         app:layout_constraintStart_toStartOf="@+id/textView19"
         app:layout_constraintTop_toBottomOf="@+id/textView18" />
 
@@ -77,21 +76,21 @@
         android:id="@+id/textView20"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:text="Recherche par ID"
-        android:textSize="12sp"
+        android:layout_marginTop="20dp"
+        android:text="@string/recherche_par_id"
+        android:textSize="13sp"
         app:layout_constraintStart_toStartOf="@+id/textView18"
         app:layout_constraintTop_toBottomOf="@+id/et_search_doctor_name" />
 
     <EditText
         android:id="@+id/et_search_doctor_id"
-        android:layout_width="210dp"
-        android:layout_height="40dp"
+        android:layout_width="310dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
         android:autofillHints=""
-        android:textSize="11sp"
         android:paddingStart="10dp"
         android:paddingEnd="10dp"
+        android:textSize="15sp"
         app:layout_constraintStart_toStartOf="@+id/textView20"
         app:layout_constraintTop_toBottomOf="@+id/textView20" />
 
@@ -104,8 +103,9 @@
         android:layout_marginEnd="20dp"
         android:text="@string/search"
         android:textAllCaps="false"
-        android:textSize="11sp"
         android:textColor="@color/clickable_blue"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/et_search_doctor_id" />
 
