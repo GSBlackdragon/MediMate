@@ -79,7 +79,7 @@
         android:text="@string/textstoponstock"
         app:layout_constraintBottom_toBottomOf="@+id/switchStopOnStock"
         app:layout_constraintStart_toEndOf="@+id/switchStopOnStock"
-        app:layout_constraintTop_toTopOf="@+id/switch4" />
+        app:layout_constraintTop_toTopOf="@+id/switchStopOnStock" />
 
     <EditText
         android:id="@+id/edit_endDate"
