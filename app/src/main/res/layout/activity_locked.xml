@@ -99,7 +99,6 @@
             style="@style/CustomButtonStyle3"
             android:layout_width="80dp"
             android:layout_height="80dp"
-            android:onClick="onNumberButtonClick"
             android:text="1"
             android:textSize="20dp" />
 
@@ -108,7 +107,6 @@
             style="@style/CustomButtonStyle3"
             android:layout_width="80dp"
             android:layout_height="80dp"
-            android:onClick="onNumberButtonClick"
             android:textSize="20dp"
             android:text="2" />
 
@@ -117,7 +115,6 @@
             style="@style/CustomButtonStyle3"
             android:layout_width="80dp"
             android:layout_height="80dp"
-            android:onClick="onNumberButtonClick"
             android:textSize="20dp"
             android:text="3" />
 
@@ -126,7 +123,6 @@
             style="@style/CustomButtonStyle3"
             android:layout_width="80dp"
             android:layout_height="80dp"
-            android:onClick="onNumberButtonClick"
             android:textSize="20dp"
             android:text="4" />
 
@@ -135,7 +131,6 @@
             style="@style/CustomButtonStyle3"
             android:layout_width="80dp"
             android:layout_height="80dp"
-            android:onClick="onNumberButtonClick"
             android:textSize="20dp"
             android:text="5" />
 
@@ -144,7 +139,6 @@
             style="@style/CustomButtonStyle3"
             android:layout_width="80dp"
             android:layout_height="80dp"
-            android:onClick="onNumberButtonClick"
             android:textSize="20dp"
             android:text="6" />
 
@@ -153,7 +147,6 @@
             style="@style/CustomButtonStyle3"
             android:layout_width="80dp"
             android:layout_height="80dp"
-            android:onClick="onNumberButtonClick"
             android:textSize="20dp"
             android:text="7" />
 
@@ -162,7 +155,6 @@
             style="@style/CustomButtonStyle3"
             android:layout_width="80dp"
             android:layout_height="80dp"
-            android:onClick="onNumberButtonClick"
             android:textSize="20dp"
             android:text="8" />
 
@@ -171,7 +163,6 @@
             style="@style/CustomButtonStyle3"
             android:layout_width="80dp"
             android:layout_height="80dp"
-            android:onClick="onNumberButtonClick"
             android:textSize="20dp"
             android:text="9" />
 
@@ -187,7 +178,6 @@
             style="@style/CustomButtonStyle3"
             android:layout_width="80dp"
             android:layout_height="80dp"
-            android:onClick="onNumberButtonClick"
             android:textSize="20dp"
             android:text="0" />
 
@@ -196,7 +186,6 @@
             style="@style/CustomButtonStyle3"
             android:layout_width="80dp"
             android:layout_height="80dp"
-            android:onClick="onDeleteButtonClick"
             android:src="@drawable/baseline_backspace_24" />
 
     </androidx.gridlayout.widget.GridLayout>
