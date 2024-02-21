@@ -5,6 +5,7 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Update
 import com.example.mms.model.SideInfoMedicine
 
 @Dao
@@ -28,4 +29,6 @@ interface SideInfoMedicineDAO {
     @Query("DELETE FROM SideInfoMedicine")
     fun deleteAll()
 
+    @Query("UPDATE SideInfoMedicine SET sideInfo = :sideInfo WHERE code_cis = :code_cis")
+    fun addBadInteraction(code_cis: String, sideInfo: String)
 }

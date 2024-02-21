@@ -21,5 +21,6 @@ class SideInfoMedicine (
         var warning : String,
         var allergie : String,
         var content : String,
-        var sideInfo : String
+        var sideInfo : String,
+
 )

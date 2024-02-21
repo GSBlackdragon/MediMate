@@ -116,7 +116,7 @@ class LoaderActivity : AppCompatActivity() {
         }
         t.start()
         t.join()
-        Thread{
+        var t2 = Thread{
             @Serializable
             data class SideInfo(
                 val Warning: List<String>,
@@ -135,6 +135,21 @@ class LoaderActivity : AppCompatActivity() {
                 db.sideInfoMedicineDao().insertMany(storage)
             }.start()
 
+        }
+        t2.start()
+        t2.join()
+        Thread{
+
+            var map = Json.decodeFromString<Map<String, List<Int>>>(this.assets.open("databases/super.json").bufferedReader().use {
+                it.readText()
+            })
+
+            Thread{
+                map.forEach{
+
+                    db.sideInfoMedicineDao().addBadInteraction(it.key, it.value.toString().replace("[","").replace("]",""))
+                }
+            }.start()
         }.start()
 
     }
