@@ -260,20 +260,18 @@ class TakesAdapter(
         val hoursRemaining = hourSplited.first
         val minutesRemaining = hourSplited.second
 
-        if (hoursRemaining < 0) {
-            return context.getString(R.string.dans) + (hoursRemaining * -1).toString() + " " + if (hoursRemaining == -1) context.getString(R.string.heure) else context.getString(R.string.heures)
+        return if (hoursRemaining < 0) {
+            context.getString(R.string.dans) + (hoursRemaining * -1).toString() + " " + if (hoursRemaining == -1) context.getString(R.string.heure) else context.getString(R.string.heures)
         } else if (hoursRemaining == 0) {
-            return if (minutesRemaining < 0) {
+            if (minutesRemaining < 0) {
                 context.getString(R.string.dans) + (minutesRemaining * -1).toString() + " " + if (minutesRemaining == -1) context.getString(R.string.minute) else context.getString(R.string.minutes)
+            } else if (minutesRemaining == 1) {
+                context.getString(R.string.il_y_a_minute)
             } else {
-                if (minutesRemaining == 1) {
-                    context.getString(R.string.il_y_a_minute)
-                } else {
-                    context.getString(R.string.il_y_a_minutes, minutesRemaining.toString())
-                }
+                context.getString(R.string.il_y_a_minutes, minutesRemaining.toString())
             }
         } else {
-            return if (hoursRemaining == 1) {
+            if (hoursRemaining == 1) {
                 context.getString(R.string.il_y_a_heure)
             } else {
                 context.getString(R.string.il_y_a_heures, hoursRemaining.toString())
