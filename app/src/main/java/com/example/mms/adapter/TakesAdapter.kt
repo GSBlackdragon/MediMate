@@ -163,56 +163,10 @@ class TakesAdapter(
         // If the task is done we change the color of the item
         holder.itemView.setBackgroundColor(context.getColor(R.color.white))
         holder.buttonTaskChecked.setImageResource(R.drawable.baseline_check_24)
-        val today = Date()
-        if (areDatesOnSameDay(today, currentDate)) {
-            // Know if the task is done or not (HourWeight isDone)
-            var takes: Takes? = null
-            val t = Thread {
-                takes = this.tasksService.getOrCreateTakes(item.hourWeight.id, LocalDateTime.now().toLocalDate().atStartOfDay())
-            }
-            t.start()
-            t.join()
-                if (takes != null) {
-                    // If the task is done we change the color of the item
-                    if (takes!!.isDone) {
-                        context.run {
-                            holder.buttonTaskChecked.setImageResource(R.drawable.baseline_info_24)
-                        }
-                        holder.buttonTaskChecked.setOnClickListener {
-                            dialogDetails(item, true, position)
-                        }
-                    } else {
-                        // Else we set on click of the button buttonTaskChecked the action of validate the takes
-                        holder.buttonTaskChecked.setOnClickListener {
-                            val tt = Thread {
-                                var dismiss = false
-                                if (item.medicineStorage != null) {
-                                    dismiss = this.mStorageService.updateMedicineStorage(
-                                        item.medicineStorage,
-                                        item.hourWeight.weight,
-                                        item.medicineName,
-                                        this@TakesAdapter
-                                    )
-                                }
-                                if(!dismiss) {
-                                    db.takesDao().updateIsDone(true, item.hourWeight.id, LocalDateTime.now().toLocalDate().atStartOfDay(), LocalDateTime.now())
-                                    funUpdateSmiley()
-                                }
-                            }
-                            tt.start()
-                            tt.join()
-                            this@TakesAdapter.notifyDataSetChanged()
-                        }
-                    }
-                }
-            } else {
-                // if the takes is not for today we change the color of the item
-                holder.itemView.setBackgroundColor(context.getColor(R.color.light_gray))
-                holder.buttonTaskChecked.setImageResource(R.drawable.baseline_info_24)
-                holder.buttonTaskChecked.setOnClickListener {
-                    dialogDetails(item, false, position)
-                }
-            }
+
+
+        takesTickManager(context,holder,item,position)
+
 
         when (item.medicineType.generic!!) {
             "comprime" -> holder.medicineImage.setImageResource(R.drawable.comprime)
@@ -275,6 +229,66 @@ class TakesAdapter(
                 context.getString(R.string.il_y_a_heure)
             } else {
                 context.getString(R.string.il_y_a_heures, hoursRemaining.toString())
+            }
+        }
+    }
+
+    /**
+     * Function managing the tick button on a specific take
+     * @param context The context of the view
+     * @param holder The ViewHolder
+     * @param item a ShowableHourWeight (the take)
+     * @param position the position of the item
+     */
+    fun takesTickManager(context: Context,holder: MyViewHolder, item : ShowableHourWeight, position: Int){
+        val today = Date()
+        if (areDatesOnSameDay(today, currentDate)) {
+            // Know if the task is done or not (HourWeight isDone)
+            var takes: Takes? = null
+            val t = Thread {
+                takes = this.tasksService.getOrCreateTakes(item.hourWeight.id, LocalDateTime.now().toLocalDate().atStartOfDay())
+            }
+            t.start()
+            t.join()
+            if (takes != null) {
+                // If the task is done we change the color of the item
+                if (takes!!.isDone) {
+                    context.run {
+                        holder.buttonTaskChecked.setImageResource(R.drawable.baseline_info_24)
+                    }
+                    holder.buttonTaskChecked.setOnClickListener {
+                        dialogDetails(item, true, position)
+                    }
+                } else {
+                    // Else we set on click of the button buttonTaskChecked the action of validate the takes
+                    holder.buttonTaskChecked.setOnClickListener {
+                        val tt = Thread {
+                            var dismiss = false
+                            if (item.medicineStorage != null) {
+                                dismiss = this.mStorageService.updateMedicineStorage(
+                                    item.medicineStorage,
+                                    item.hourWeight.weight,
+                                    item.medicineName,
+                                    this@TakesAdapter
+                                )
+                            }
+                            if(!dismiss) {
+                                db.takesDao().updateIsDone(true, item.hourWeight.id, LocalDateTime.now().toLocalDate().atStartOfDay(), LocalDateTime.now())
+                                funUpdateSmiley()
+                            }
+                        }
+                        tt.start()
+                        tt.join()
+                        this@TakesAdapter.notifyDataSetChanged()
+                    }
+                }
+            }
+        } else {
+            // if the takes is not for today we change the color of the item
+            holder.itemView.setBackgroundColor(context.getColor(R.color.light_gray))
+            holder.buttonTaskChecked.setImageResource(R.drawable.baseline_info_24)
+            holder.buttonTaskChecked.setOnClickListener {
+                dialogDetails(item, false, position)
             }
         }
     }
