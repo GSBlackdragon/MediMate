@@ -111,22 +111,12 @@ class TakesAdapter(
         //Horizontal layout for the warning icons
         val layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
 
-        /*Gathering all informations about the current warnings set on the specific medicine and checking
-         if the currentUser is allergic to the medicine in any way to display warning icons later
-         */
-        var itemWarnings : List<String> = mutableListOf()
-        var isUserAllergic : Pair<Boolean,String> = Pair(false,"")
-        val warningThread = Thread {
-            val itemWarningsTemp : MutableList<String> = db.sideInfoMedicineDao().getById(item.task.medicineCIS.toString())?.warning!!.split(",").toMutableList()
-            isUserAllergic = sideInfoService.knowIfMedicineIsInAllergicListOfUser(item.task.medicineCIS)
-            if (isUserAllergic.first){
-                itemWarningsTemp.add("allergie")
-            }
-            itemWarnings = itemWarningsTemp.map { it.trim().lowercase() }.distinct()
-        }
-        warningThread.start()
-        warningThread.join()
-        val warningsAdapter = TakesWarningsAdapter(context, itemWarnings.toList(),isUserAllergic.second)
+
+
+
+
+        val (warnings,allergie) = getItemWarnings(item)
+        val warningsAdapter = TakesWarningsAdapter(context,warnings,allergie)
 
         holder.recyclerViewIconsWarning.layoutManager = layoutManager
         holder.recyclerViewIconsWarning.adapter=warningsAdapter
@@ -167,32 +157,8 @@ class TakesAdapter(
         }
         holder.taskTime.text = this.context.getString(R.string.a_heures, item.hourWeight.hour)
 
-
-        // Get the remaining time
-        val hourSplited = getHoursMinutesRemaining(item.hourWeight)
-        val hoursRemaining = hourSplited.first
-        val minutesRemaining = hourSplited.second
-
         // Display the remaining time
-        holder.timeRemaining.text = if (hoursRemaining < 0) {
-            context.getString(R.string.dans) + (hoursRemaining * -1).toString() + " " + if (hoursRemaining == -1) context.getString(R.string.heure) else context.getString(R.string.heures)
-        } else if (hoursRemaining == 0) {
-            if (minutesRemaining < 0) {
-                context.getString(R.string.dans) + (minutesRemaining * -1).toString() + " " + if (minutesRemaining == -1) context.getString(R.string.minute) else context.getString(R.string.minutes)
-            } else {
-                if (minutesRemaining == 1) {
-                    context.getString(R.string.il_y_a_minute)
-                } else {
-                    context.getString(R.string.il_y_a_minutes, minutesRemaining.toString())
-                }
-            }
-        } else {
-            if (hoursRemaining == 1) {
-                context.getString(R.string.il_y_a_heure)
-            } else {
-                context.getString(R.string.il_y_a_heures, hoursRemaining.toString())
-            }
-        }
+        holder.timeRemaining.text = getRemainingTime(item)
 
         // If the task is done we change the color of the item
         holder.itemView.setBackgroundColor(context.getColor(R.color.white))
@@ -259,6 +225,59 @@ class TakesAdapter(
 
         holder.medicineImage.setOnClickListener {
             dialogMedicineInformations(item)
+        }
+    }
+
+    /**
+     * Gathering all informations about the current warnings set on the specific medicine and checking
+     * if the currentUser is allergic to the medicine in any way to display warning icons later
+     * @param item a ShowableHourWeight representing the current medicine we're taking care of
+     * @return A pair of the list of the warnings of the medicine, and a string of the potential active substance the user is allergic to in this medicine
+     */
+    fun getItemWarnings(item : ShowableHourWeight) : Pair<List<String>,String> {
+
+        var itemWarnings : List<String> = mutableListOf()
+        var isUserAllergic : Pair<Boolean,String> = Pair(false,"")
+        val warningThread = Thread {
+            val itemWarningsTemp : MutableList<String> = db.sideInfoMedicineDao().getById(item.task.medicineCIS.toString())?.warning!!.split(",").toMutableList()
+            isUserAllergic = sideInfoService.knowIfMedicineIsInAllergicListOfUser(item.task.medicineCIS)
+            if (isUserAllergic.first){
+                itemWarningsTemp.add("allergie")
+            }
+            itemWarnings = itemWarningsTemp.map { it.trim().lowercase() }.distinct()
+        }
+        warningThread.start()
+        warningThread.join()
+
+        return Pair(itemWarnings,isUserAllergic.second)
+
+    }
+
+    fun getRemainingTime(item : ShowableHourWeight) : String{
+
+        // Get the remaining time
+        val hourSplited = getHoursMinutesRemaining(item.hourWeight)
+        val hoursRemaining = hourSplited.first
+        val minutesRemaining = hourSplited.second
+
+        if (hoursRemaining < 0) {
+            return context.getString(R.string.dans) + (hoursRemaining * -1).toString() + " " + if (hoursRemaining == -1) context.getString(R.string.heure) else context.getString(R.string.heures)
+        } else if (hoursRemaining == 0) {
+            return if (minutesRemaining < 0) {
+                context.getString(R.string.dans) + (minutesRemaining * -1).toString() + " " + if (minutesRemaining == -1) context.getString(R.string.minute) else context.getString(R.string.minutes)
+            } else {
+                if (minutesRemaining == 1) {
+                    context.getString(R.string.il_y_a_minute)
+                } else {
+                    context.getString(R.string.il_y_a_minutes, minutesRemaining.toString())
+                }
+            }
+        } else {
+            return if (hoursRemaining == 1) {
+                context.getString(R.string.il_y_a_heure)
+            } else {
+                context.getString(R.string.il_y_a_heures, hoursRemaining.toString())
+            }
         }
     }
 
