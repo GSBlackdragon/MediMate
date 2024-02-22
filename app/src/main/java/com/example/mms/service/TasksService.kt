@@ -37,6 +37,11 @@ class TasksService(context: Context) {
         db.taskDao().update(task)
     }
 
+    fun deleteAllTasks() {
+        // Appeler la méthode deleteAll() du DAO
+        db.taskDao().deleteAll()
+    }
+
     /**
      * Return a boolean regarding if the active substance is
      * already present in any active treatments during the the given period of time

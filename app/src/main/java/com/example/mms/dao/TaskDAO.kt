@@ -49,4 +49,9 @@ interface TaskDAO {
 
     @Query("DELETE FROM task WHERE id = :taskId")
     fun deleteById(taskId: Long)
+
+    @Query("DELETE FROM task")
+    fun deleteAll()
+
 }
+
