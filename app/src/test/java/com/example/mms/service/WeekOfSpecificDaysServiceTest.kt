@@ -1,8 +1,8 @@
 package com.example.mms.service
 
 import com.example.mms.model.HourWeight
-import org.junit.Assert.assertThrows
 import org.junit.Test
+import org.testng.Assert.assertThrows
 
 
 class WeekOfSpecificDaysServiceTest {
