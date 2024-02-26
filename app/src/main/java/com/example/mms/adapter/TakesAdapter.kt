@@ -52,6 +52,7 @@ class TakesAdapter(
     private val currentDate : Date,
     private val view : View,
     private var listSubActiveDoublons : MutableList<Int?>,
+    private var listMedicineCIS : MutableList<String>,
     private val funUpdateSmiley : () -> Unit
 
 ) :
@@ -115,19 +116,33 @@ class TakesAdapter(
 
 
 
-        val (warnings,allergie) = getItemWarnings(item)
-        val warningsAdapter = TakesWarningsAdapter(context,warnings,allergie)
 
-        holder.recyclerViewIconsWarning.layoutManager = layoutManager
-        holder.recyclerViewIconsWarning.adapter=warningsAdapter
 
         //Retrieving active substance code of the current drug to check if there is any active substance duplication
         var itemSubActCode : Int? = null
+        var commun : Set<String> = setOf()
         val t = Thread {
             itemSubActCode = db.medicineDao().getByCIS(item.task.medicineCIS)?.composition?.substance_code
+            var liste = db.sideInfoMedicineDao().getById(item.task.medicineCIS.toString())?.sideInfo?.split(",")
+
+            if (liste != null){
+                commun = listMedicineCIS.intersect(liste.toSet())
+            }
+
+
+
+
         }
         t.start()
         t.join()
+        var (warnings,allergie) = getItemWarnings(item)
+        if (commun.isNotEmpty()){
+            warnings+=commun.first()
+        }
+        val warningsAdapter = TakesWarningsAdapter(db,context,warnings,allergie)
+
+        holder.recyclerViewIconsWarning.layoutManager = layoutManager
+        holder.recyclerViewIconsWarning.adapter=warningsAdapter
 
         //Displaying, if necessary, the "active substance duplication" warning icon
         if (itemSubActCode != null && itemSubActCode in listSubActiveDoublons){
@@ -302,8 +317,9 @@ class TakesAdapter(
         this.notifyDataSetChanged()
     }
 
-    fun updateListDoublons(list : MutableList<Int?>) {
-        this.listSubActiveDoublons = list
+    fun updateListDoublonsAndCIS(list : Pair<MutableList<Int?>,MutableList<String>>) {
+        this.listSubActiveDoublons = list.first
+        this.listMedicineCIS = list.second
         this.notifyDataSetChanged()
     }
 

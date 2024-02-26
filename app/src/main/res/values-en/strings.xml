@@ -251,6 +251,7 @@
     <string name="allergie_dectectee">An allergy has been detected</string>
     <string name="allergie_dectectee_message">The drug you are trying to add contains an active substance (%s) to which you are allergic</string>
     <string name="toast_allergie">This drug presents an active substance (%s) to which you are allergic</string>
+    <string name="toast_contre_indic">Countraindication with %s</string>
     <string name="recherche_par_id">Search by ID</string>
     <string name="m_decins_d_tect_s">Doctors detected</string>
     <string name="m_dicaments_d_tect_s">Drugs detected</string>
