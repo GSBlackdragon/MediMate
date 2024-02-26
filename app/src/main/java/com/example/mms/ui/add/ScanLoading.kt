@@ -12,13 +12,14 @@ import com.example.mms.R
 import com.example.mms.Utils.OCR
 import com.example.mms.database.inApp.SingletonDatabase
 import com.example.mms.databinding.LoaderBinding
-import com.googlecode.tesseract.android.TessBaseAPI
+import com.google.android.gms.tasks.Tasks
+import com.google.mlkit.vision.common.InputImage
+import com.google.mlkit.vision.text.TextRecognition
+import com.google.mlkit.vision.text.latin.TextRecognizerOptions
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.io.File
-import java.io.FileOutputStream
 
 class ScanLoading : AppCompatActivity() {
     private lateinit var binding: LoaderBinding
@@ -69,43 +70,12 @@ class ScanLoading : AppCompatActivity() {
 
 
     private fun getTextFromBitmap(bitmap: Bitmap): String {
-        val tess = TessBaseAPI()
-        tess.pageSegMode = TessBaseAPI.PageSegMode.PSM_AUTO
-
-        val datapath = File(this.filesDir, "tesseract")
-        val tessdataDirectory = File(datapath, "tessdata")
-
-        try {
-            datapath.mkdirs()
-            tessdataDirectory.mkdirs()
-
-            val trainedDataFile = File(tessdataDirectory, "fra.traineddata")
-
-            if (!trainedDataFile.exists()) {
-                assets.open("tessdata/fra.traineddata").use { inputStream ->
-                    FileOutputStream(trainedDataFile).use { outStream ->
-                        val buffer = ByteArray(5000)
-                        var read: Int
-                        while (inputStream.read(buffer).also { read = it } != -1) {
-                            outStream.write(buffer, 0, read)
-                        }
-                    }
-                }
-            }
-
-            if (!tess.init(datapath.absolutePath, "fra")) {
-                Log.e("Tesseract", "init failed")
-            } else {
-                tess.setImage(bitmap)
-                return tess.utF8Text
-
-            }
-        } catch (e: Exception) {
-            Log.e("Tesseract", "Error: ${e.message}")
-        } finally {
-            tess.end()
-        }
-        return ""
+        return Tasks.await(
+            TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS)
+                .process(InputImage.fromBitmap(bitmap, 0))
+                .addOnSuccessListener { Log.d("ImageToText", "Image read correctly") }
+                .addOnFailureListener { Log.e("ImageToText", it.toString()) }
+        ).text
     }
 }
 
