@@ -25,12 +25,12 @@ import com.example.mms.model.HourWeight
 import com.example.mms.service.TasksService
 import com.example.mms.model.Task
 import com.example.mms.model.User
-import org.junit.Test
 import com.example.mms.R
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import org.hamcrest.CoreMatchers.allOf
 import org.hamcrest.Matcher
 import org.hamcrest.Matchers.greaterThanOrEqualTo
+import org.junit.jupiter.api.Test
 import java.time.LocalDateTime
 
 class RecyclerViewContentTest {

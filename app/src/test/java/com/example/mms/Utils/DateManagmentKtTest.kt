@@ -12,7 +12,7 @@ import com.example.mms.Utils.intToStringAdd0IfNecessary
 import com.example.mms.Utils.stringHourMinuteToInt
 import com.example.mms.Utils.stringToDate
 import com.example.mms.Utils.stringddmmyyyyToDate
-import org.junit.Test
+import org.junit.jupiter.api.Test
 import java.time.LocalDateTime
 import java.util.Calendar
 import java.util.Date
