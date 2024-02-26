@@ -43,14 +43,13 @@ class ScanLoading : AppCompatActivity() {
                     Log.d("ScanLoading", "Texte extrait: $text")
                     val ocr = OCR(SingletonDatabase.getDatabase(this@ScanLoading))
                     val medList = ocr.extractMedicationInfo(text)
+                    val doctorList = ocr.getDoctorInfo(text)
 
                     withContext(Dispatchers.Main) {
                         startActivity(
                             Intent(this@ScanLoading, ChooseMedicamentActivity::class.java)
-                                .putExtra(
-                                    "medicamentFound",
-                                    medList as ArrayList<OCR.MedicationInfo>
-                                )
+                                .putExtra("medicamentFound", medList)
+                                .putExtra("doctorFound", doctorList)
                         )
                         finish()
                     }

@@ -11,12 +11,19 @@ import kotlin.math.abs
 class OCR(private val db: AppDatabase) {
 
     /**
+     * Extract doctors RPPS code
+     *
+     * @return A list of String representing RPPS code.
+     */
+    fun getDoctorInfo(text: String): Array<String> = Regex("\\d{11,}").findAll(text).map{ it.value }.toSet().toTypedArray()
+
+    /**
      * Extracts the medication information from the text.
      *
      * @param text The text to extract the medication information from.
      * @return The medication information extracted from the text.
      */
-    fun extractMedicationInfo(text: String): List<MedicationInfo> {
+    fun extractMedicationInfo(text: String): Array<MedicationInfo> {
         val tokens = tokenText(text)
         val listMedFound = extractMedicationName(tokens)
         val dosages = extractDosage(tokens)
@@ -28,7 +35,7 @@ class OCR(private val db: AppDatabase) {
                 "",
                 ""
             )
-        }
+        }.toTypedArray()
 
     }
 
