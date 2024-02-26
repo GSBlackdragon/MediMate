@@ -24,17 +24,47 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.118" />
 
+
+    <TextView
+        android:id="@+id/tv_doctor_found"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/m_decins_d_tect_s"
+        android:textSize="16sp"
+        android:layout_marginTop="20dp"
+        app:layout_constraintHorizontal_bias="0.21"
+        app:layout_constraintStart_toStartOf="@+id/text_choose_medicament"
+        app:layout_constraintTop_toBottomOf="@+id/text_choose_medicament" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/doctorDetectedRecyclerView"
+        android:layout_width="300dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_doctor_found" />
+
+    <TextView
+        android:id="@+id/textView23"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/m_dicaments_d_tect_s"
+        android:textSize="16sp"
+        android:layout_marginTop="20dp"
+        app:layout_constraintStart_toStartOf="@+id/medicamentRecyclerView"
+        app:layout_constraintTop_toBottomOf="@+id/doctorDetectedRecyclerView" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/medicamentRecyclerView"
         style="@style/BoxShadow"
         android:layout_width="300dp"
-        android:layout_height="400dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_height="200dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_choose_medicament"
-        app:layout_constraintVertical_bias="0.132" />
+        app:layout_constraintTop_toBottomOf="@+id/textView23"
+        app:layout_constraintVertical_bias="0.62" />
 
     <Button
         android:id="@+id/btn_next"
@@ -48,6 +78,6 @@
         app:layout_constraintHorizontal_bias="0.95"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/medicamentRecyclerView"
-        app:layout_constraintVertical_bias="0.8" />
+        app:layout_constraintVertical_bias="0.7" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

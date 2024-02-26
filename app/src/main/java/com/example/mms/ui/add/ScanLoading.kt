@@ -41,11 +41,10 @@ class ScanLoading : AppCompatActivity() {
 
                 if (imageToScan != null) {
                     val text = getTextFromBitmap(imageToScan)
-                    Log.d("ScanLoading", "Texte extrait: $text")
+                    Log.d("ImageToText", text)
                     val ocr = OCR(SingletonDatabase.getDatabase(this@ScanLoading))
                     val medList = ocr.extractMedicationInfo(text)
                     val doctorList = ocr.getDoctorInfo(text)
-
                     withContext(Dispatchers.Main) {
                         startActivity(
                             Intent(this@ScanLoading, ChooseMedicamentActivity::class.java)

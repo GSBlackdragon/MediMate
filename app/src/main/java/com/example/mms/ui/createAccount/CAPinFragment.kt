@@ -83,8 +83,8 @@ class CAPinFragment : Fragment() {
 
         binding.codePin.buttonDelete.setOnClickListener {
             if (currentIndex > 0) {
-                currentIndex--
                 listCodePin[currentIndex].setText("")
+                currentIndex--
             }
         }
         for (button in listButtons) {
@@ -92,9 +92,10 @@ class CAPinFragment : Fragment() {
             // Set onClickListener to each button
             button.setOnClickListener {
                 listCodePin[currentIndex].setText(button.text.toString())
-                currentIndex++
-                if (currentIndex > 4) {
-                    currentIndex = 4
+                if (currentIndex >= 3) {
+                    currentIndex = 3
+                }else {
+                    currentIndex++
                 }
             }
         }

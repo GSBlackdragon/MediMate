@@ -252,4 +252,7 @@
     <string name="allergie_dectectee_message">The drug you are trying to add contains an active substance (%s) to which you are allergic</string>
     <string name="toast_allergie">This drug presents an active substance (%s) to which you are allergic</string>
     <string name="recherche_par_id">Search by ID</string>
+    <string name="m_decins_d_tect_s">Doctors detected</string>
+    <string name="m_dicaments_d_tect_s">Drugs detected</string>
+    <string name="aucun_docteur_trouve">No doctor found</string>
 </resources>
