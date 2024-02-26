@@ -12,11 +12,9 @@ import com.google.mlkit.vision.text.Text
 import com.google.mlkit.vision.text.TextRecognition
 import com.google.mlkit.vision.text.latin.TextRecognizerOptions
 import org.apache.commons.text.similarity.FuzzyScore
-import org.apache.commons.text.similarity.HammingDistance
-import org.apache.commons.text.similarity.LevenshteinDistance
-import org.apache.commons.text.similarity.LongestCommonSubsequence
-import org.apache.commons.text.similarity.LongestCommonSubsequenceDistance
 import java.util.Locale
+import kotlin.contracts.contract
+import kotlin.math.log
 
 class OCR(private val db: AppDatabase) {
 
@@ -34,39 +32,51 @@ class OCR(private val db: AppDatabase) {
             .addOnFailureListener { Log.d("Image Recovery", "Failure : image not read"); throw Exception("Recognition failed") }
         )
     }
+
+    fun getDoctorInfo(): List<String> = Regex("\\d{11,}").findAll(result.text).map{ it.value }.toSet().toList()
+
+    data class LineFuzzyScore(
+        val line: String,
+        val medicine: Medicine,
+        val fuzzyScore: Int
+    ) {
+        companion object {
+            fun getLinesFuzzyScore(text: Text, medicines: List<Medicine>): List<LineFuzzyScore> {
+                val fuzzy = FuzzyScore(Locale.FRANCE)
+                val reg = Regex("[()\\-<>]")
+                val linesScore = mutableListOf<LineFuzzyScore>()
+
+                text.textBlocks.forEach { it.lines.forEach { line ->
+                    if(line.text.length > 20) {
+                        medicines.forEach { med ->
+                            val medString = "${med.composition?.substance_name} ${med.name} ${med.type.weight}".replace(reg, "")
+                            val score = fuzzy.fuzzyScore(
+                                line.text.replace(reg, ""),
+                                medString
+                            )
+                            if(score > 30) linesScore.add(LineFuzzyScore(line.text, med, score))
+                        }
+                    }
+                } }
+                return linesScore
+            }
+        }
+    }
     fun getMedicineInfo(): List<MedicationInfo> {
 
-        val medicines = db.medicineDao().getAll()
-        val detectedMedicines = mutableListOf<Medicine>()
-        val jws = FuzzyScore(Locale.FRENCH)
-        val reg = Regex("[()\\-<>]")
+        try {
+            val medicines = db.medicineDao().getAll()
+            val listFuzzyScore = LineFuzzyScore.getLinesFuzzyScore(result, medicines)
 
-        val airomir = medicines.find { it.code_cis == 66086181L }?.let { "${it.composition?.substance_name} ${it.name} ${it.type.weight}" }
-        val score = jws.fuzzyScore(
-            "1/ Salbutamol AlROMIR 100MCG/DOSE AUTOHALER 200  1 Flacon".uppercase(),
-            airomir!!.replace(reg, "")
-        )
-        Log.d("JWS Score", "${airomir.replace(reg, "")} -> $score")
+            listFuzzyScore.sortedWith(compareBy<LineFuzzyScore> {it.line}.thenByDescending { it.fuzzyScore })
+                .filterIndexed { index, line -> index == 0 || line.line != listFuzzyScore[index-1].line } //Filter Not working properly
+                .forEach { Log.d("Fuzzy Score", it.toString()) }
 
-        result.textBlocks.forEach { it.lines.forEach { line ->
-            if(line.text.length > 10) {
-                medicines.forEach { med ->
-                    val medString = "${med.composition?.substance_name} ${med.name} ${med.type.weight}"
-                    val score = jws.fuzzyScore(line.text.replace(reg, ""), medString.replace(reg, ""))
-                    if(score > 38) {
-                        detectedMedicines.add(med)
-                        Log.d("JWS Score", "${line.text.replace(reg, "")} -> ${medString.replace(reg, "")} : $score")
-                    }
-                }
-            }
-        } }
+        } catch (e: Exception) {
+            Log.d("Fuzzy Score", e.toString())
+        }
 
-        Log.d("MedicinesList", detectedMedicines.toString())
-        return emptyList()
-    }
-
-    fun getDoctorInfo(): List<String> {
-        return Regex("\\d{11,}").findAll(result.text).map{ it.value }.toSet().toList()
+        return listOf(MedicationInfo("","","",""))
     }
 
     /**

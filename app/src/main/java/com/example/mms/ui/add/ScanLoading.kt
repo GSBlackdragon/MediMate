@@ -40,22 +40,23 @@ class ScanLoading : AppCompatActivity() {
 
                 val ocr = OCR(SingletonDatabase.getDatabase(this@ScanLoading))
                 ocr.recognize(image)
-                val docList = ocr.getDoctorInfo()
-                val medList = ocr.getMedicineInfo()
-
-                startActivity(
-                    Intent(this@ScanLoading, ChooseMedicamentActivity::class.java)
-                        .putExtra(
-                            "medicamentFound",
-                            medList as ArrayList<OCR.MedicationInfo>
-                        )
-                )
-                finish()
+                val docList = ocr.getDoctorInfo().toTypedArray()
+                val medList = ocr.getMedicineInfo().toTypedArray()
+                withContext(Dispatchers.Main) {
+                    startActivity(
+                        Intent(this@ScanLoading, ChooseMedicamentActivity::class.java)
+                            .putExtra("medicamentFound", medList)
+                            .putExtra("DoctorFound", docList)
+                    )
+                    finish()
+                }
 
             } catch (e: Exception) {
-                Log.d("Image Error", e.toString())
-                Toast.makeText(this@ScanLoading, getString(R.string.erreur_prise_photo), Toast.LENGTH_SHORT).show()
-                finish()
+                withContext(Dispatchers.Main) {
+                    Log.d("Image Error", e.toString())
+                    Toast.makeText(this@ScanLoading, getString(R.string.erreur_prise_photo), Toast.LENGTH_SHORT).show()
+                    finish()
+                }
             }
         }
             /*
