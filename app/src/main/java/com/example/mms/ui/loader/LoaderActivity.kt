@@ -125,7 +125,7 @@ class LoaderActivity : AppCompatActivity() {
                 val Warning: List<String>,
                 val Allergie: List<String>,
                 val Content: String,
-                val sideEffect: List<Int>
+                val sideEffect: String
             )
             val json = Json { ignoreUnknownKeys = true }
             this.assets.open("databases/sideInfo.json").use { inputStream ->
@@ -133,7 +133,7 @@ class LoaderActivity : AppCompatActivity() {
                 val map = json.decodeFromStream(mapType, inputStream)
                 val storage = mutableListOf<SideInfoMedicine>()
                 map.forEach { (key, value) ->
-                    storage.add(SideInfoMedicine(key, value.Warning.joinToString(), value.Allergie.joinToString(), value.Content, value.sideEffect.joinToString()))
+                    storage.add(SideInfoMedicine(key, value.Warning.joinToString(), value.Allergie.joinToString(), value.Content, value.sideEffect))
                 }
                 Executors.newSingleThreadExecutor().submit {
                     db.sideInfoMedicineDao().insertMany(storage)
