@@ -5,6 +5,7 @@ import android.content.Intent
 import android.icu.text.SimpleDateFormat
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -53,6 +54,7 @@ class AccueilFragment : Fragment() {
     private lateinit var userMedicines: MutableList<Task>
     private lateinit var items: MutableList<ShowableHourWeight>
     private lateinit var listDoublonsSubActiveCode : MutableList<Int?>
+    private lateinit var listMedicineCIS : MutableList<String>
     private lateinit var db: AppDatabase
     private lateinit var tasksService: TasksService
     private val selectedDate = Date()
@@ -113,11 +115,13 @@ class AccueilFragment : Fragment() {
         updateSmiley()
 
         listDoublonsSubActiveCode = mutableListOf()
+        listMedicineCIS = mutableListOf()
 
         var t = Thread {
             var listSubActiveCode : MutableList<Int?> = mutableListOf()
             for (item in items){
                 listSubActiveCode.add(db.medicineDao().getByCIS(item.task.medicineCIS)?.composition?.substance_code)
+                listMedicineCIS.add(item.task.medicineCIS.toString())
             }
             listDoublonsSubActiveCode =
                 listSubActiveCode
@@ -126,15 +130,14 @@ class AccueilFragment : Fragment() {
                     .filter { it.value >= 2 }
                     .keys
                     .toMutableList()
-
         }
         t.start()
         t.join()
 
-
+        Log.d("test",listMedicineCIS.toString())
 
         setMonthAndYear(extractMonthAndYearFromDate(this.selectedDate.toString())!!.first, extractMonthAndYearFromDate(this.selectedDate.toString())!!.second)
-        takesAdapter = TakesAdapter(root.context, items, db, this.selectedDate, root,listDoublonsSubActiveCode) { updateSmiley() }
+        takesAdapter = TakesAdapter(root.context, items, db, this.selectedDate, root,listDoublonsSubActiveCode,listMedicineCIS) { updateSmiley() }
         medicinesRV.layoutManager = LinearLayoutManager(root.context)
         medicinesRV.adapter = takesAdapter
 
@@ -160,7 +163,7 @@ class AccueilFragment : Fragment() {
                         userMedicines
                     )
                 )
-                takesAdapter.updateListDoublons(updateSubActiveDoublons())
+                takesAdapter.updateListDoublonsAndCIS(updateSubActiveDoublons())
 
                 takesAdapter.updateCurrentDate(stringToDate(clickedDay.date))
 
@@ -211,7 +214,7 @@ class AccueilFragment : Fragment() {
             userMedicines.addAll(clickedDay.listTasks)
             items.clear()
             items.addAll(this.tasksService.createShowableHourWeightsFromTasks(userMedicines))
-            takesAdapter.updateListDoublons(updateSubActiveDoublons())
+            takesAdapter.updateListDoublonsAndCIS(updateSubActiveDoublons())
             takesAdapter.updateCurrentDate(stringToDate(clickedDay.date))
             takesAdapter.notifyDataSetChanged()
             binding.floatingActionButtonBackToday.hide()
@@ -277,7 +280,7 @@ class AccueilFragment : Fragment() {
         items.clear()
         items.addAll(this.tasksService.createShowableHourWeightsFromTasks(userMedicines))
 
-        takesAdapter.updateListDoublons(updateSubActiveDoublons())
+        takesAdapter.updateListDoublonsAndCIS(updateSubActiveDoublons())
 
         takesAdapter.updateCurrentDate(stringToDate(clickedDay.date))
         takesAdapter.notifyDataSetChanged()
@@ -315,12 +318,17 @@ class AccueilFragment : Fragment() {
         _binding = null
     }
 
-    fun updateSubActiveDoublons() : MutableList<Int?>{
+    fun updateSubActiveDoublons() : Pair<MutableList<Int?>,MutableList<String>> {
+
         listDoublonsSubActiveCode.clear()
+        listMedicineCIS.clear()
+
+
         var t = Thread {
             var listSubActiveCode : MutableList<Int?> = mutableListOf()
             for (item in items){
                 listSubActiveCode.add(db.medicineDao().getByCIS(item.task.medicineCIS)?.composition?.substance_code)
+                listMedicineCIS.add(item.task.medicineCIS.toString())
             }
             listDoublonsSubActiveCode =
                 listSubActiveCode
@@ -333,6 +341,6 @@ class AccueilFragment : Fragment() {
         }
         t.start()
         t.join()
-        return listDoublonsSubActiveCode
+        return Pair(listDoublonsSubActiveCode,listMedicineCIS)
     }
 }

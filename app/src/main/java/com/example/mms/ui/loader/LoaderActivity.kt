@@ -27,8 +27,11 @@ import com.example.mms.ui.login.LoginActivity
 import com.example.mms.ui.welcome.WelcomeActivity
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.serialization.*
+
 import kotlinx.serialization.json.*
+import kotlinx.serialization.json.Json.Default.serializersModule
 import java.util.Calendar
+import java.util.concurrent.Executors
 
 class LoaderActivity : AppCompatActivity() {
     private lateinit var binding: LoaderBinding
@@ -116,30 +119,32 @@ class LoaderActivity : AppCompatActivity() {
         }
         t.start()
         t.join()
-        var t2 = Thread{
+        val t2 = Thread {
             @Serializable
             data class SideInfo(
                 val Warning: List<String>,
                 val Allergie: List<String>,
-                val Content: String
+                val Content: String,
+                val sideEffect: String
             )
-
-            var map = Json.decodeFromString<Map<String, SideInfo>>(this.assets.open("databases/sideEffect.json").bufferedReader().use {
-            it.readText()
-        })
-            var storage = mutableListOf<SideInfoMedicine>()
-            map.forEach {
-                storage.add(SideInfoMedicine(it.key, it.value.Warning.toString().replace("[","").replace("]",""), it.value.Allergie.toString().replace("[","").replace("]",""), it.value.Content,""))
+            val json = Json { ignoreUnknownKeys = true }
+            this.assets.open("databases/sideInfo.json").use { inputStream ->
+                val mapType = serializersModule.serializer<Map<String, SideInfo>>()
+                val map = json.decodeFromStream(mapType, inputStream)
+                val storage = mutableListOf<SideInfoMedicine>()
+                map.forEach { (key, value) ->
+                    storage.add(SideInfoMedicine(key, value.Warning.joinToString(), value.Allergie.joinToString(), value.Content, value.sideEffect))
+                }
+                Executors.newSingleThreadExecutor().submit {
+                    db.sideInfoMedicineDao().insertMany(storage)
+                }
             }
-            Thread{
-                db.sideInfoMedicineDao().insertMany(storage)
-            }.start()
-
         }
         t2.start()
-        t2.join()
-        /*
-        Thread{
+
+        //t2.join()
+
+        /*Thread{
 
             var map = Json.decodeFromString<Map<String, List<Int>>>(this.assets.open("databases/super.json").bufferedReader().use {
                 it.readText()
@@ -152,8 +157,8 @@ class LoaderActivity : AppCompatActivity() {
                 }
             }.start()
         }.start()
+        */
 
-         */
 
     }
 
