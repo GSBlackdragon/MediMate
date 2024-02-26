@@ -138,7 +138,7 @@ class LoaderActivity : AppCompatActivity() {
         }
         t2.start()
         t2.join()
-        /*
+
         Thread{
 
             var map = Json.decodeFromString<Map<String, List<Int>>>(this.assets.open("databases/super.json").bufferedReader().use {
@@ -153,7 +153,7 @@ class LoaderActivity : AppCompatActivity() {
             }.start()
         }.start()
 
-         */
+
 
     }
 
