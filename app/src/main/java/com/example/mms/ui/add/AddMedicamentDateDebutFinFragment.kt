@@ -1,6 +1,7 @@
 package com.example.mms.ui.add
 
 import android.app.DatePickerDialog
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -87,41 +88,8 @@ class AddMedicamentDateDebutFinFragment : Fragment() {
             }
         }
 
-        binding.nextButton.setOnClickListener {
-            // take values from the form
-            val beginDate = binding.editBeginDate.text.toString()
-            val endDate = binding.editEndDate.text.toString()
+        nextButtonBinder(root.context)
 
-            // check if the values are correct
-            val errorMessage = when (true) {
-                (beginDate == "") -> getString(R.string.fill_fields)
-                (endDate == "") -> getString(R.string.fill_fields)
-                else -> null
-            }
-
-            if (errorMessage != null) {
-                // display error message
-                val toast = Toast.makeText(root.context, errorMessage, Toast.LENGTH_SHORT)
-                toast.show()
-            } else {
-                // save values in the view model
-                viewModel.taskData.value!!.stopOnStock=STOP_ON_STOCK
-                viewModel.taskData.value!!.startDate = this.beginDate
-                if (STOP_ON_STOCK){
-                    var totalStock = viewModel.storage.value?.storage
-                    var totalWeight = viewModel.cycle.value?.hourWeights!!.map { it.weight }.sum()
-                    var totalDaysToAdd = totalStock?.div(totalWeight)
-                    viewModel.taskData.value!!.endDate = this.beginDate.plusDays(totalDaysToAdd!!.toLong()-1)
-
-                }else{
-                    viewModel.taskData.value!!.endDate = this.endDate
-                }
-
-
-                // go to next fragment
-                goTo(requireActivity(), R.id.action_start_end_date_to_recap)
-            }
-        }
 
         return root
     }
@@ -185,6 +153,44 @@ class AddMedicamentDateDebutFinFragment : Fragment() {
         editText.isEnabled = true
         editText.keyListener = null
         editText.isFocusable = false
+    }
+
+    private fun nextButtonBinder(context : Context) {
+        binding.nextButton.setOnClickListener {
+            // take values from the form
+            val beginDate = binding.editBeginDate.text.toString()
+            val endDate = binding.editEndDate.text.toString()
+
+            // check if the values are correct
+            val errorMessage = when (true) {
+                (beginDate == "") -> getString(R.string.fill_fields)
+                (endDate == "") -> getString(R.string.fill_fields)
+                else -> null
+            }
+
+            if (errorMessage != null) {
+                // display error message
+                val toast = Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT)
+                toast.show()
+            } else {
+                // save values in the view model
+                viewModel.taskData.value!!.stopOnStock=STOP_ON_STOCK
+                viewModel.taskData.value!!.startDate = this.beginDate
+                if (STOP_ON_STOCK){
+                    val totalStock = viewModel.storage.value?.storage
+                    val totalWeight = viewModel.cycle.value?.hourWeights!!.map { it.weight }.sum()
+                    val totalDaysToAdd = totalStock?.div(totalWeight)
+                    viewModel.taskData.value!!.endDate = this.beginDate.plusDays(totalDaysToAdd!!.toLong()-1)
+
+                }else{
+                    viewModel.taskData.value!!.endDate = this.endDate
+                }
+
+
+                // go to next fragment
+                goTo(requireActivity(), R.id.action_start_end_date_to_recap)
+            }
+        }
     }
 
 }
