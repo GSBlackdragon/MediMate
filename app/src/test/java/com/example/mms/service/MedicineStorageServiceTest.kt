@@ -1,6 +1,6 @@
 package com.example.mms.service
 
-import org.junit.Test
+import org.junit.jupiter.api.Test
 
 class MedicineStorageServiceTest {
 
