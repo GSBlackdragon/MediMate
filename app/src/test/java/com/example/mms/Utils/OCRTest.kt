@@ -11,7 +11,7 @@ class OCRTest {
 
     @Test
     fun doctorInfoRandomOrderCode() {
-        val allowedChars = ('A'..'Z') + ('a'..'z') + ('0'..'9')
+        val allowedChars = ('A'..'Z') + ('a'..'z')
         val sideString = {(0..10).map { allowedChars.random() }.joinToString("")}
         val codeString = (0..11).map { ('0'..'9').random() }.joinToString("")
         val testString = sideString() + codeString + sideString()

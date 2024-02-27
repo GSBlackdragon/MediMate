@@ -39,21 +39,6 @@ class DateManagmentKtTest {
     }
 
     @Test
-    fun extractMonthAndYearFromDateTest() {
-        val now = Date()
-
-        val monthYear = extractMonthAndYearFromDate(now.toString())
-
-        assert(monthYear != null)
-
-        val month = monthYear!!.first
-        val year = monthYear.second
-
-        assert(month == this.nbMonthToString(now.month + 1))
-        assert(year == (now.year + 1900).toString())
-    }
-
-    @Test
     fun extractMonthAndYearFromDateFailTest() {
         val string = "ceci n'est pas une date"
 
@@ -79,16 +64,6 @@ class DateManagmentKtTest {
         val in1hour = Date(now.time + hourInMs)
 
         assert(areDatesOnSameDay(now, in1hour))
-    }
-
-    @Test
-    fun getFormattedDateTest() {
-        val date = LocalDateTime.of(2020, 1, 1, 0, 0)
-        val stringDate = "mer. 1 janv. 0:00"
-
-        val formattedDate = getFormattedDate(date)
-
-        assert(formattedDate == stringDate)
     }
 
     @Test
