@@ -124,8 +124,6 @@ class TakesAdapter(
         val t = Thread {
             itemSubActCode = db.medicineDao().getByCIS(item.task.medicineCIS)?.composition?.substance_code
             var liste = db.sideInfoMedicineDao().getById(item.task.medicineCIS.toString())?.sideInfo?.split(",")
-            Log.d("test5",liste.toString())
-            Log.d("test6",listMedicineCIS.toString())
 
             if (liste != null){
                 commun = listMedicineCIS.intersect(liste.toSet())
@@ -137,12 +135,10 @@ class TakesAdapter(
         }
         t.start()
         t.join()
-        Log.d("test3",commun.toString())
         var (warnings,allergie) = getItemWarnings(item)
         if (commun.isNotEmpty()){
             warnings+=commun.first()
         }
-        Log.d("test2",warnings.toString())
         val warningsAdapter = TakesWarningsAdapter(db,context,warnings,allergie)
 
         holder.recyclerViewIconsWarning.layoutManager = layoutManager

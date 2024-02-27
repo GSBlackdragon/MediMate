@@ -134,7 +134,6 @@ class AccueilFragment : Fragment() {
         t.start()
         t.join()
 
-        Log.d("test",listMedicineCIS.toString())
 
         setMonthAndYear(extractMonthAndYearFromDate(this.selectedDate.toString())!!.first, extractMonthAndYearFromDate(this.selectedDate.toString())!!.second)
         takesAdapter = TakesAdapter(root.context, items, db, this.selectedDate, root,listDoublonsSubActiveCode,listMedicineCIS) { updateSmiley() }

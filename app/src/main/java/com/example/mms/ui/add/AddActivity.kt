@@ -103,7 +103,7 @@ class AddActivity : AppCompatActivity() {
 
         binding.buttonGetPhoto.setOnLongClickListener {
             startActivity(Intent(this@AddActivity, ScanLoading::class.java)
-                .putExtra("capturedImageUri", Uri.parse("android.resource://com.example.mms/drawable/ordonnance_2")))
+                .putExtra("capturedImageUri", Uri.parse("android.resource://com.example.mms/drawable/ordonnance_3")))
             true
         }
 
