@@ -7,7 +7,6 @@ import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
-import android.util.Log
 import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
@@ -26,7 +25,6 @@ import com.example.mms.database.inApp.AppDatabase
 import com.example.mms.model.HourWeight
 import com.example.mms.model.ShowableHourWeight
 import com.example.mms.model.Takes
-import com.example.mms.model.Task
 import com.example.mms.service.MedicineStorageService
 import com.example.mms.service.SideInfoService
 import com.example.mms.service.TasksService

@@ -5,7 +5,6 @@ import android.os.Parcelable
 import androidx.core.text.isDigitsOnly
 import com.example.mms.database.inApp.AppDatabase
 import edu.stanford.nlp.simple.Document
-import java.util.regex.Pattern
 import kotlin.math.abs
 
 class OCR(private val db: AppDatabase) {
