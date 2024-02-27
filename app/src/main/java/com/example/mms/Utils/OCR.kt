@@ -115,40 +115,6 @@ class OCR(private val db: AppDatabase) {
     }
 
     /**
-     * Extracts the frequencies from the text. (Not used)
-     *
-     * @param tokens The tokens to extract the frequencies from.
-     * @return The frequencies extracted from the text.
-     */
-    private fun extractFrequency(tokens: List<String>): String {
-        // Exemple : Identifier des phrases comme "une fois par jour", "2 fois par jour", etc.
-        val frequencyPattern = Pattern.compile("\\d+ par jour")
-        for (token in tokens) {
-            if (frequencyPattern.matcher(token).find()) {
-                return token
-            }
-        }
-        return ""
-    }
-
-    /**
-     * Extracts the duration from the text. (Not used)
-     *
-     * @param tokens The tokens to extract the duration from.
-     * @return The duration extracted from the text.
-     */
-    private fun extractDuration(tokens: List<String>): String {
-        // Exemple : Identifier des phrases comme "pendant 10 jours", "pendant 2 semaines", etc.
-        val durationPattern = Pattern.compile("pendant \\d+ (jours|semaines|mois)")
-        for (token in tokens) {
-            if (durationPattern.matcher(token).find()) {
-                return token
-            }
-        }
-        return ""
-    }
-
-    /**
      * Transforms the text to make it easier to extract the medication information.
      * Replaces wrongly guessed 'o' and '0' by the right one.
      *

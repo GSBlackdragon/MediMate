@@ -29,6 +29,6 @@ interface SideInfoMedicineDAO {
     @Query("DELETE FROM SideInfoMedicine")
     fun deleteAll()
 
-    @Query("UPDATE SideInfoMedicine SET sideInfo = :sideInfo WHERE code_cis = :code_cis")
-    fun addBadInteraction(code_cis: String, sideInfo: String)
+    @Query("UPDATE SideInfoMedicine SET sideInfo = :sideInfo WHERE code_cis = :codeCis")
+    fun addBadInteraction(codeCis: String, sideInfo: String)
 }
