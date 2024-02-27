@@ -53,4 +53,10 @@ class OCRTest {
         val testString = "lhddkjqn12345678901kjsdlknfq098765432109khqfkj,fs12345678901ljnfns;df"
         assertArrayEquals(arrayOf("12345678901", "098765432109"), this.ocr.getDoctorInfo(testString))
     }
+
+    @Test
+    fun removeSpaceBetweenNumberTest() {
+        val testString = "Hello12 342 2world 1 313 0121 kotlin 12 12 1cool"
+        assertEquals("Hello123422world 13130121 kotlin 12121cool", this.ocr.removeSpaceBetweenNumbers(testString))
+    }
 }

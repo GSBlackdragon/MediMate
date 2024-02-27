@@ -165,19 +165,8 @@ class OCR(private val db: AppDatabase) {
      * @param text The text to remove the spaces between numbers from.
      * @return The text without spaces between numbers.
      */
-    private fun removeSpaceBetweenNumbers(text: String) : String {
-        var res = ""
-        for (i in text.indices) {
-            if (text[i] == ' ') {
-                if (i > 0 && i < text.length - 1) {
-                    if (text[i - 1] in '0'..'9' && text[i + 1] in '0'..'9') {
-                        continue
-                    }
-                }
-            }
-            res += text[i]
-        }
-        return res
+    fun removeSpaceBetweenNumbers(text: String) : String {
+        return text.replace(Regex("(?<=\\d) +(?=\\d)"),"")
     }
 
 
