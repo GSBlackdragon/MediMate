@@ -56,8 +56,8 @@ class SharedAMViewModel : ViewModel() {
         _cycle.value = cycle
     }
 
-    fun setSpecificDays(specificDays: MutableList<SpecificDaysHourWeight>) {
-        _specificDays.value = specificDays
+    fun setSpecificDays(specificDays: List<SpecificDaysHourWeight>) {
+        _specificDays.value = specificDays.toMutableList()
     }
 
     fun setOneTakeWeight(weight: Int) {
