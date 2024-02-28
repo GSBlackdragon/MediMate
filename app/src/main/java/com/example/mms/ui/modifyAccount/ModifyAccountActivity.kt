@@ -74,14 +74,14 @@ class ModifyAccountActivity : AppCompatActivity() {
                 binding.editBirthdate.setOnClickListener {
                     // init calendar
                     val calendar = Calendar.getInstance()
-                    val year = calendar.get(Calendar.YEAR)
-                    val month = calendar.get(Calendar.MONTH)
-                    val day = calendar.get(Calendar.DAY_OF_MONTH)
+                    val year = calendar[Calendar.YEAR]
+                    val month = calendar[Calendar.MONTH]
+                    val day = calendar[Calendar.DAY_OF_MONTH]
 
                     // create date picker dialog
                     val datePickerDialog = DatePickerDialog(
                         this,
-                        DatePickerDialog.OnDateSetListener { view, selectedYear, selectedMonth, selectedDay ->
+                        DatePickerDialog.OnDateSetListener { _, selectedYear, selectedMonth, selectedDay ->
                             val selectedDate = "$selectedDay/${selectedMonth + 1}/$selectedYear"
                             binding.editBirthdate.setText(selectedDate)
                         },
@@ -97,7 +97,7 @@ class ModifyAccountActivity : AppCompatActivity() {
 
                 // filter to edit name and surname
                 val nameSurnameRegex = Regex("^[a-zA-ZÀ-ÿ-'\\s]+$")
-                val nameSurnameFilter = InputFilter { source, start, end, dest, dstart, dend ->
+                val nameSurnameFilter = InputFilter { source, _, _, _, _, _ ->
                     if (source != null && !source.toString().matches(nameSurnameRegex)) {
                         ""  // Si le texte ne correspond pas à la regex, le caractère est supprimé
                     } else {
