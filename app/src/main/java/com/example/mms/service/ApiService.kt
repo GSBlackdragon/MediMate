@@ -253,6 +253,8 @@ class ApiService private constructor(context: Context) {
     }
 
     fun getDoctor(name: Pair<String, String>?, identifier: String?, resultCallback: DoctorResultCallback) {
+        val errorDoctorEmailString = "Une erreur est survenue lors de la récupération de l'email du docteur"
+        val errorDoctorInfoString = "Une erreur est survenue lors de la récupération des informations du docteur"
         this.Doctor = null
         if (identifier != null) {
             getDoctorbyIDInstamed(identifier,
@@ -263,17 +265,17 @@ class ApiService private constructor(context: Context) {
                             this.Doctor?.email = email
                         },
                         errorCallback = {
-                            Log.d("error", "Une erreur est survenue lors de la récupération de l'email du docteur")
+                            Log.d("error", errorDoctorEmailString)
                             // Signaler une erreur
-                            resultCallback.onError("Une erreur est survenue lors de la récupération de l'email du docteur")
+                            resultCallback.onError(errorDoctorEmailString)
                         }
                     )
                     resultCallback.onSuccess(listOf(doctor))
                 },
                 errorCallback = {
-                    Log.d("error", "Une erreur est survenue lors de la récupération des informations du docteur")
+                    Log.d("error", errorDoctorInfoString)
                     // Signaler une erreur
-                    resultCallback.onError("Une erreur est survenue lors de la récupération des informations du docteur")
+                    resultCallback.onError(errorDoctorInfoString)
                 }
             )
         } else if (name != null) {
@@ -311,9 +313,9 @@ class ApiService private constructor(context: Context) {
                     }
                 },
                 errorCallback = {
-                    Log.d("error", "Une erreur est survenue lors de la récupération des informations du docteur")
+                    Log.d("error", errorDoctorInfoString)
                     // Signaler une erreur
-                    resultCallback.onError("Une erreur est survenue lors de la récupération des informations du docteur")
+                    resultCallback.onError(errorDoctorInfoString)
                 }
             )
         } else {
