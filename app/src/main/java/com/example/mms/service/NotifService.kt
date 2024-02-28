@@ -70,7 +70,6 @@ class NotifService(
      * @param hasEnoughStock True if the user has enough stock to take the medicine
      */
     fun sendReminder(medicineName: String, takes: Takes, hasEnoughStock: Boolean) {
-        val title = medicineName
         val message = this.context.getString(R.string.notification_message)
 
         this.createNotificationChannel()
@@ -86,7 +85,7 @@ class NotifService(
         // Build the notification
         val builder = NotificationCompat.Builder(this.context, this.CHANNEL_MEDI_REMINDER)
             .setSmallIcon(R.drawable.medicament)
-            .setContentTitle(title)
+            .setContentTitle(medicineName)
             .setContentText(message)
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .setContentIntent(pendingIntent)

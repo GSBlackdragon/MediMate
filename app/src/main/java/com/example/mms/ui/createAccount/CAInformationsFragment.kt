@@ -27,7 +27,6 @@ class CAInformationsFragment : Fragment() {
 
     private val binding get() = _binding!!
 
-    @OptIn(DelicateCoroutinesApi::class)
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,

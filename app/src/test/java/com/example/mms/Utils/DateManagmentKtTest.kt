@@ -6,7 +6,6 @@ import com.example.mms.Utils.dateToLocalDatetime
 import com.example.mms.Utils.dateToString
 import com.example.mms.Utils.extractMonthAndYearFromDate
 import com.example.mms.Utils.getAgeFromStringBirthDate
-import com.example.mms.Utils.getFormattedDate
 import com.example.mms.Utils.hourMinuteToString
 import com.example.mms.Utils.intToStringAdd0IfNecessary
 import com.example.mms.Utils.stringHourMinuteToInt
