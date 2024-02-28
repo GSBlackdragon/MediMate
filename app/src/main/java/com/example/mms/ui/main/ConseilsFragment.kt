@@ -110,8 +110,7 @@ class ConseilsFragment : Fragment() {
             if(nameDoctor.text.isEmpty() && idDoctor.text.isEmpty()) {
                 Toast.makeText(this.requireContext(), getString(R.string.fill_fields), Toast.LENGTH_SHORT).show()
             } else {
-                var id : String? = idDoctor.text.toString()
-                if (id!!.isEmpty()) id = null
+                val id = idDoctor.text.toString()
                 val lastName = nameDoctor.text.toString()
                 val firstName = firstNameDoctor.text.toString()
                 api.getDoctor(Pair(firstName,lastName),id, object : ApiService.DoctorResultCallback{
@@ -121,13 +120,10 @@ class ConseilsFragment : Fragment() {
                         nameDoctor.isEnabled = true
                         firstNameDoctor.isEnabled = true
                         idDoctor.isEnabled = true
-                        Log.d("SUCCESS", doctors.toString())
-                        if (doctors != null) {
-                            if (doctors.isEmpty()) {
-                                Toast.makeText(this@ConseilsFragment.requireContext(), R.string.no_doctor_found, Toast.LENGTH_SHORT).show()
-                            } else {
-                                dialogChooseDoctors(doctors)
-                            }
+                        if (!doctors.isNullOrEmpty()) {
+                            dialogChooseDoctors(doctors)
+                        }else {
+                            Toast.makeText(this@ConseilsFragment.requireContext(), R.string.no_doctor_found, Toast.LENGTH_SHORT).show()
                         }
                     }
                     override fun onError(error: String) {
