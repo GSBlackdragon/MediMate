@@ -8,7 +8,6 @@ import com.example.mms.adapter.AccountAdapter
 import com.example.mms.database.inApp.AppDatabase
 import com.example.mms.database.inApp.SingletonDatabase
 import com.example.mms.databinding.ActivityLoginBinding
-import com.example.mms.model.User
 import com.example.mms.ui.createAccount.CreateAccountActivity
 import com.example.mms.ui.locked.LockedActivity
 

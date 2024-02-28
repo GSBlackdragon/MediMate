@@ -1,10 +1,8 @@
 package com.example.mms.ui.add
 
-import android.graphics.Bitmap
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.mms.Utils.OCR
 import com.example.mms.model.Cycle
 import com.example.mms.model.MedicineStorage
 import com.example.mms.model.SpecificDaysHourWeight
