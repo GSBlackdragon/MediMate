@@ -69,7 +69,7 @@ class HourWeightAdapter(
         holder.npDosage.value = this.hourWeightList[position].weight
 
         // set listeners
-        holder.npDosage.setOnValueChangedListener { picker, oldVal, newVal ->
+        holder.npDosage.setOnValueChangedListener { _, _, newVal ->
             this.hourWeightList[position].weight = newVal
         }
 

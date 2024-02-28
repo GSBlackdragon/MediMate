@@ -15,7 +15,7 @@ import com.example.mms.database.inApp.AppDatabase
 import com.example.mms.model.Doctor
 
 class DoctorAdapter(
-    var doctorList : MutableList<Doctor>,
+    private var doctorList : MutableList<Doctor>,
     val context : Context,
     val db : AppDatabase
     )  : RecyclerView.Adapter<DoctorAdapter.MyViewHolder>() {
@@ -42,14 +42,10 @@ class DoctorAdapter(
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        val item                    = doctorList[position]
-        holder.nomMedecin.text      = item.firstname + " " + item.name
-        if (item.title.isEmpty()) {
-            holder.titleMedecin.text = item.speciality
-        }else {
-            holder.titleMedecin.text = item.title
-        }
-        holder.cityMedecin.text     = item.city
+        val item = doctorList[position]
+        holder.nomMedecin.text = item.firstname.plus(" ").plus(item.name)
+        holder.titleMedecin.text = item.title.ifEmpty { item.speciality }
+        holder.cityMedecin.text = item.city
         holder.btnDelete.setOnClickListener {
             val tt = Thread {
                 db.doctorDao().deleteDoctor(item)

@@ -6,7 +6,7 @@ import androidx.room.OnConflictStrategy
 import com.example.mms.model.SpecificDaysHourWeight
 
 @Dao
-interface SpecificDaysDAO {
+fun interface SpecificDaysDAO {
 
     @Insert(onConflict = OnConflictStrategy.ABORT)
     fun insert(specificDays: SpecificDaysHourWeight)

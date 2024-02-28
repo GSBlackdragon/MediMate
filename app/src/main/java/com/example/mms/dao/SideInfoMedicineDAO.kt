@@ -5,7 +5,6 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import androidx.room.Update
 import com.example.mms.model.SideInfoMedicine
 
 @Dao
@@ -14,8 +13,8 @@ interface SideInfoMedicineDAO {
     @Query("SELECT * FROM SideInfoMedicine")
     fun getAll(): List<SideInfoMedicine>?
 
-    @Query("SELECT * FROM SideInfoMedicine WHERE code_cis = :code_cis")
-    fun getById(code_cis: String): SideInfoMedicine?
+    @Query("SELECT * FROM SideInfoMedicine WHERE code_cis = :codeCis")
+    fun getById(codeCis: String): SideInfoMedicine?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(medicine: SideInfoMedicine)
