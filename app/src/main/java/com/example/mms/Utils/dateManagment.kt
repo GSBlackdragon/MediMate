@@ -52,9 +52,9 @@ fun areDatesOnSameDay(date1: Date, date2: Date): Boolean {
     val cal1 = Calendar.getInstance().apply { time = date1 }
     val cal2 = Calendar.getInstance().apply { time = date2 }
 
-    return cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR) &&
-            cal1.get(Calendar.MONTH) == cal2.get(Calendar.MONTH) &&
-            cal1.get(Calendar.DAY_OF_MONTH) == cal2.get(Calendar.DAY_OF_MONTH)
+    return cal1[Calendar.YEAR] == cal2[Calendar.YEAR] &&
+            cal1[Calendar.MONTH] == cal2[Calendar.MONTH] &&
+            cal1[Calendar.DAY_OF_MONTH] == cal2[Calendar.DAY_OF_MONTH]
 }
 
 /**
@@ -86,7 +86,7 @@ fun getFormattedDate(dateTime: LocalDateTime): String {
 }
 
 fun getNewCalendarDayList(
-    previousCalendarDays: MutableList<CalendarDay>,
+    previousCalendarDays: List<CalendarDay>,
     daySelected: Date,
     context: Context
 ): MutableList<CalendarDay> {
@@ -112,7 +112,7 @@ fun getNewCalendarDayList(
         // Add new random CalendarDays for the previous days
         for (i in 0 until 5) {
             val date = calendar.time
-            val dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH)
+            val dayOfMonth = calendar[Calendar.DAY_OF_MONTH]
             val isSelected = (daySelected == date)
 
             var listOfTask = mutableListOf<Task>()
@@ -145,9 +145,8 @@ fun getNewCalendarDayList(
         if (calendarDay != null) {
             calendarDays.add(calendarDay)
         } else {
-            val dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH)
+            val dayOfMonth = calendar[Calendar.DAY_OF_MONTH]
             val isSelected = (daySelected == date)
-            // val listOfTask = getRandomTaskHourTypeAndMedicineList(context)
             var listOfTask = mutableListOf<Task>()
             t = Thread {
                 listOfTask = tasksService.getTasksAt(email, date)
@@ -175,10 +174,10 @@ fun getAgeFromStringBirthDate(birthDate: String, calendar: Calendar = Calendar.g
     val inputFormat = SimpleDateFormat("dd/MM/yyyy", Locale.FRENCH)
     val date = inputFormat.parse(birthDate)
     calendar.time = date!!
-    val year = calendar.get(Calendar.YEAR)
+    val year = calendar[Calendar.YEAR]
     val today = Calendar.getInstance()
-    var age = today.get(Calendar.YEAR) - year
-    if (today.get(Calendar.DAY_OF_YEAR) < calendar.get(Calendar.DAY_OF_YEAR)) {
+    var age = today[Calendar.YEAR] - year
+    if (today[Calendar.DAY_OF_YEAR] < calendar[Calendar.DAY_OF_YEAR]) {
         age--
     }
     if (age < 0) {
