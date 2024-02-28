@@ -55,7 +55,7 @@ class TasksService(context: Context) {
         var listSubActiveCode = mutableListOf<Int?>()
         var listTasks = getCurrentUserTasks()
         for (task in listTasks){
-            if (startDate <= task.endDate && endDate >= task.startDate){
+            if (startDate.toLocalDate() <= task.endDate.toLocalDate() && endDate.toLocalDate() >= task.startDate.toLocalDate()){
                 listSubActiveCode.add(db.medicineDao().getByCIS(task.medicineCIS)?.composition?.substance_code)
             }
         }
