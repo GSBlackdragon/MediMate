@@ -34,8 +34,8 @@ class DoctorAdapter(
         return MyViewHolder(view)
     }
 
-    fun updateList(list : MutableList<Doctor>){
-        this.doctorList=list
+    fun updateList(list : List<Doctor>){
+        this.doctorList=list.toMutableList()
     }
     override fun getItemCount(): Int {
         return doctorList.size
