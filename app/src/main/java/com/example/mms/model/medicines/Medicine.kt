@@ -7,7 +7,7 @@ import kotlinx.serialization.Serializable
 
 @Entity
 @Serializable
-data class Medicine constructor(
+data class Medicine(
     var name: String,
     @PrimaryKey
     var code_cis: Long,

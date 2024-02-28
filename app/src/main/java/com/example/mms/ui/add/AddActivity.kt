@@ -17,7 +17,6 @@ import androidx.core.content.FileProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mms.R
-import com.example.mms.adapter.Interface.OnItemClickListener
 import com.example.mms.adapter.MediProposalsAdapter
 import com.example.mms.database.inApp.SingletonDatabase
 import com.example.mms.databinding.ActivityAddTaskBinding
