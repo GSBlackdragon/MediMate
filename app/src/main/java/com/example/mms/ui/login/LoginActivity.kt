@@ -5,11 +5,9 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.mms.adapter.AccountAdapter
-import com.example.mms.adapter.Interface.OnItemClickListener
 import com.example.mms.database.inApp.AppDatabase
 import com.example.mms.database.inApp.SingletonDatabase
 import com.example.mms.databinding.ActivityLoginBinding
-import com.example.mms.model.User
 import com.example.mms.ui.createAccount.CreateAccountActivity
 import com.example.mms.ui.locked.LockedActivity
 
@@ -18,7 +16,6 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
     private lateinit var db: AppDatabase
     private lateinit var adapter: AccountAdapter
-    private lateinit var users: List<User>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,14 +49,13 @@ class LoginActivity : AppCompatActivity() {
             }
 
             // set on click listener
-            adapter.setOnItemClickListener(object : OnItemClickListener {
-                override fun onItemClick(position: Int) {
-                    val intent = Intent(this@LoginActivity, LockedActivity::class.java)
-                    intent.putExtra("userEmail", users[position].email).putExtra("isLinkedToBiometric", users[position].isLinkedToBiometric)
-                    startActivity(intent)
-                    finish()
-                }
-            })
+            adapter.setOnItemClickListener { position ->
+                val intent = Intent(this@LoginActivity, LockedActivity::class.java)
+                intent.putExtra("userEmail", users[position].email)
+                    .putExtra("isLinkedToBiometric", users[position].isLinkedToBiometric)
+                startActivity(intent)
+                finish()
+            }
         }.start()
 
         binding.buttonCreateAccount.setOnClickListener {

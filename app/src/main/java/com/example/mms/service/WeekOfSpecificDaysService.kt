@@ -23,8 +23,8 @@ class WeekOfSpecificDaysService {
     /**
      * Set the hours with their weight in a day
      */
-    fun setDay(day: Int, hoursWeights: MutableList<HourWeight>) {
-        this.week[day] = hoursWeights
+    fun setDay(day: Int, hoursWeights: List<HourWeight>) {
+        this.week[day] = hoursWeights.toMutableList()
     }
 
     /**

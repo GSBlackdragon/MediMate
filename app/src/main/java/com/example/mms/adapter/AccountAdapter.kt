@@ -30,9 +30,9 @@ class AccountAdapter(private val context: Context, private val users: List<User>
 
     // class that represents the view holder of the recycler view
     class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val userName: TextView = itemView.findViewById<TextView>(R.id.account_name)
-        val userEmail: TextView = itemView.findViewById<TextView>(R.id.account_email)
-        val userImageFingerprint : ImageView = itemView.findViewById<ImageView>(R.id.account_fingerprint)
+        val userName: TextView = itemView.findViewById(R.id.account_name)
+        val userEmail: TextView = itemView.findViewById(R.id.account_email)
+        val userImageFingerprint : ImageView = itemView.findViewById(R.id.account_fingerprint)
     }
 
     // function that creates the view holder

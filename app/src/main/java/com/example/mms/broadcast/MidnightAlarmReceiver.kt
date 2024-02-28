@@ -28,7 +28,7 @@ class MidnightAlarmReceiver: BroadcastReceiver() {
 
         // Planify the notifications
         val notifService = NotifService(context)
-        notifService.planifyTakesNotifications(todaysShowableHourWeights)
+        notifService.planningTakesNotifications(todaysShowableHourWeights)
 
         // Update end date of "Stop on stock" treatments
         val medicineStorageService = MedicineStorageService(context,null)

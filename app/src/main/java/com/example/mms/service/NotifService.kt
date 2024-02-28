@@ -70,7 +70,6 @@ class NotifService(
      * @param hasEnoughStock True if the user has enough stock to take the medicine
      */
     fun sendReminder(medicineName: String, takes: Takes, hasEnoughStock: Boolean) {
-        val title = medicineName
         val message = this.context.getString(R.string.notification_message)
 
         this.createNotificationChannel()
@@ -86,7 +85,7 @@ class NotifService(
         // Build the notification
         val builder = NotificationCompat.Builder(this.context, this.CHANNEL_MEDI_REMINDER)
             .setSmallIcon(R.drawable.medicament)
-            .setContentTitle(title)
+            .setContentTitle(medicineName)
             .setContentText(message)
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .setContentIntent(pendingIntent)
@@ -126,9 +125,9 @@ class NotifService(
      * @param showableHourWeights The list of notifications to planify
      */
     @RequiresApi(Build.VERSION_CODES.S)
-    fun planifyTakesNotifications(showableHourWeights: MutableList<ShowableHourWeight>) {
+    fun planningTakesNotifications(showableHourWeights: List<ShowableHourWeight>) {
         for (hourWeight in showableHourWeights) {
-            this.planifyOneNotification(hourWeight)
+            this.planningOneNotification(hourWeight)
         }
     }
 
@@ -141,7 +140,7 @@ class NotifService(
      * @return True if the notification has been planified, false otherwise
      */
     @RequiresApi(Build.VERSION_CODES.S)
-    fun planifyOneNotification(showableHourWeight: ShowableHourWeight, now: LocalDateTime = LocalDateTime.now()): Boolean {
+    fun planningOneNotification(showableHourWeight: ShowableHourWeight, now: LocalDateTime = LocalDateTime.now()): Boolean {
         val alarmManager = this.context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
 
         val hourMin = stringHourMinuteToInt(showableHourWeight.hourWeight.hour)

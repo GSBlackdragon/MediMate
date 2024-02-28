@@ -51,11 +51,7 @@ class AddMedicamentCycleHourWeightFragment: Fragment() {
         recyclerView.layoutManager = LinearLayoutManager(this.requireContext())
 
         // OnClick listener for the time picker
-        val tvTimePickerOnClick = object : OnItemClickListener {
-            override fun onItemClick(position: Int) {
-                openTimePicker(position)
-            }
-        }
+        val tvTimePickerOnClick = OnItemClickListener { position -> openTimePicker(position) }
         this.hourWeightAdapter.setOnItemClickListener(tvTimePickerOnClick)
 
         // buttons listeners
@@ -69,7 +65,7 @@ class AddMedicamentCycleHourWeightFragment: Fragment() {
         }
 
         binding.nextButton.setOnClickListener {
-            if (this.hourWeightList.size == 0) {
+            if (this.hourWeightList.isEmpty()) {
                 requireActivity().runOnUiThread {
                     Toast.makeText(
                         this.requireContext(),

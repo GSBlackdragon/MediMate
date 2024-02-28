@@ -17,7 +17,6 @@ import androidx.core.content.FileProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mms.R
-import com.example.mms.adapter.Interface.OnItemClickListener
 import com.example.mms.adapter.MediProposalsAdapter
 import com.example.mms.database.inApp.SingletonDatabase
 import com.example.mms.databinding.ActivityAddTaskBinding
@@ -116,16 +115,14 @@ class AddActivity : AppCompatActivity() {
         this.mediProposalsRecyclerView = findViewById(R.id.proposalList)
 
         this.mediProposalsAdapter = MediProposalsAdapter(this, this.mediProposals)
-        this.mediProposalsAdapter.setOnItemClickListener(object : OnItemClickListener {
-            override fun onItemClick(position: Int) {
-                val medicineName = this@AddActivity.mediProposals[position]
+        this.mediProposalsAdapter.setOnItemClickListener { position ->
+            val medicineName = this@AddActivity.mediProposals[position]
 
-                startActivity(
-                    Intent(this@AddActivity, AddMedicamentActivity::class.java)
-                        .putExtra("medicineName", medicineName)
-                )
-            }
-        })
+            startActivity(
+                Intent(this@AddActivity, AddMedicamentActivity::class.java)
+                    .putExtra("medicineName", medicineName)
+            )
+        }
 
 
         this.mediProposalsRecyclerView.adapter = this.mediProposalsAdapter
@@ -133,18 +130,14 @@ class AddActivity : AppCompatActivity() {
 
         this.searchBar = findViewById(R.id.medi_searchbar)
         this.searchBar.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-            override fun afterTextChanged(s: Editable?) {}
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {/*Empty cause unused*/}
+            override fun afterTextChanged(s: Editable?) {/*Empty cause unused*/}
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 updateSearchBar()
             }
         })
     }
-
-
-
-
 
     fun updateSearchBar() {
         Thread {
@@ -173,7 +166,7 @@ class AddActivity : AppCompatActivity() {
         }.start()
     }
 
-    fun showRecyclerView() {
+    private fun showRecyclerView() {
         this.mediProposalsRecyclerView.visibility = RecyclerView.VISIBLE
 
         val params: ViewGroup.LayoutParams = this.mediProposalsRecyclerView.layoutParams
@@ -181,7 +174,7 @@ class AddActivity : AppCompatActivity() {
         this.mediProposalsRecyclerView.layoutParams = params
     }
 
-    fun hideRyclerclerView() {
+    private fun hideRyclerclerView() {
         this.mediProposalsRecyclerView.visibility = RecyclerView.INVISIBLE
 
         val params: ViewGroup.LayoutParams = this.mediProposalsRecyclerView.layoutParams

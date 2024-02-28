@@ -88,11 +88,7 @@ class AddMedicamentJoursSpecifiquesFragment : Fragment() {
         rvHeureDosage.layoutManager = LinearLayoutManager(this.requireContext())
 
         // Create the listener for the time picker
-        val tvTimePickerOnClick = object : OnItemClickListener {
-            override fun onItemClick(position: Int) {
-                openTimePicker(position)
-            }
-        }
+        val tvTimePickerOnClick = OnItemClickListener { position -> openTimePicker(position) }
         this.hourWeightAdapter.setOnItemClickListener(tvTimePickerOnClick)
 
         // Update the adapter
@@ -110,7 +106,7 @@ class AddMedicamentJoursSpecifiquesFragment : Fragment() {
         }
 
         binding.nextButton.setOnClickListener {
-            if (this.weekOfSpecificDaysService.getFlat().size == 0) {
+            if (this.weekOfSpecificDaysService.getFlat().isEmpty()) {
                 requireActivity().runOnUiThread {
                     Toast.makeText(
                         this.requireContext(),

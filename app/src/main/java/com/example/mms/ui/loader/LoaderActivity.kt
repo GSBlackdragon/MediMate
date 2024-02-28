@@ -49,10 +49,8 @@ class LoaderActivity : AppCompatActivity() {
         db = SingletonDatabase.getDatabase(this)
 
         // Set the midnight alarm if it's not already set
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            if (!this.isMidnightAlarmSet()) {
-                this.startMidnightAlarmManager()
-            }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && !this.isMidnightAlarmSet()) {
+            this.startMidnightAlarmManager()
         }
 
         // == Update the medicines database ==
@@ -141,25 +139,6 @@ class LoaderActivity : AppCompatActivity() {
             }
         }
         t2.start()
-
-        //t2.join()
-
-        /*Thread{
-
-            var map = Json.decodeFromString<Map<String, List<Int>>>(this.assets.open("databases/super.json").bufferedReader().use {
-                it.readText()
-            })
-
-            Thread{
-                map.forEach{
-
-                    db.sideInfoMedicineDao().addBadInteraction(it.key, it.value.toString().replace("[","").replace("]",""))
-                }
-            }.start()
-        }.start()
-        */
-
-
     }
 
     private fun nextPage() {
@@ -243,7 +222,7 @@ class LoaderActivity : AppCompatActivity() {
 
         // Planify the notifications
         val notifService = NotifService(this)
-        notifService.planifyTakesNotifications(todaysShowableHourWeights)
+        notifService.planningTakesNotifications(todaysShowableHourWeights)
     }
 
     private fun isMidnightAlarmSet(): Boolean {

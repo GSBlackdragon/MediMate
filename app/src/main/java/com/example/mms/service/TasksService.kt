@@ -37,11 +37,6 @@ class TasksService(context: Context) {
         db.taskDao().update(task)
     }
 
-    fun deleteAllTasks() {
-        // Appeler la méthode deleteAll() du DAO
-        db.taskDao().deleteAll()
-    }
-
     /**
      * Return a boolean regarding if the active substance is
      * already present in any active treatments during the the given period of time
@@ -52,8 +47,8 @@ class TasksService(context: Context) {
      * @return The Boolean
      */
     fun isSubCodeInActiveSubstanceCode(subcode : Int?,startDate : LocalDateTime, endDate : LocalDateTime) : Boolean{
-        var listSubActiveCode = mutableListOf<Int?>()
-        var listTasks = getCurrentUserTasks()
+        val listSubActiveCode = mutableListOf<Int?>()
+        val listTasks = getCurrentUserTasks()
         for (task in listTasks){
             if (startDate.toLocalDate() <= task.endDate.toLocalDate() && endDate.toLocalDate() >= task.startDate.toLocalDate()){
                 listSubActiveCode.add(db.medicineDao().getByCIS(task.medicineCIS)?.composition?.substance_code)
@@ -303,18 +298,16 @@ class TasksService(context: Context) {
         val specificDays = this.db.taskDao().getTaskSpecificDays(taskId)
         val oneTake = this.db.oneTakeDao().find(taskId)
 
-        if (cycle != null) {
+        if (cycle != null && this.shouldTakeThisCycleAt(task, cycle, date)) {
             // If the cycle need to be taken at the given date, fill the task with cycle informations
-            if (this.shouldTakeThisCycleAt(task, cycle, date)) {
-                val listHourWeight = this.db.cycleDao().getCycleHourWeight(cycle.id)
+            val listHourWeight = this.db.cycleDao().getCycleHourWeight(cycle.id)
 
-                // Get all the hour weights of the cycle
-                cycle.hourWeights = listHourWeight.map {
-                    this.db.hourWeightDao().getHourWeight(it.hourWeightId)
-                }.toMutableList()
+            // Get all the hour weights of the cycle
+            cycle.hourWeights = listHourWeight.map {
+                this.db.hourWeightDao().getHourWeight(it.hourWeightId)
+            }.toMutableList()
 
-                task.cycle = cycle
-            }
+            task.cycle = cycle
         }
 
         for (specificDay in specificDays) {
@@ -342,7 +335,7 @@ class TasksService(context: Context) {
      *
      * @return A pair of Int, the first is the number of task done today, the second is the total of task to do today
      */
-    fun getNumberOfTaskDoneToday(listSHW: MutableList<ShowableHourWeight>) : Pair<Int,Int> {
+    fun getNumberOfTaskDoneToday(listSHW: List<ShowableHourWeight>) : Pair<Int,Int> {
         var numberTakes = 0
         var totalTakes = 0
 
@@ -721,7 +714,7 @@ class TasksService(context: Context) {
      *
      * @return The list of hour weights without the already passed hour weights
      */
-    fun removeAlreadyPassedHourWeights(hourWeights: MutableList<ShowableHourWeight>): MutableList<ShowableHourWeight> {
+    fun removeAlreadyPassedHourWeights(hourWeights: List<ShowableHourWeight>): MutableList<ShowableHourWeight> {
         val now = LocalDateTime.now()
         val newHourWeights = mutableListOf<ShowableHourWeight>()
 

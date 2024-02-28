@@ -105,9 +105,9 @@ class AddMedicamentDateDebutFinFragment : Fragment() {
     fun setupDatePickerDialog(editText: EditText, initialDate: LocalDateTime, start : Boolean, editText2: EditText)  {
         // init date
         val calendar = Calendar.getInstance()
-        val year = calendar.get(Calendar.YEAR)
-        val month = calendar.get(Calendar.MONTH)
-        val day = calendar.get(Calendar.DAY_OF_MONTH)
+        val year = calendar[Calendar.YEAR]
+        val month = calendar[Calendar.MONTH]
+        val day = calendar[Calendar.DAY_OF_MONTH]
 
         // define the date picker dialog
         val datePickerDialog = DatePickerDialog(

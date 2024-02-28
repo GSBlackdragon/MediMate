@@ -3,12 +3,10 @@ package com.example.mms.ui.add
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.NavController
 import com.example.mms.databinding.ActivityAddMedicamentBinding
 
 class AddMedicamentActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAddMedicamentBinding
-    private lateinit var navController: NavController
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

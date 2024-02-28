@@ -100,7 +100,7 @@ class NotificationTest {
         every { localDateTimeMock.hour } returns 18
         every { localDateTimeMock.minute } returns 20
 
-        val notificationIsPlanned = notifService.planifyOneNotification(showableHourWeight, localDateTimeMock)
+        val notificationIsPlanned = notifService.planningOneNotification(showableHourWeight, localDateTimeMock)
         assert(!notificationIsPlanned)
     }
 
@@ -136,7 +136,7 @@ class NotificationTest {
             localDateTimeMock.minute
         )
 
-        val notificationIsPlanned = notifService.planifyOneNotification(showableHourWeight, localDateTimeMock)
+        val notificationIsPlanned = notifService.planningOneNotification(showableHourWeight, localDateTimeMock)
         assert(notificationIsPlanned)
     }
 }

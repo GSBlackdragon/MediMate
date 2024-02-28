@@ -22,7 +22,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.mms.R
 import com.example.mms.adapter.DoctorAdapter
-import com.example.mms.adapter.Interface.OnItemClickListener
 import com.example.mms.adapter.TempDoctorAdapter
 import com.example.mms.constant.LIEN_EFFETS_INDESIRABLES
 import com.example.mms.database.inApp.SingletonDatabase
@@ -161,16 +160,14 @@ class ConseilsFragment : Fragment() {
             dialog.dismiss()
         }
         val doctorsChecked = mutableListOf<Doctor>()
-        adapter.setOnItemClickListener(object : OnItemClickListener {
-            override fun onItemClick(position: Int) {
-                val doctor = doctors[position]
-                if (doctorsChecked.contains(doctor)) {
-                    doctorsChecked.remove(doctor)
-                } else {
-                    doctorsChecked.add(doctor)
-                }
+        adapter.setOnItemClickListener { position ->
+            val doctor = doctors[position]
+            if (doctorsChecked.contains(doctor)) {
+                doctorsChecked.remove(doctor)
+            } else {
+                doctorsChecked.add(doctor)
             }
-        })
+        }
         btnValidate.setOnClickListener {
             if (doctorsChecked.isEmpty()) {
                 Toast.makeText(this.requireContext(), R.string.choose_doctor, Toast.LENGTH_SHORT).show()

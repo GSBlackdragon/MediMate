@@ -198,11 +198,7 @@ class AddMedicamentRecapFragment : Fragment() {
 
         if (viewModel.storage.value != null) {
             // save storage
-            val t = Thread {
-                db.medicineStorageDao().insert(viewModel.storage.value!!)
-                //db.medicineDao().getByCIS(viewModel.taskData.value!!.medicineCIS)?.composition?.substance_code.toString()
-
-            }
+            val t = Thread { db.medicineStorageDao().insert(viewModel.storage.value!!) }
             t.start()
             t.join()
         }
@@ -236,7 +232,7 @@ class AddMedicamentRecapFragment : Fragment() {
 
                     if (todaysSwHourWeightsTask.isNotEmpty()) {
                         val notifService = NotifService(this.requireContext())
-                        notifService.planifyOneNotification(todaysSwHourWeightsTask.first())
+                        notifService.planningOneNotification(todaysSwHourWeightsTask.first())
                     }
                 }
             }

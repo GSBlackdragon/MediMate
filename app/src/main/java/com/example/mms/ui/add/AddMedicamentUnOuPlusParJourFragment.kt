@@ -62,16 +62,12 @@ class AddMedicamentUnOuPlusParJourFragment : Fragment() {
 
 
         // set the onClickListener for the timePicker
-        val tvTimePickerOnClick = object : OnItemClickListener {
-            override fun onItemClick(position: Int) {
-                openTimePicker(position)
-            }
-        }
+        val tvTimePickerOnClick = OnItemClickListener { position -> openTimePicker(position) }
         this.hourWeightAdapter.setOnItemClickListener(tvTimePickerOnClick)
 
         binding.nextButton.setOnClickListener {
             // check if the list is empty
-            if (this.hourWeightList.size == 0) {
+            if (this.hourWeightList.isEmpty()) {
                 requireActivity().runOnUiThread {
                     Toast.makeText(
                         this.requireContext(),

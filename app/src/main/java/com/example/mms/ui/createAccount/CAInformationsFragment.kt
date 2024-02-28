@@ -27,7 +27,6 @@ class CAInformationsFragment : Fragment() {
 
     private val binding get() = _binding!!
 
-    @OptIn(DelicateCoroutinesApi::class)
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -46,7 +45,6 @@ class CAInformationsFragment : Fragment() {
         binding.editBirthdate.setText(viewModel.userData.value?.birthday ?: "----")
         binding.editTaille.setText(viewModel.userData.value?.height?.toString() ?: "")
         binding.editPoids.setText(viewModel.userData.value?.height?.toString() ?: "")
-        //binding.spinnerSexe.setSelection(viewModel.userData.value?.sexe.toString().toInt())
 
         binding.editBirthdate.keyListener = null
         binding.editBirthdate.isFocusable = false
@@ -54,14 +52,14 @@ class CAInformationsFragment : Fragment() {
         binding.editBirthdate.setOnClickListener {
             // init calendar
             val calendar = Calendar.getInstance()
-            val year = calendar.get(Calendar.YEAR)
-            val month = calendar.get(Calendar.MONTH)
-            val day = calendar.get(Calendar.DAY_OF_MONTH)
+            val year = calendar[Calendar.YEAR]
+            val month = calendar[Calendar.MONTH]
+            val day = calendar[Calendar.DAY_OF_MONTH]
 
             // build date picker dialog
             val datePickerDialog = DatePickerDialog(
                 root.context,
-                DatePickerDialog.OnDateSetListener { view, selectedYear, selectedMonth, selectedDay ->
+                { _, selectedYear, selectedMonth, selectedDay ->
                     val selectedDate = "$selectedDay/${selectedMonth + 1}/$selectedYear"
                     binding.editBirthdate.setText(selectedDate)
                 },
@@ -77,7 +75,7 @@ class CAInformationsFragment : Fragment() {
 
         // regex for name and surname
         val nameSurnameRegex = Regex("^[a-zA-ZÀ-ÿ-'\\s]+$")
-        val nameSurnameFilter = InputFilter { source, start, end, dest, dstart, dend ->
+        val nameSurnameFilter = InputFilter { source, _, _, _, _, _ ->
             if (source != null && !source.toString().matches(nameSurnameRegex)) {
                 ""  // Si le texte ne correspond pas à la regex, le caractère est supprimé
             } else {

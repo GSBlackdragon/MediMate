@@ -14,7 +14,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.mms.MainActivity
 import com.example.mms.R
 import com.example.mms.Utils.OCR
-import com.example.mms.adapter.Interface.OnItemClickListener
 import com.example.mms.adapter.MediChooseAdapter
 import com.example.mms.adapter.TempDoctorAdapter
 import com.example.mms.contrat.AddTaskFromOCR
@@ -119,15 +118,13 @@ class ChooseMedicamentActivity : AppCompatActivity() {
             adapterDoctor = TempDoctorAdapter(doctorList, this)
             listDoctorRv.layoutManager = LinearLayoutManager(this)
             listDoctorRv.adapter = adapterDoctor
-            adapterDoctor.setOnItemClickListener(object : OnItemClickListener {
-                override fun onItemClick(position: Int) {
-                    if (doctorToAdd.contains(doctorList[position])){
-                        doctorToAdd.remove(doctorList[position])
-                    }else{
-                        doctorToAdd.add(doctorList[position])
-                    }
+            adapterDoctor.setOnItemClickListener { position ->
+                if (doctorToAdd.contains(doctorList[position])) {
+                    doctorToAdd.remove(doctorList[position])
+                } else {
+                    doctorToAdd.add(doctorList[position])
                 }
-            })
+            }
         }
 
         if (medicamentsFound.isEmpty()) {
@@ -137,12 +134,10 @@ class ChooseMedicamentActivity : AppCompatActivity() {
             listMedicamentView.layoutManager = LinearLayoutManager(this)
             listMedicamentView.adapter = adapterMedicine
 
-            adapterMedicine.setOnItemClickListener(object : OnItemClickListener {
-                override fun onItemClick(position: Int) {
-                    contratLaunchedPosition = position
-                    contratAddFromOCR.launch(medicamentsFound[position].name)
-                }
-            })
+            adapterMedicine.setOnItemClickListener { position ->
+                contratLaunchedPosition = position
+                contratAddFromOCR.launch(medicamentsFound[position].name)
+            }
         }
     }
 
@@ -166,11 +161,11 @@ class ChooseMedicamentActivity : AppCompatActivity() {
             builder.setMessage(this.getString(R.string.confirmation_message_ocr_add_pluriel, nbMedicament.toString()))
         }
 
-        builder.setPositiveButton(this.getString(R.string.oui)) { dialog, which ->
+        builder.setPositiveButton(this.getString(R.string.oui)) { _, _ ->
             this.goToMain()
         }
 
-        builder.setNegativeButton(this.getString(R.string.non)) { dialog, which ->
+        builder.setNegativeButton(this.getString(R.string.non)) { dialog, _ ->
             dialog.dismiss()
         }
 
