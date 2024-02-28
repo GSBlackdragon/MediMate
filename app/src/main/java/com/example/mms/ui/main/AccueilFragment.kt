@@ -5,6 +5,7 @@ import android.content.Intent
 import android.icu.text.SimpleDateFormat
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -54,6 +55,7 @@ class AccueilFragment : Fragment() {
     private lateinit var items: MutableList<ShowableHourWeight>
     private lateinit var listDoublonsSubActiveCode : MutableList<Int?>
     private lateinit var listMedicineCIS : MutableList<String>
+    private lateinit var listTasksID : MutableList<String>
     private lateinit var db: AppDatabase
     private lateinit var tasksService: TasksService
     private val selectedDate = Date()
@@ -114,13 +116,18 @@ class AccueilFragment : Fragment() {
         updateSmiley()
 
         listDoublonsSubActiveCode = mutableListOf()
+        listTasksID = mutableListOf()
         listMedicineCIS = mutableListOf()
+
 
         var t = Thread {
             var listSubActiveCode : MutableList<Int?> = mutableListOf()
             for (item in items){
-                listSubActiveCode.add(db.medicineDao().getByCIS(item.task.medicineCIS)?.composition?.substance_code)
-                listMedicineCIS.add(item.task.medicineCIS.toString())
+                if (item.task.id.toString() !in listTasksID){
+                    listSubActiveCode.add(db.medicineDao().getByCIS(item.task.medicineCIS)?.composition?.substance_code)
+                    listMedicineCIS.add(item.task.medicineCIS.toString())
+                    listTasksID.add(item.task.id.toString())
+                }
             }
             listDoublonsSubActiveCode =
                 listSubActiveCode
@@ -129,10 +136,10 @@ class AccueilFragment : Fragment() {
                     .filter { it.value >= 2 }
                     .keys
                     .toMutableList()
+
         }
         t.start()
         t.join()
-
 
         setMonthAndYear(extractMonthAndYearFromDate(this.selectedDate.toString())!!.first, extractMonthAndYearFromDate(this.selectedDate.toString())!!.second)
         takesAdapter = TakesAdapter(root.context, items, db, this.selectedDate, root,listDoublonsSubActiveCode,listMedicineCIS) { updateSmiley() }
@@ -320,13 +327,17 @@ class AccueilFragment : Fragment() {
 
         listDoublonsSubActiveCode.clear()
         listMedicineCIS.clear()
+        listTasksID.clear()
 
 
         var t = Thread {
             var listSubActiveCode : MutableList<Int?> = mutableListOf()
             for (item in items){
-                listSubActiveCode.add(db.medicineDao().getByCIS(item.task.medicineCIS)?.composition?.substance_code)
-                listMedicineCIS.add(item.task.medicineCIS.toString())
+                if (item.task.id.toString() !in listTasksID){
+                    listSubActiveCode.add(db.medicineDao().getByCIS(item.task.medicineCIS)?.composition?.substance_code)
+                    listMedicineCIS.add(item.task.medicineCIS.toString())
+                    listTasksID.add(item.task.id.toString())
+                }
             }
             listDoublonsSubActiveCode =
                 listSubActiveCode
