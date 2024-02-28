@@ -37,11 +37,6 @@ class TasksService(context: Context) {
         db.taskDao().update(task)
     }
 
-    fun deleteAllTasks() {
-        // Appeler la méthode deleteAll() du DAO
-        db.taskDao().deleteAll()
-    }
-
     /**
      * Return a boolean regarding if the active substance is
      * already present in any active treatments during the the given period of time
@@ -52,8 +47,8 @@ class TasksService(context: Context) {
      * @return The Boolean
      */
     fun isSubCodeInActiveSubstanceCode(subcode : Int?,startDate : LocalDateTime, endDate : LocalDateTime) : Boolean{
-        var listSubActiveCode = mutableListOf<Int?>()
-        var listTasks = getCurrentUserTasks()
+        val listSubActiveCode = mutableListOf<Int?>()
+        val listTasks = getCurrentUserTasks()
         for (task in listTasks){
             if (startDate.toLocalDate() <= task.endDate.toLocalDate() && endDate.toLocalDate() >= task.startDate.toLocalDate()){
                 listSubActiveCode.add(db.medicineDao().getByCIS(task.medicineCIS)?.composition?.substance_code)

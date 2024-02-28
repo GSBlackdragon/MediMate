@@ -14,7 +14,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.mms.MainActivity
 import com.example.mms.R
 import com.example.mms.Utils.OCR
-import com.example.mms.adapter.Interface.OnItemClickListener
 import com.example.mms.adapter.MediChooseAdapter
 import com.example.mms.adapter.TempDoctorAdapter
 import com.example.mms.contrat.AddTaskFromOCR

@@ -22,7 +22,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.mms.R
 import com.example.mms.adapter.DoctorAdapter
-import com.example.mms.adapter.Interface.OnItemClickListener
 import com.example.mms.adapter.TempDoctorAdapter
 import com.example.mms.constant.LIEN_EFFETS_INDESIRABLES
 import com.example.mms.database.inApp.SingletonDatabase

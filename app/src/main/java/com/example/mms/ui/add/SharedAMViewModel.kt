@@ -29,12 +29,6 @@ class SharedAMViewModel : ViewModel() {
     private val _previousFragmentId = MutableLiveData(0)
     val previousFragmentId: LiveData<Int> get() = _previousFragmentId
 
-    private val _imageToScan = MutableLiveData<Bitmap>()
-    val imageToScan: LiveData<Bitmap> get() = _imageToScan
-
-    private val _medicationsFound = MutableLiveData<List<OCR.MedicationInfo>>()
-    val medicationsFound: LiveData<List<OCR.MedicationInfo>> get() = _medicationsFound
-
     private val _storage = MutableLiveData<MedicineStorage?>(null)
     val storage: LiveData<MedicineStorage?> get() = _storage
 

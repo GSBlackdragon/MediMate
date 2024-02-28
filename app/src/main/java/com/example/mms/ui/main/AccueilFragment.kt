@@ -19,8 +19,6 @@ import com.example.mms.Utils.extractMonthAndYearFromDate
 import com.example.mms.Utils.getNewCalendarDayList
 import com.example.mms.Utils.stringToDate
 import com.example.mms.adapter.CalendarAdapter
-import com.example.mms.adapter.Interface.CalendarAdapterInterface
-import com.example.mms.adapter.Interface.OnItemClickListener
 import com.example.mms.adapter.TakesAdapter
 import com.example.mms.database.inApp.AppDatabase
 import com.example.mms.database.inApp.SingletonDatabase

@@ -60,7 +60,7 @@ class CAInformationsFragment : Fragment() {
             // build date picker dialog
             val datePickerDialog = DatePickerDialog(
                 root.context,
-                DatePickerDialog.OnDateSetListener { _, selectedYear, selectedMonth, selectedDay ->
+                { _, selectedYear, selectedMonth, selectedDay ->
                     val selectedDate = "$selectedDay/${selectedMonth + 1}/$selectedYear"
                     binding.editBirthdate.setText(selectedDate)
                 },
