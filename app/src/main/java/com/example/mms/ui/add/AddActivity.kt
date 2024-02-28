@@ -116,16 +116,14 @@ class AddActivity : AppCompatActivity() {
         this.mediProposalsRecyclerView = findViewById(R.id.proposalList)
 
         this.mediProposalsAdapter = MediProposalsAdapter(this, this.mediProposals)
-        this.mediProposalsAdapter.setOnItemClickListener(object : OnItemClickListener {
-            override fun onItemClick(position: Int) {
-                val medicineName = this@AddActivity.mediProposals[position]
+        this.mediProposalsAdapter.setOnItemClickListener { position ->
+            val medicineName = this@AddActivity.mediProposals[position]
 
-                startActivity(
-                    Intent(this@AddActivity, AddMedicamentActivity::class.java)
-                        .putExtra("medicineName", medicineName)
-                )
-            }
-        })
+            startActivity(
+                Intent(this@AddActivity, AddMedicamentActivity::class.java)
+                    .putExtra("medicineName", medicineName)
+            )
+        }
 
 
         this.mediProposalsRecyclerView.adapter = this.mediProposalsAdapter
@@ -141,10 +139,6 @@ class AddActivity : AppCompatActivity() {
             }
         })
     }
-
-
-
-
 
     fun updateSearchBar() {
         Thread {
@@ -173,7 +167,7 @@ class AddActivity : AppCompatActivity() {
         }.start()
     }
 
-    fun showRecyclerView() {
+    private fun showRecyclerView() {
         this.mediProposalsRecyclerView.visibility = RecyclerView.VISIBLE
 
         val params: ViewGroup.LayoutParams = this.mediProposalsRecyclerView.layoutParams
@@ -181,7 +175,7 @@ class AddActivity : AppCompatActivity() {
         this.mediProposalsRecyclerView.layoutParams = params
     }
 
-    fun hideRyclerclerView() {
+    private fun hideRyclerclerView() {
         this.mediProposalsRecyclerView.visibility = RecyclerView.INVISIBLE
 
         val params: ViewGroup.LayoutParams = this.mediProposalsRecyclerView.layoutParams
