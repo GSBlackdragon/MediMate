@@ -30,17 +30,13 @@ import com.example.mms.databinding.FragmentConseilsBinding
 import com.example.mms.model.Doctor
 import com.example.mms.service.ApiService
 import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.maps.model.Marker
 import org.osmdroid.api.IMapController
 import org.osmdroid.util.GeoPoint
-import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay
 
 class ConseilsFragment : Fragment() {
 
     private var _binding: FragmentConseilsBinding? = null
-    private lateinit var map: MapView
-    private lateinit var marker: Marker
     private lateinit var controller: IMapController
     private lateinit var myLocationOverlay: MyLocationNewOverlay
     private lateinit var fusedLocationClient: FusedLocationProviderClient
@@ -56,7 +52,7 @@ class ConseilsFragment : Fragment() {
     ): View {
 
 
-        val viewModel = ViewModelProvider(requireActivity())[MainViewModel::class.java]
+        ViewModelProvider(requireActivity())[MainViewModel::class.java]
 
         _binding = FragmentConseilsBinding.inflate(inflater, container, false)
         val root: View = binding.root
@@ -131,7 +127,7 @@ class ConseilsFragment : Fragment() {
                             if (doctors.isEmpty()) {
                                 Toast.makeText(this@ConseilsFragment.requireContext(), R.string.no_doctor_found, Toast.LENGTH_SHORT).show()
                             } else {
-                                dialogChooseDoctors(doctors, dialog.dismiss())
+                                dialogChooseDoctors(doctors)
                             }
                         }
                     }
@@ -150,7 +146,7 @@ class ConseilsFragment : Fragment() {
         dialog.show()
     }
 
-    private fun dialogChooseDoctors(doctors: List<Doctor>, prevDialog: Unit) {
+    private fun dialogChooseDoctors(doctors: List<Doctor>) {
         val dialog = Dialog(this.requireContext())
         dialog.setContentView(R.layout.custom_dialog_choose_doctor)
         val btnValidate = dialog.findViewById<Button>(R.id.btn_search_doctor)
@@ -191,7 +187,6 @@ class ConseilsFragment : Fragment() {
                 this.adapterDoctor.notifyDataSetChanged()
                 Toast.makeText(this.requireContext(), R.string.doctor_added, Toast.LENGTH_SHORT).show()
                 Log.d("DOCTORS", doctorsAdded.size.toString())
-                prevDialog
                 dialog.dismiss()
 
 
