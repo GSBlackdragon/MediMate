@@ -19,7 +19,7 @@ import java.util.Locale
  * @return Pair of month and year
  */
 fun extractMonthAndYearFromDate(dateString: String): Pair<String, String>? {
-    try {
+    return try {
         val inputFormat = SimpleDateFormat("E MMM dd HH:mm:ss zzz yyyy", Locale.ENGLISH)
         val date = inputFormat.parse(dateString)
 
@@ -27,10 +27,10 @@ fun extractMonthAndYearFromDate(dateString: String): Pair<String, String>? {
         val month = localDateTime.month.getDisplayName(TextStyle.FULL, Locale.getDefault())
         val year = localDateTime.year.toString()
 
-        return Pair(month, year)
+        Pair(month, year)
     } catch (e: Exception) {
         e.printStackTrace()
-        return null
+        null
     }
 }
 
