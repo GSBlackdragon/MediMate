@@ -52,7 +52,7 @@ class RecyclerViewContentTest {
     @Test
     fun checkRecyclerViewContent(){
         addUser()
-        var userConnected : User? = null
+        val userConnected : User?
         try {
             userConnected = db.userDao().getConnectedUser()
         }catch (e: Exception){
