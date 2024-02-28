@@ -17,9 +17,9 @@ import com.example.mms.model.medicines.Medicine
     primaryKeys = ["code_cis"]
 )
 class SideInfoMedicine (
-        var code_cis : String,
-        var warning : String,
-        var allergie : String,
-        var content : String,
-        var sideInfo : String,
+    var code_cis : String,
+    var warning : String,
+    var allergie : String,
+    var content : String,
+    var sideInfo : String,
 )
