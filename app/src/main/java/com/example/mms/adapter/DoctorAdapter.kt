@@ -6,6 +6,7 @@ import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
@@ -27,6 +28,7 @@ class DoctorAdapter(
         val btnDelete: ImageView = itemView.findViewById(R.id.medecinDelete)
         val btnSms: TextView = itemView.findViewById(R.id.btn_sms)
         val btnMail: TextView = itemView.findViewById(R.id.btn_mail)
+        val btnDlPDF : Button = itemView.findViewById(R.id.btn_dl_pdf)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
@@ -95,6 +97,9 @@ class DoctorAdapter(
             }
         } else {
             holder.btnSms.visibility = View.GONE
+        }
+        holder.btnDlPDF.setOnClickListener {
+            Toast.makeText(this.context, "Téléchargement du PDF", Toast.LENGTH_SHORT).show()
         }
     }
 
