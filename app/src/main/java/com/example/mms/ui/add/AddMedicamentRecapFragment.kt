@@ -90,7 +90,7 @@ class AddMedicamentRecapFragment : Fragment() {
             binding.intervalTask.text = task.type
             binding.dateNextTask.text = getFormattedDate(tasksService.getNextTakeDate(task))
 
-        } else if (specificDays != null && specificDays.isNotEmpty()) {
+        } else if (!specificDays.isNullOrEmpty()) {
             // SpecificDays
             saveFunction = { addedTask ->
                 saveSpecificDays(addedTask)

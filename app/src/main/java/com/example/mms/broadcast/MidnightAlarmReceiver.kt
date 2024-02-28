@@ -32,12 +32,12 @@ class MidnightAlarmReceiver: BroadcastReceiver() {
 
         // Update end date of "Stop on stock" treatments
         val medicineStorageService = MedicineStorageService(context,null)
-        var listTaskStopOnStock = tasksService.getCurrentUserTasks().filter { it.stopOnStock }
+        val listTaskStopOnStock = tasksService.getCurrentUserTasks().filter { it.stopOnStock }
 
         for (task in listTaskStopOnStock){
-            var totalStock = medicineStorageService.getMedicineStorageByMedicineId(task.medicineCIS)?.storage
-            var totalWeight = task.cycle.hourWeights.map { it.weight }.sum()
-            var totalDaysToAdd = totalStock?.div(totalWeight)
+            val totalStock = medicineStorageService.getMedicineStorageByMedicineId(task.medicineCIS)?.storage
+            val totalWeight = task.cycle.hourWeights.sumOf { it.weight }
+            val totalDaysToAdd = totalStock?.div(totalWeight)
 
             task.endDate= LocalDateTime.now().plusDays(totalDaysToAdd!!.toLong()-1)
             tasksService.updateTask(task)

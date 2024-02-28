@@ -30,7 +30,7 @@ class MedicineJsonDatabase(
      *
      * @return The medicines from the json database
      */
-    fun getMedicinesFromJson(): List<Medicine> {
+    private fun getMedicinesFromJson(): List<Medicine> {
         return Json.decodeFromString<List<Medicine>>(this.getJsonContent(this.dbFileName))
     }
 

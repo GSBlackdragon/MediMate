@@ -71,7 +71,7 @@ class TakesWarningsAdapter(
             }
             if (item.matches(Regex("^6.*",RegexOption.IGNORE_CASE))) {
                 var nom : String? = ""
-                var t = Thread {
+                val t = Thread {
                     nom = db.medicineDao().getByCIS(item.toLong())?.name
                 }
                 t.start()

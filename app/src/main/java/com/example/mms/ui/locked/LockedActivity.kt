@@ -27,7 +27,6 @@ class LockedActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLockedBinding
     private lateinit var biometricPrompt: BiometricPrompt
     private lateinit var db: AppDatabase
-    private lateinit var codePin: String
 
     @RequiresApi(Build.VERSION_CODES.P)
     override fun onCreate(savedInstanceState: Bundle?) {

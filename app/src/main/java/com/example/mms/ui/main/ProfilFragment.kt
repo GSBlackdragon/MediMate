@@ -28,7 +28,7 @@ class ProfilFragment : Fragment() {
     private val binding get() = _binding!!
 
     // We use this to get the result of the ModifyAccountActivity
-    val modifyContrat : ActivityResultLauncher<Unit?> = registerForActivityResult(
+    private val modifyContrat : ActivityResultLauncher<Unit?> = registerForActivityResult(
         ModifiyAccountContrat()
     ) {
         if (it.name != "") {
@@ -74,7 +74,7 @@ class ProfilFragment : Fragment() {
                 requireActivity().runOnUiThread {
                     // We set the progress bar and the text
                     binding.progressBarTakes.setProgress(takesPercent)
-                    binding.percentTaken.text = takesPercent.toString() + "%"
+                    binding.percentTaken.text = "$takesPercent%"
                     binding.nbDoses.text = takesDone.toString() + " " + resources.getString(R.string.doses)
                     if(takesDone == 0) binding.felicitations.text = ""
                     if(takesPercent <= 50) {

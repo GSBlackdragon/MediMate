@@ -121,7 +121,7 @@ class TakesAdapter(
         var commun : Set<String> = setOf()
         val t = Thread {
             itemSubActCode = db.medicineDao().getByCIS(item.task.medicineCIS)?.composition?.substance_code
-            var liste = db.sideInfoMedicineDao().getById(item.task.medicineCIS.toString())?.sideInfo?.split(",")
+            val liste = db.sideInfoMedicineDao().getById(item.task.medicineCIS.toString())?.sideInfo?.split(",")
 
             if (liste != null){
                 commun = listMedicineCIS.intersect(liste.toSet())
@@ -201,7 +201,7 @@ class TakesAdapter(
      * @param item a ShowableHourWeight representing the current medicine we're taking care of
      * @return A pair of the list of the warnings of the medicine, and a string of the potential active substance the user is allergic to in this medicine
      */
-    fun getItemWarnings(item : ShowableHourWeight) : Pair<List<String>,String> {
+    private fun getItemWarnings(item : ShowableHourWeight) : Pair<List<String>,String> {
 
         var itemWarnings : List<String> = mutableListOf()
         var isUserAllergic : Pair<Boolean,String> = Pair(false,"")
@@ -220,7 +220,7 @@ class TakesAdapter(
 
     }
 
-    fun getRemainingTime(item : ShowableHourWeight) : String{
+    private fun getRemainingTime(item : ShowableHourWeight) : String{
 
         // Get the remaining time
         val hourSplited = getHoursMinutesRemaining(item.hourWeight)
@@ -253,7 +253,7 @@ class TakesAdapter(
      * @param item a ShowableHourWeight (the take)
      * @param position the position of the item
      */
-    fun takesTickManager(context: Context,holder: MyViewHolder, item : ShowableHourWeight, position: Int){
+    private fun takesTickManager(context: Context,holder: MyViewHolder, item : ShowableHourWeight, position: Int){
         val today = Date()
         if (areDatesOnSameDay(today, currentDate)) {
             // Know if the task is done or not (HourWeight isDone)
@@ -327,7 +327,7 @@ class TakesAdapter(
      * @param hW the hour weight
      * @return the remaining time
      */
-    fun getHoursMinutesRemaining(hW: HourWeight): Pair<Int, Int> {
+    private fun getHoursMinutesRemaining(hW: HourWeight): Pair<Int, Int> {
         val hour = hW.hour.split(":")[0].toInt()
         return Pair(
             LocalDateTime.now().hour - hour,
@@ -463,7 +463,7 @@ class TakesAdapter(
 
 
         val t = Thread {
-            var medicine = db.medicineDao().getByCIS(
+            val medicine = db.medicineDao().getByCIS(
                 item.task.medicineCIS)
             medicineAdministration.text=medicine?.usage?.route_administration
             HELP_LINK=medicine?.usage?.link_help

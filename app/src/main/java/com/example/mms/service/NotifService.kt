@@ -45,7 +45,7 @@ class NotifService(
     /**
      * Create a notification channel
      */
-    fun createNotificationChannel() {
+    private fun createNotificationChannel() {
         // define the channel's name and description
         val name = this.context.getString(R.string.channel_name_reminder)
         val descriptionText = this.context.getString(R.string.channel_description_reminder)

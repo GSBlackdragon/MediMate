@@ -14,26 +14,4 @@ class MainViewModel : ViewModel() {
     fun setUserData(user: User) {
         _userData.value = user
     }
-
-    private val _medecinName = MutableLiveData<String>()
-    val medecinName: LiveData<String> get() = _medecinName
-
-    fun setMedecinName(name: String) {
-        _medecinName.value = name
-    }
-
-    private val _medecinPhone = MutableLiveData<String>()
-    val medecinPhone: LiveData<String> get() = _medecinPhone
-
-    fun setMedecinPhone(phone: String) {
-        _medecinPhone.value = phone
-    }
-
-    private val _medecinMail = MutableLiveData<String>()
-    val medecinMail: LiveData<String> get() = _medecinMail
-
-    fun setMedecinMail(mail: String) {
-        _medecinMail.value = mail
-    }
-
 }

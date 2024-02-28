@@ -12,7 +12,7 @@ import com.example.mms.adapter.Interface.OnItemClickListener
 import com.example.mms.model.Doctor
 
 class TempDoctorAdapter(
-    val tempDoctors : MutableList<Doctor>,
+    private val tempDoctors : MutableList<Doctor>,
     val context : Context)
     : RecyclerView.Adapter<TempDoctorAdapter.MyViewHolder>() {
 
@@ -25,11 +25,11 @@ class TempDoctorAdapter(
     }
 
     class MyViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView) {
-        val name        = itemView.findViewById<TextView>(R.id.tv_doctor_name)
-        val firstName   = itemView.findViewById<TextView>(R.id.tv_doctor_firstname)
-        val title       = itemView.findViewById<TextView>(R.id.tv_doctor_title)
-        val city        = itemView.findViewById<TextView>(R.id.tv_doctor_city)
-        val isSelected  = itemView.findViewById<CheckBox>(R.id.checkbox_doctor)
+        val name: TextView = itemView.findViewById(R.id.tv_doctor_name)
+        val firstName: TextView = itemView.findViewById(R.id.tv_doctor_firstname)
+        val title: TextView = itemView.findViewById(R.id.tv_doctor_title)
+        val city: TextView = itemView.findViewById(R.id.tv_doctor_city)
+        val isSelected: CheckBox = itemView.findViewById(R.id.checkbox_doctor)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {

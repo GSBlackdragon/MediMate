@@ -10,7 +10,6 @@ import com.example.mms.ui.createAccount.CreateAccountActivity
 class WelcomeActivity : AppCompatActivity() {
 
     private lateinit var binding: WelcomeActivityBinding
-    private lateinit var db: AppDatabase
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

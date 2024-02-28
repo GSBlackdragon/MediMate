@@ -21,12 +21,12 @@ class DoctorAdapter(
     )  : RecyclerView.Adapter<DoctorAdapter.MyViewHolder>() {
 
     class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val nomMedecin      = itemView.findViewById<TextView>(R.id.nomMedecin)
-        val titleMedecin    = itemView.findViewById<TextView>(R.id.titleMedecin)
-        val cityMedecin     = itemView.findViewById<TextView>(R.id.cityMedecin)
-        val btnDelete       = itemView.findViewById<ImageView>(R.id.medecinDelete)
-        val btnSms          = itemView.findViewById<TextView>(R.id.btn_sms)
-        val btnMail         = itemView.findViewById<TextView>(R.id.btn_mail)
+        val nomMedicine: TextView = itemView.findViewById(R.id.nomMedecin)
+        val titleMedicine: TextView = itemView.findViewById(R.id.titleMedecin)
+        val cityMedicine: TextView = itemView.findViewById(R.id.cityMedecin)
+        val btnDelete: ImageView = itemView.findViewById(R.id.medecinDelete)
+        val btnSms: TextView = itemView.findViewById(R.id.btn_sms)
+        val btnMail: TextView = itemView.findViewById(R.id.btn_mail)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
@@ -43,9 +43,9 @@ class DoctorAdapter(
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val item = doctorList[position]
-        holder.nomMedecin.text = item.firstname.plus(" ").plus(item.name)
-        holder.titleMedecin.text = item.title.ifEmpty { item.speciality }
-        holder.cityMedecin.text = item.city
+        holder.nomMedicine.text = item.firstname.plus(" ").plus(item.name)
+        holder.titleMedicine.text = item.title.ifEmpty { item.speciality }
+        holder.cityMedicine.text = item.city
         holder.btnDelete.setOnClickListener {
             val tt = Thread {
                 db.doctorDao().deleteDoctor(item)

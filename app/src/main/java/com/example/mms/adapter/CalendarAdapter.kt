@@ -116,7 +116,7 @@ class CalendarAdapter(
 
 
     // function that creates the linear layout with the points
-    fun createLinearLayoutWithImage(nb: Int): LinearLayout {
+    private fun createLinearLayoutWithImage(nb: Int): LinearLayout {
         // max 3 points per day (too big if more)
         var numberOfImage = nb
         if (numberOfImage > 3) {
@@ -158,7 +158,7 @@ class CalendarAdapter(
     }
 
     // function that returns the drawable image for the index
-    fun getDrawableImageForIndex(index: Int): Int {
+    private fun getDrawableImageForIndex(index: Int): Int {
         return when (index) {
             0 -> R.drawable.blue_point
             1 -> R.drawable.purple_point

@@ -17,7 +17,6 @@ import com.example.mms.database.inApp.AppDatabase
 import com.example.mms.database.inApp.SingletonDatabase
 import com.example.mms.databinding.FragmentCreateAccountInformationsBinding
 import com.example.mms.model.User
-import kotlinx.coroutines.DelicateCoroutinesApi
 import java.util.Calendar
 
 class CAInformationsFragment : Fragment() {

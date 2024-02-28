@@ -34,9 +34,9 @@ class HourWeightAdapter(
 
     class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         // get items view
-        val tvHeure = itemView.findViewById<TextView>(R.id.text_timepicker)
-        val npDosage = itemView.findViewById<NumberPicker>(R.id.np_dosage)
-        val btnDelete = itemView.findViewById<ImageButton>(R.id.btn_delete)
+        val tvHeure: TextView = itemView.findViewById(R.id.text_timepicker)
+        val npDosage: NumberPicker = itemView.findViewById(R.id.np_dosage)
+        val btnDelete: ImageButton = itemView.findViewById(R.id.btn_delete)
 
         init {
             npDosage.minValue = 1

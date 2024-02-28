@@ -19,7 +19,6 @@ import kotlinx.serialization.json.Json
  * Singleton pattern
  *
  * @param context The context of the application
- * @property url The url of the api
  * @property queue The queue of the requests
  * @property json The json parser
  */

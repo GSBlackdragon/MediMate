@@ -94,7 +94,7 @@ class TaskAdapter(
      * @param medicine the medicine
      * @param edit if the task is editable
      */
-    fun dialogTask(task : Task, medicine: Medicine , edit : Boolean) {
+    private fun dialogTask(task : Task, medicine: Medicine , edit : Boolean) {
         val dialog = Dialog(context)
         dialog.setContentView(R.layout.custom_dialog_tasks)
 

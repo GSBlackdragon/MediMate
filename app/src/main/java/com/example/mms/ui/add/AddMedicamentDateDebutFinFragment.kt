@@ -102,7 +102,7 @@ class AddMedicamentDateDebutFinFragment : Fragment() {
      * @param start true if the EditText is for the start date, false if it's for the end date
      * @param editText2 the other EditText
      */
-    fun setupDatePickerDialog(editText: EditText, initialDate: LocalDateTime, start : Boolean, editText2: EditText)  {
+    private fun setupDatePickerDialog(editText: EditText, initialDate: LocalDateTime, start : Boolean, editText2: EditText)  {
         // init date
         val calendar = Calendar.getInstance()
         val year = calendar[Calendar.YEAR]
@@ -178,7 +178,7 @@ class AddMedicamentDateDebutFinFragment : Fragment() {
                 viewModel.taskData.value!!.startDate = this.beginDate
                 if (STOP_ON_STOCK){
                     val totalStock = viewModel.storage.value?.storage
-                    val totalWeight = viewModel.cycle.value?.hourWeights!!.map { it.weight }.sum()
+                    val totalWeight = viewModel.cycle.value?.hourWeights!!.sumOf { it.weight }
                     val totalDaysToAdd = totalStock?.div(totalWeight)
                     viewModel.taskData.value!!.endDate = this.beginDate.plusDays(totalDaysToAdd!!.toLong()-1)
 

@@ -92,7 +92,7 @@ class RecyclerViewContentTest {
 
     }
 
-    fun navigateTo(@IdRes menuItemId: Int): ViewAction {
+    private fun navigateTo(@IdRes menuItemId: Int): ViewAction {
         return object : ViewAction {
             override fun getConstraints(): Matcher<View> {
                 return allOf(
