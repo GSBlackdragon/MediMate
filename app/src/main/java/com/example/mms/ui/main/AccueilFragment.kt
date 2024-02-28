@@ -116,8 +116,8 @@ class AccueilFragment : Fragment() {
         listDoublonsSubActiveCode = mutableListOf()
         listMedicineCIS = mutableListOf()
 
-        var t = Thread {
-            var listSubActiveCode : MutableList<Int?> = mutableListOf()
+        val t = Thread {
+            val listSubActiveCode : MutableList<Int?> = mutableListOf()
             for (item in items){
                 listSubActiveCode.add(db.medicineDao().getByCIS(item.task.medicineCIS)?.composition?.substance_code)
                 listMedicineCIS.add(item.task.medicineCIS.toString())
@@ -139,48 +139,41 @@ class AccueilFragment : Fragment() {
         medicinesRV.layoutManager = LinearLayoutManager(root.context)
         medicinesRV.adapter = takesAdapter
 
-        calendarAdapter.setOnItemClickListener(object : OnItemClickListener {
-            override fun onItemClick(position: Int) {
-                val clickedDay = calendarDays[position]
-                val newCalendarDays = getNewCalendarDayList(
-                    calendarDays,
-                    stringToDate(clickedDay.date),
-                    this@AccueilFragment.requireContext()
+        calendarAdapter.setOnItemClickListener { position ->
+            val clickedDay = calendarDays[position]
+            val newCalendarDays = getNewCalendarDayList(
+                calendarDays,
+                stringToDate(clickedDay.date),
+                this@AccueilFragment.requireContext()
+            )
+
+            calendarDays.clear()
+            calendarDays.addAll(newCalendarDays)
+            calendarAdapter.toggleDaySelection(calendarDays.indexOfFirst { it.date == clickedDay.date })
+            calendarAdapter.notifyDataSetChanged()
+
+            userMedicines.clear()
+            userMedicines.addAll(clickedDay.listTasks)
+            items.clear()
+            items.addAll(
+                this@AccueilFragment.tasksService.createShowableHourWeightsFromTasks(
+                    userMedicines
                 )
+            )
+            takesAdapter.updateListDoublonsAndCIS(updateSubActiveDoublons())
 
-                calendarDays.clear()
-                calendarDays.addAll(newCalendarDays)
-                calendarAdapter.toggleDaySelection(calendarDays.indexOfFirst { it.date == clickedDay.date })
-                calendarAdapter.notifyDataSetChanged()
+            takesAdapter.updateCurrentDate(stringToDate(clickedDay.date))
 
-                userMedicines.clear()
-                userMedicines.addAll(clickedDay.listTasks)
-                items.clear()
-                items.addAll(
-                    this@AccueilFragment.tasksService.createShowableHourWeightsFromTasks(
-                        userMedicines
-                    )
-                )
-                takesAdapter.updateListDoublonsAndCIS(updateSubActiveDoublons())
-
-                takesAdapter.updateCurrentDate(stringToDate(clickedDay.date))
-
-                takesAdapter.notifyDataSetChanged()
+            takesAdapter.notifyDataSetChanged()
 
 
-                if (clickedDay.date != today.time.toString()) binding.floatingActionButtonBackToday.show()
-                else binding.floatingActionButtonBackToday.hide()
+            if (clickedDay.date != today.time.toString()) binding.floatingActionButtonBackToday.show()
+            else binding.floatingActionButtonBackToday.hide()
 
-                updateSmiley()
-            }
+            updateSmiley()
+        }
 
-        })
-
-        calendarAdapter.setCalendarAdapterInterface(object : CalendarAdapterInterface {
-            override fun onMonthYearChanged(month: String, year: String) {
-                setMonthAndYear(month, year)
-            }
-        })
+        calendarAdapter.setCalendarAdapterInterface { month, year -> setMonthAndYear(month, year) }
 
 
         binding.buttonNextMonth.setOnClickListener {
@@ -242,21 +235,18 @@ class AccueilFragment : Fragment() {
             binding.textHome.text = getString(R.string.rien_prendre_aujourd_hui)
         } else {
             val percent = numberTakesTook.first * 100 / numberTakesTook.second
-            if (percent < 25) {
-                binding.imageView.setImageResource(R.drawable.en_colere)
-            } else if (percent < 50) {
-                binding.imageView.setImageResource(R.drawable.tres_triste)
-            } else if (percent < 75) {
-                binding.imageView.setImageResource(R.drawable.neutre)
-            } else {
-                binding.imageView.setImageResource(R.drawable.tres_heureux)
+            when {
+                percent < 25 -> binding.imageView.setImageResource(R.drawable.en_colere)
+                percent < 50 -> binding.imageView.setImageResource(R.drawable.tres_triste)
+                percent < 75 -> binding.imageView.setImageResource(R.drawable.neutre)
+                else -> binding.imageView.setImageResource(R.drawable.tres_heureux)
             }
             binding.textHome.text =
                 getString(R.string.vous_avez_pris_medicaments_aujourd_hui, numberTakesTook.first.toString())
         }
     }
 
-    fun updateMonth(numberToAdd: Int) {
+    private fun updateMonth(numberToAdd: Int) {
         val newCalendar = Calendar.getInstance()
         newCalendar.time = stringToDate(getDaySelected().date)
         newCalendar.add(Calendar.MONTH, numberToAdd)
@@ -293,13 +283,13 @@ class AccueilFragment : Fragment() {
         updateSmiley()
     }
 
-    fun setMonthAndYear(month: String, year: String) {
+    private fun setMonthAndYear(month: String, year: String) {
         binding.calendarCurrentMonthText.text = month
         binding.calendarCurrentYearText.text = year
     }
 
 
-    fun areDatesOnSameDay(date1: Date, date2: Date): Boolean {
+    private fun areDatesOnSameDay(date1: Date, date2: Date): Boolean {
         val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
         val formattedDate1 = dateFormat.format(date1)
         val formattedDate2 = dateFormat.format(date2)
@@ -307,7 +297,7 @@ class AccueilFragment : Fragment() {
         return formattedDate1 == formattedDate2
     }
 
-    fun getDaySelected(): CalendarDay {
+    private fun getDaySelected(): CalendarDay {
         return calendarDays.find { it.isSelected }!!
     }
 
@@ -316,14 +306,14 @@ class AccueilFragment : Fragment() {
         _binding = null
     }
 
-    fun updateSubActiveDoublons() : Pair<MutableList<Int?>,MutableList<String>> {
+    private fun updateSubActiveDoublons() : Pair<MutableList<Int?>,MutableList<String>> {
 
         listDoublonsSubActiveCode.clear()
         listMedicineCIS.clear()
 
 
-        var t = Thread {
-            var listSubActiveCode : MutableList<Int?> = mutableListOf()
+        val t = Thread {
+            val listSubActiveCode : MutableList<Int?> = mutableListOf()
             for (item in items){
                 listSubActiveCode.add(db.medicineDao().getByCIS(item.task.medicineCIS)?.composition?.substance_code)
                 listMedicineCIS.add(item.task.medicineCIS.toString())
