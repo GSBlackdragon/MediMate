@@ -197,11 +197,6 @@ class ApiService private constructor(context: Context) {
         queue.add(stringRequest)
     }
 
-
-    @Serializable
-    data class DoctorsResponse(
-        val doctors: List<TemporaryDoctor>
-    )
     // Supposons que ces propriétés soient les seules nécessaires pour créer un objet Doctor
     @Serializable
     data class TemporaryDoctor(
@@ -221,7 +216,7 @@ class ApiService private constructor(context: Context) {
 
 
     private fun getDoctorByName(lastName: String, firstName: String, callback: (List<Doctor>) -> Unit, errorCallback: (String) -> Unit) {
-        var url = makeUrl("/rpps?page=1&_per_page=30&lastName=${lastName}&firstName=${firstName}",2)
+        val url = makeUrl("/rpps?page=1&_per_page=30&lastName=${lastName}&firstName=${firstName}",2)
         val stringRequest = object : StringRequest(Method.GET, url,
             { response ->
                 try {
