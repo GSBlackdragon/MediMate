@@ -126,9 +126,9 @@ class NotifService(
      * @param showableHourWeights The list of notifications to planify
      */
     @RequiresApi(Build.VERSION_CODES.S)
-    fun planifyTakesNotifications(showableHourWeights: MutableList<ShowableHourWeight>) {
+    fun planningTakesNotifications(showableHourWeights: List<ShowableHourWeight>) {
         for (hourWeight in showableHourWeights) {
-            this.planifyOneNotification(hourWeight)
+            this.planningOneNotification(hourWeight)
         }
     }
 
@@ -141,7 +141,7 @@ class NotifService(
      * @return True if the notification has been planified, false otherwise
      */
     @RequiresApi(Build.VERSION_CODES.S)
-    fun planifyOneNotification(showableHourWeight: ShowableHourWeight, now: LocalDateTime = LocalDateTime.now()): Boolean {
+    fun planningOneNotification(showableHourWeight: ShowableHourWeight, now: LocalDateTime = LocalDateTime.now()): Boolean {
         val alarmManager = this.context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
 
         val hourMin = stringHourMinuteToInt(showableHourWeight.hourWeight.hour)

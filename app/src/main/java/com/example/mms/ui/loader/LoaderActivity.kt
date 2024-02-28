@@ -243,7 +243,7 @@ class LoaderActivity : AppCompatActivity() {
 
         // Planify the notifications
         val notifService = NotifService(this)
-        notifService.planifyTakesNotifications(todaysShowableHourWeights)
+        notifService.planningTakesNotifications(todaysShowableHourWeights)
     }
 
     private fun isMidnightAlarmSet(): Boolean {

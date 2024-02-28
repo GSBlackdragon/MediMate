@@ -236,7 +236,7 @@ class AddMedicamentRecapFragment : Fragment() {
 
                     if (todaysSwHourWeightsTask.isNotEmpty()) {
                         val notifService = NotifService(this.requireContext())
-                        notifService.planifyOneNotification(todaysSwHourWeightsTask.first())
+                        notifService.planningOneNotification(todaysSwHourWeightsTask.first())
                     }
                 }
             }

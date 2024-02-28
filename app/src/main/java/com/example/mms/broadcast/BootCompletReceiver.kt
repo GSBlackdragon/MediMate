@@ -28,7 +28,7 @@ class BootCompletReceiver: BroadcastReceiver() {
 
             // Planify the notifications
             val notifService = NotifService(context)
-            notifService.planifyTakesNotifications(todaysShowableHourWeights)
+            notifService.planningTakesNotifications(todaysShowableHourWeights)
         }
     }
 }
