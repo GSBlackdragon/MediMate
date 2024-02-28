@@ -16,7 +16,7 @@ class SideInfoService(context : Context) {
     fun knowIfMedicineIsInAllergicListOfUser(codeCIS: Long): Pair<Boolean,String> {
         val user = db.userDao().getConnectedUser()
         val sideInfoMedicine = db.sideInfoMedicineDao().getById(codeCIS.toString())
-        if (user == null || sideInfoMedicine == null) return Pair(false,"")
+        if (user == null || sideInfoMedicine == null || sideInfoMedicine.allergie == "") return Pair(false,"")
         val userAllergies = user.listAllergies.split(",").toList().map { it.trim();it.lowercase() }
         val allergicOfMedicine = sideInfoMedicine.allergie.split(",").toList().map { it.lowercase();it.trim() }
         val resList = userAllergies.intersect(allergicOfMedicine.toSet())
