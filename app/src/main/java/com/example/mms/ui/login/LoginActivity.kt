@@ -52,14 +52,13 @@ class LoginActivity : AppCompatActivity() {
             }
 
             // set on click listener
-            adapter.setOnItemClickListener(object : OnItemClickListener {
-                override fun onItemClick(position: Int) {
-                    val intent = Intent(this@LoginActivity, LockedActivity::class.java)
-                    intent.putExtra("userEmail", users[position].email).putExtra("isLinkedToBiometric", users[position].isLinkedToBiometric)
-                    startActivity(intent)
-                    finish()
-                }
-            })
+            adapter.setOnItemClickListener { position ->
+                val intent = Intent(this@LoginActivity, LockedActivity::class.java)
+                intent.putExtra("userEmail", users[position].email)
+                    .putExtra("isLinkedToBiometric", users[position].isLinkedToBiometric)
+                startActivity(intent)
+                finish()
+            }
         }.start()
 
         binding.buttonCreateAccount.setOnClickListener {
