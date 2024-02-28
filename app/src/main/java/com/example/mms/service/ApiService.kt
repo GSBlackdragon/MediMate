@@ -180,7 +180,7 @@ class ApiService private constructor(context: Context) {
         val stringRequest = object : StringRequest(Method.GET, url,
             { response ->
                 try {
-                    val doctorResponse = json.decodeFromString<temporaryDoctor>(response)
+                    val doctorResponse = json.decodeFromString<TemporaryDoctor>(response)
                     // Assurez-vous que temporaryDoctor a une fonction toDoctor() définie similairement à l'exemple précédent
                     callback(doctorResponse.toDoctor())
                 } catch (e: Exception) {
@@ -200,11 +200,11 @@ class ApiService private constructor(context: Context) {
 
     @Serializable
     data class DoctorsResponse(
-        val doctors: List<temporaryDoctor>
+        val doctors: List<TemporaryDoctor>
     )
     // Supposons que ces propriétés soient les seules nécessaires pour créer un objet Doctor
     @Serializable
-    data class temporaryDoctor(
+    data class TemporaryDoctor(
         var idRpps: Long,
         var lastName: String?,
         var firstName: String?,
@@ -225,7 +225,7 @@ class ApiService private constructor(context: Context) {
         val stringRequest = object : StringRequest(Method.GET, url,
             { response ->
                 try {
-                    val doctorResponse = json.decodeFromString<List<temporaryDoctor>>(response)
+                    val doctorResponse = json.decodeFromString<List<TemporaryDoctor>>(response)
                     // Assurez-vous que temporaryDoctor a une fonction toDoctor() définie similairement à l'exemple précédent
                     callback(doctorResponse.map { it.toDoctor() })
 
