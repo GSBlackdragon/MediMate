@@ -1,11 +1,11 @@
 package com.example.mms.service
 
 import android.content.Context
+import com.example.mms.database.inApp.AppDatabase
 import com.example.mms.database.inApp.SingletonDatabase
 
-class SideInfoService(context : Context) {
-    private val db = SingletonDatabase.getDatabase(context)
-
+class SideInfoService(context : Context, dbTest : AppDatabase? = null) {
+    private val db = dbTest ?: SingletonDatabase.getDatabase(context)
     /**
      * Return a pair of a boolean and a string regarding if the current user is allergic to the medicine and if so,
      * return the active substance to which the current user is allergic to
