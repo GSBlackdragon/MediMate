@@ -146,7 +146,7 @@ class ApiService private constructor(context: Context) {
             return null
         }
 
-        return null // Retourne null si aucun email n'est trouvé
+        return null
     }
     private fun getDoctorbyIDGOUV(identifier: String, callback: (String) -> Unit, errorCallback: () -> Unit) {
         val url = makeUrl(identifier, 1)
@@ -179,6 +179,7 @@ class ApiService private constructor(context: Context) {
         val stringRequest = object : StringRequest(Method.GET, url,
             { response ->
                 try {
+                    Log.d("json", "response: $response")
                     val doctorResponse = json.decodeFromString<TemporaryDoctor>(response)
                     // Assurez-vous que temporaryDoctor a une fonction toDoctor() définie similairement à l'exemple précédent
                     callback(doctorResponse.toDoctor())
@@ -196,7 +197,7 @@ class ApiService private constructor(context: Context) {
         queue.add(stringRequest)
     }
 
-    // Supposons que ces propriétés soient les seules nécessaires pour créer un objet Doctor
+
     @Serializable
     data class TemporaryDoctor(
         var idRpps: Long,
@@ -215,12 +216,13 @@ class ApiService private constructor(context: Context) {
 
 
     private fun getDoctorByName(lastName: String, firstName: String, callback: (List<Doctor>) -> Unit, errorCallback: (String) -> Unit) {
-        val url = makeUrl("/rpps?page=1&_per_page=30&lastName=${lastName}&firstName=${firstName}",2)
+        val url = makeUrl("/rpps?page=1&_per_page=30&lastName=${firstName}&firstName=${lastName}",2)
         val stringRequest = object : StringRequest(Method.GET, url,
             { response ->
                 try {
+
                     val doctorResponse = json.decodeFromString<List<TemporaryDoctor>>(response)
-                    // Assurez-vous que temporaryDoctor a une fonction toDoctor() définie similairement à l'exemple précédent
+
                     callback(doctorResponse.map { it.toDoctor() })
 
 
@@ -260,7 +262,7 @@ class ApiService private constructor(context: Context) {
                         },
                         errorCallback = {
                             Log.d("error", errorDoctorEmailString)
-                            // Signaler une erreur
+
                             resultCallback.onError(errorDoctorEmailString)
                         }
                     )
@@ -268,7 +270,7 @@ class ApiService private constructor(context: Context) {
                 },
                 errorCallback = {
                     Log.d("error", errorDoctorInfoString)
-                    // Signaler une erreur
+
                     resultCallback.onError(errorDoctorInfoString)
                 }
             )
@@ -276,7 +278,7 @@ class ApiService private constructor(context: Context) {
             getDoctorByName(name.second, name.first,
                 callback = { doctors ->
                     val doctorsWithEmail = mutableListOf<Doctor>()
-                    val emailsReceived = MutableList(doctors.size) { false } // Suivi des emails récupérés
+                    val emailsReceived = MutableList(doctors.size) { false }
                     doctors.forEachIndexed { index, doctor ->
                         if (doctor.email.isNotEmpty()) {
                             doctorsWithEmail.add(doctor)
@@ -308,41 +310,18 @@ class ApiService private constructor(context: Context) {
                 },
                 errorCallback = {
                     Log.d("error", errorDoctorInfoString)
-                    // Signaler une erreur
+
                     resultCallback.onError(errorDoctorInfoString)
                 }
             )
         } else {
-            // Ni identifiant ni nom fourni
+
             resultCallback.onSuccess(null)
         }
     }
 
 
-    /* Exemple d'utilisation de la fonction getDoctor
-    * Thread{
-            var bd = db.doctorDao()
 
-            ApiService.getInstance(this).getDoctor(null,"10002527652", object : ApiService.DoctorResultCallback {
-                override fun onSuccess(doctor: Doctor?) {
-                    if (doctor != null) {
-                        Thread{ bd.insert(doctor) }.start()
-                    } else {
-                        Log.d("SUCCESS", "Aucun docteur trouvé")
-                    }
-                }
-
-                override fun onError(error: String) {
-                    Log.d("ERROR", error)
-                }
-            })
-
-
-        }.start()
-    *
-    *
-    *
-    * */
 
 
 
