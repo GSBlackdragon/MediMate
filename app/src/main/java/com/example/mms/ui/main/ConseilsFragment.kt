@@ -110,7 +110,8 @@ class ConseilsFragment : Fragment() {
             if(nameDoctor.text.isEmpty() && idDoctor.text.isEmpty()) {
                 Toast.makeText(this.requireContext(), getString(R.string.fill_fields), Toast.LENGTH_SHORT).show()
             } else {
-                val id = idDoctor.text.toString()
+                var id : String? = idDoctor.text.toString()
+                if (id!!.isEmpty()) id = null
                 val lastName = nameDoctor.text.toString()
                 val firstName = firstNameDoctor.text.toString()
                 api.getDoctor(Pair(firstName,lastName),id, object : ApiService.DoctorResultCallback{
