@@ -107,15 +107,26 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
         android:paddingLeft="20dp"
         android:paddingRight="20dp"
         android:text="@string/envoyer_un_mail"
         android:textAllCaps="false"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/btn_dl_pdf"
+        app:layout_constraintStart_toEndOf="@+id/btn_sms"
         app:layout_constraintTop_toBottomOf="@id/separator"
         app:layout_constraintVertical_bias="0.0" />
+
+    <Button
+        android:id="@+id/btn_dl_pdf"
+        style="@style/CustomButtonStyle3"
+        android:background="@drawable/baseline_file_download_24"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/btn_mail"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/btn_mail" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 
