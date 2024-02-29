@@ -114,38 +114,38 @@ class DoctorAdapter(
 
 
     private fun generateDataForReport():Pair<String,MutableList<String>> {
-        class pdf (var taskid : Int, var takes: MutableList<Takes>)
+        class Pdf (var taskid : Int, var takes: MutableList<Takes>)
 
 
-        val  weightbyname = mutableMapOf<Long,String >()
+        val weightByName = mutableMapOf<Long,String >()
         val tasks: MutableList<Task> = TasksService(context).getCurrentUserTasks().toMutableList()
 
         tasks.forEach {
             TasksService(context).getTaskFilled(it, it.cycle.isEmpty() && it.specificDays.isEmpty())
         }
         Log.d("pdf", tasks.toString())
-        val takes = mutableListOf<pdf>()
+        val takes = mutableListOf<Pdf>()
 
         val t = Thread{
         tasks.forEach { task ->
 
             if (task.cycle.isEmpty() && task.specificDays.isEmpty()) {
 
-                takes.add(pdf(task.id.toInt(),db.takesDao().getAllFromHourWeightId(task.oneTakeHourWeight!!.id)))
+                takes.add(Pdf(task.id.toInt(),db.takesDao().getAllFromHourWeightId(task.oneTakeHourWeight!!.id)))
 
-                weightbyname.put(task.oneTakeHourWeight!!.id.toLong(),db.medicineDao().getNameByCIS(task.medicineCIS)!!)
+                weightByName.put(task.oneTakeHourWeight!!.id.toLong(),db.medicineDao().getNameByCIS(task.medicineCIS)!!)
             } else {
                 if (task.cycle.isNotEmpty()) {
                     task.cycle.hourWeights.forEach { hourWeight ->
 
-                        takes.add(pdf(task.id.toInt(),db.takesDao().getAllFromHourWeightId(hourWeight.id)))
+                        takes.add(Pdf(task.id.toInt(),db.takesDao().getAllFromHourWeightId(hourWeight.id)))
                     }
-                    weightbyname.put(task.cycle.id.toLong(),db.medicineDao().getNameByCIS(task.medicineCIS)!!)
+                    weightByName.put(task.cycle.id.toLong(),db.medicineDao().getNameByCIS(task.medicineCIS)!!)
                 } else {
                     task.specificDays.forEach { specificDay ->
 
-                        takes.add(pdf(task.id.toInt(),db.takesDao().getAllFromHourWeightId(specificDay.hourWeightId)))
-                        weightbyname.put(specificDay.hourWeightId.toLong(),db.medicineDao().getNameByCIS(task.medicineCIS)!!)
+                        takes.add(Pdf(task.id.toInt(),db.takesDao().getAllFromHourWeightId(specificDay.hourWeightId)))
+                        weightByName.put(specificDay.hourWeightId.toLong(),db.medicineDao().getNameByCIS(task.medicineCIS)!!)
                     }
 
 
@@ -161,9 +161,9 @@ class DoctorAdapter(
         val tab = takes.groupBy { it.taskid }
         tab.forEach(){
 
-            storage +="<p>Sur la période du ${it.value[0].takes[0].date.toLocalDate()} au ${LocalDate.now()}, le patient a pris le mdédicament <strong>${weightbyname[it.key.toLong()]}</strong> correctement <strong>${it.value.filter { it.takes[0].isDone }.size * 100 / it.value.size}</strong> % du temps</p>"
+            storage +="<p>Sur la période du ${it.value[0].takes[0].date.toLocalDate()} au ${LocalDate.now()}, le patient a pris le mdédicament <strong>${weightByName[it.key.toLong()]}</strong> correctement <strong>${it.value.filter { it.takes[0].isDone }.size * 100 / it.value.size}</strong> % du temps</p>"
         }
-        return Pair(storage, weightbyname.values.toMutableList())
+        return Pair(storage, weightByName.values.toMutableList())
 
     }
 
