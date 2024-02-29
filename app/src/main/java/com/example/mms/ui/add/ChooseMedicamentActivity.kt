@@ -106,6 +106,7 @@ class ChooseMedicamentActivity : AppCompatActivity() {
                     override fun onSuccess(doctors: List<Doctor>?) {
                         if (doctors != null) {
                             doctorList.addAll(doctors)
+                            adapterDoctor.notifyDataSetChanged()
                         }
                     }
 
